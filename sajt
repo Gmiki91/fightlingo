@@ -1,0 +1,38 @@
+{
+"english":"Lekvár kicsi",
+"translations":["мармелад маленький", "мармелад маленький."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár okos",
+"translations":["мармелад умный", "мармелад умный."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár álmos, ezért pihen",
+"translations":["мармелад устал, поэтому отдыхает", "мармелад устал, поэтому отдыхает."],
+"level":1,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
