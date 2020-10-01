@@ -4,7 +4,7 @@
 "level":1,
 "lesson":{"BasicsI":"Basics I"},
 "learned":false,
-"learningProgress":0
+"learningProgress":0,
 "consecutiveCorrectAnswers":0,
 "interval":1,
 "difficulty":2.5,
@@ -17,7 +17,7 @@
 "level":1,
 "lesson":{"BasicsI":"Basics I"},
 "learned":false,
-"learningProgress":0
+"learningProgress":0,
 "consecutiveCorrectAnswers":0,
 "interval":1,
 "difficulty":2.5,
@@ -30,7 +30,7 @@
 "level":1,
 "lesson":{"BasicsII":"Basics II"},
 "learned":false,
-"learningProgress":0
+"learningProgress":0,
 "consecutiveCorrectAnswers":0,
 "interval":1,
 "difficulty":2.5,

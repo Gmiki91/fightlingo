@@ -28,19 +28,29 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.get("/api/sentences",(req,res,next)=>{
-    Sentence.find().then(documents=>{
+app.get("/api/sentences/learnable",(req,res,next)=>{
+    Sentence.find({learned:false})
+    .then(documents=>{
+        res.status(200).json(documents);
+    })
+ });
+
+app.get("/api/sentences/practicable",(req,res,next)=>{
+    Sentence.find({learned:true}).then(documents=>{
         res.status(200).json(documents);
     })
  });
 
  app.patch("/api/sentences", (req,res,next)=>{
-     const sentence = new Sentence({
+   
+    const sentence = new Sentence({
          _id: req.body._id,
          english: req.body.english,
          translations: req.body.translations,
          level: req.body.level,
          lesson: req.body.lesson,
+         learned: req.body.learned,
+         learningProgress: req.body.learningProgress,
          consecutiveCorrectAnswers: req.body.consecutiveCorrectAnswers,
          interval: req.body.interval,
          difficulty: req.body.difficulty,
@@ -51,6 +61,34 @@ app.get("/api/sentences",(req,res,next)=>{
      .then((response)=>{
          res.status(200).json({message:"sentence updated"})
      });
- })
+
+     /* multiple at once?
+     let sentences=[];
+  
+    req.body.forEach(element => {
+         let sentence= new Sentence({
+            _id: element._id,
+            english: element.english,
+            translations: element.translations,
+            level: element.level,
+            lesson: element.lesson,
+            learned: element.learned,
+            learningProgress: element.learningProgress,
+            consecutiveCorrectAnswers: element.consecutiveCorrectAnswers,
+            interval: element.interval,
+            difficulty: element.difficulty,
+            nextReviewDate: element.nextReviewDate
+        });
+        
+        sentences.push(sentence);
+        console.log(sentence);
+    });
+      Sentence.updateMany({}, sentences)
+     .then((response)=>{
+
+         console.log("RESPONSE:"+response);
+         res.status(200).json({message:"sentences updated"});
+     }); */
+ });
 
 module.exports=app;

@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 
 const sentenceSchema = mongoose.Schema({
     english: String,
-    translations: [String],
+    translations:[String],
     level: Number,
     lesson: Object,
     learned: Boolean,

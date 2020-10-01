@@ -7,23 +7,33 @@ import { Sentence } from './sentence.model';
 @Injectable()
 export class QuizService{
     
-    private sentenceListChanged=new Subject<Sentence>();
+
+    //private sentences:Sentence[]=[];
+    private sentenceListChanged=new Subject<Sentence[]>();
+    private sentenceChanged=new Subject<Sentence>();
 
     constructor(private http: HttpClient){}
 
-    getSentence(){
-        this.http.get('http://localhost:3300/api/sentences')
-        .subscribe((responeData:Sentence[])=>{
-            console.log(responeData);
-            responeData.sort((a,b)=> {
-               return +a.nextReviewDate - +b.nextReviewDate;
-            });
-            console.log(responeData);
-            this.sentenceListChanged.next(responeData[0]);
-        })
+    
+    getLearnableSentences(){
+        this.http.get('http://localhost:3300/api/sentences/learnable')
+        .subscribe((responseData:Sentence[])=>{
+            this.sentenceListChanged.next(responseData);
+            console.log("getLearnableSentences");
+        });
+    }
+    getPracticeableSentences(){
+        this.http.get('http://localhost:3300/api/sentences/practicable')
+        .subscribe((responseData:Sentence[])=>{
+            this.sentenceListChanged.next(responseData);
+            return responseData!=null;
+        });
     }
 
     getSentenceUpdateListener(){
+        return this.sentenceChanged.asObservable();
+    }
+    getSentenceListUpdateListener(){
         return this.sentenceListChanged.asObservable();
     }
 
@@ -36,6 +46,7 @@ export class QuizService{
             sentence.consecutiveCorrectAnswers= 0;
         } else {
             sentence.consecutiveCorrectAnswers+= 1;
+            sentence.learningProgress++;
         }
 
         // interval
@@ -52,8 +63,33 @@ export class QuizService{
         let now = +new Date();
         sentence.nextReviewDate = new Date(now + millisecondsInDay*sentence.interval);
 
-        // Store the nextPracticeDate in the database
+        // learning
+        
+        if(sentence.learningProgress>=5){
+            sentence.learned=true;
+        }
+        
+        //this.sentences.push(sentence);
         this.http.patch('http://localhost:3300/api/sentences',sentence)
-        .subscribe((response)=>console.log(response));    
+        .subscribe((response)=>console.log(response));
+       
     }
+    /* for multiple sentences at once - not working
+    sendUpdatedSentences(){
+        this.http.patch('http://localhost:3300/api/sentences',this.sentences)
+        .subscribe((response)=>console.log(response));
+        this.sentences=[];    
+    }
+
+    getSentence(){
+        this.http.get('http://localhost:3300/api/sentences')
+        .subscribe((responeData:Sentence[])=>{
+            console.log(responeData);
+            responeData.sort((a,b)=> {
+               return +a.nextReviewDate - +b.nextReviewDate;
+            });
+            console.log(responeData);
+            this.sentenceChanged.next(responeData[0]);
+        })
+    }*/
 }
