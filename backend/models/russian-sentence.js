@@ -4,7 +4,7 @@ const sentenceSchema = mongoose.Schema({
     english: String,
     translations:[String],
     level: Number,
-    lesson: Object,
+    russianLesson: Object,
     learned: Boolean,
     learningProgress:Number,
 
@@ -14,4 +14,4 @@ const sentenceSchema = mongoose.Schema({
     nextReviewDate:Date,
 });
 
-module.exports=mongoose.model('Sentence', sentenceSchema);
+module.exports=mongoose.model('RussianSentence', sentenceSchema);

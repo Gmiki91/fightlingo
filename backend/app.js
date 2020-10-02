@@ -1,11 +1,11 @@
 //mongoexport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/funlingo --collection sentences --out sajt
-//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection sentences --type json --file sajt
+//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection sentences --type json --file russian
 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app=express();
-const Sentence=require('./models/sentence');
+const Sentence=require('./models/russian-sentence');
 
 mongoose.connect(
     "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
@@ -56,7 +56,7 @@ app.get("/api/sentences/practicable/:level",(req,res,next)=>{
          english: req.body.english,
          translations: req.body.translations,
          level: req.body.level,
-         lesson: req.body.lesson,
+         russianLesson: req.body.russianLesson,
          learned: req.body.learned,
          learningProgress: req.body.learningProgress,
          consecutiveCorrectAnswers: req.body.consecutiveCorrectAnswers,

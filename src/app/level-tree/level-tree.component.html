@@ -1,5 +1,7 @@
-<carousel  cellsToShow=3 cellWidth=20% >
-    <div class="carousel-cell" *ngFor="let img of images">
-      <a  (click)="onClick(img)"> <img src={{img.path}}> </a> 
-    </div>
-</carousel>
+<hr>
+ <div class="scrollmenu" name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle-group>
+    <mat-button-toggle [disableRipple]=true  (click)="onClick(item)" *ngFor="let item of items">{{item.lesson}}</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  </div>

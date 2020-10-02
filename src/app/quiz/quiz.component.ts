@@ -35,7 +35,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.overdueSubscription=this.quizService.getOverdueListUpdateListener()
     .subscribe((sentences:Sentence[])=>{
       this.overdueSentences=sentences;
-    })
+    });
   }
 
   learn():void{
@@ -51,7 +51,10 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.displaySentence(sentences)});
   }
   practiceOverdue():void{
-    this.displaySentence(this.overdueSentences);
+    this.quizService.getOverdueSentences();
+    this.overdueSubscription=this.quizService.getOverdueListUpdateListener()
+    .subscribe((sentences:Sentence[])=>{
+      this.displaySentence(sentences)});
   }
   theory():void{
     

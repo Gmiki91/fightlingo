@@ -1,1 +1,16 @@
+div.scrollmenu {
+  width: 20%;
+  margin: auto;
+  background-color: rgb(252, 214, 46);
+  overflow: auto;
+  white-space: nowrap;
+}
+mat-button-toggle{
+  margin:1rem;
+  border-radius: 1rem;
 
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}

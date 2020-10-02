@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {IvyCarouselModule} from 'angular-responsive-carousel';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +21,7 @@ import { LevelTreeComponent } from './level-tree/level-tree.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    IvyCarouselModule
+    MatButtonToggleModule
   ],
   providers: [QuizService],
   bootstrap: [AppComponent]

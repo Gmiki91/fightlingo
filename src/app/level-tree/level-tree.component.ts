@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Lesson } from '../quiz/lesson.enum';
+import { RussianLesson } from '../quiz/language-lessons/russian-lesson.enum';
 import { QuizService } from '../quiz/quiz.service';
 
 @Component({
@@ -9,26 +9,20 @@ import { QuizService } from '../quiz/quiz.service';
 })
 export class LevelTreeComponent implements OnInit {
 
-  images=[
-    {path:'../assets/one.PNG', number:1},
-    {path:'../assets/two.PNG', number:2},
-    {path:'../assets/three.PNG', number:3},
-    {path:'../assets/four.PNG', number:4},
-    {path:'../assets/five.PNG', number:5},
-    {path:'../assets/six.PNG', number:6},
-    {path:'../assets/seven.PNG', number:7}
-  ]
   items=[
-    Lesson.BasicsI,
-    Lesson.BasicsII
+    {lesson:RussianLesson.BasicsI,number:1},
+    {lesson:RussianLesson.BasicsII,number:2},
+    {lesson:RussianLesson.BasicsIII,number:3},
+    {lesson:RussianLesson.BasicsIII,number:3},
+
   ];
-  constructor(private quizService:QuizService) {
-   }
+  constructor(private quizService:QuizService) {}
 
   ngOnInit(): void {
   }
 
   onClick(lesson){
     this.quizService.levelChoosen(lesson.number);
+
   }
 }
