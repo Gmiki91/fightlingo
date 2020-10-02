@@ -28,15 +28,23 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.get("/api/sentences/learnable",(req,res,next)=>{
-    Sentence.find({learned:false})
+app.get("/api/sentences/overdue",(req,res,next)=>{
+    Sentence.find({learned:true,
+                   nextReviewDate:{$lte:new Date()}})
     .then(documents=>{
         res.status(200).json(documents);
     })
  });
 
-app.get("/api/sentences/practicable",(req,res,next)=>{
-    Sentence.find({learned:true}).then(documents=>{
+app.get("/api/sentences/learnable/:level",(req,res,next)=>{
+    Sentence.find({learned:false, level:req.params.level})
+    .then(documents=>{
+        res.status(200).json(documents);
+    })
+ });
+
+app.get("/api/sentences/practicable/:level",(req,res,next)=>{
+    Sentence.find({learned:true, level:req.params.level}).then(documents=>{
         res.status(200).json(documents);
     })
  });

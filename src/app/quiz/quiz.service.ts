@@ -10,31 +10,51 @@ export class QuizService{
 
     //private sentences:Sentence[]=[];
     private sentenceListChanged=new Subject<Sentence[]>();
-    private sentenceChanged=new Subject<Sentence>();
+    private overdueListChanged=new Subject<Sentence[]>();
+    //private sentenceChanged=new Subject<Sentence>();
+    private levelChanged=new Subject<number>();
 
     constructor(private http: HttpClient){}
 
-    
-    getLearnableSentences(){
-        this.http.get('http://localhost:3300/api/sentences/learnable')
+    levelChoosen(level:number){
+        this.levelChanged.next(level);
+    }
+
+    getLevelChanged(){
+        return this.levelChanged.asObservable();
+    }
+
+    getLearnableSentences(level){
+        this.http.get('http://localhost:3300/api/sentences/learnable/'+level)
         .subscribe((responseData:Sentence[])=>{
             this.sentenceListChanged.next(responseData);
-            console.log("getLearnableSentences");
         });
     }
-    getPracticeableSentences(){
-        this.http.get('http://localhost:3300/api/sentences/practicable')
+    getPracticeableSentences(level){
+        this.http.get('http://localhost:3300/api/sentences/practicable/'+level)
         .subscribe((responseData:Sentence[])=>{
+            
             this.sentenceListChanged.next(responseData);
-            return responseData!=null;
+          
+        });
+    }
+    getOverdueSentences(){
+        this.http.get('http://localhost:3300/api/sentences/overdue')
+        .subscribe((responseData:Sentence[])=>{
+            console.log(responseData);
+            this.overdueListChanged.next(responseData);
+            
         });
     }
 
-    getSentenceUpdateListener(){
+   /* getSentenceUpdateListener(){
         return this.sentenceChanged.asObservable();
-    }
+    }*/
     getSentenceListUpdateListener(){
         return this.sentenceListChanged.asObservable();
+    }
+    getOverdueListUpdateListener(){
+        return this.overdueListChanged.asObservable();
     }
 
     updateSentence(sentence:Sentence, answerEfficieny:number){
@@ -58,17 +78,18 @@ export class QuizService{
             sentence.interval = Math.round(sentence.interval * sentence.difficulty);
         }
 
-        // next practice 
-        let millisecondsInDay = 60 * 60 * 24 * 1000;
-        let now = +new Date();
-        sentence.nextReviewDate = new Date(now + millisecondsInDay*sentence.interval);
-
         // learning
-        
         if(sentence.learningProgress>=5){
             sentence.learned=true;
         }
-        
+
+        // next practice 
+        if(sentence.learned){
+            let millisecondsInDay = 60 * 60 * 24 * 1000;
+            let now = +new Date();
+            sentence.nextReviewDate = new Date(now + millisecondsInDay*sentence.interval);
+        }
+
         //this.sentences.push(sentence);
         this.http.patch('http://localhost:3300/api/sentences',sentence)
         .subscribe((response)=>console.log(response));

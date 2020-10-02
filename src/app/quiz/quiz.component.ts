@@ -11,29 +11,47 @@ import { Sentence } from './sentence.model';
 export class QuizComponent implements OnInit, OnDestroy {
 
   @ViewChild("input") input;
+  levelSelected:number;
   sentence:Sentence;
   sentences:Sentence[];
+  overdueSentences:Sentence[];
   numberOfSentences:number;
+  overdueSubscription:Subscription;
   learnableSubscription:Subscription;
+  levelChangeSubscription:Subscription;
   practiceableSubscription:Subscription;
   
   constructor(private quizService:QuizService) { }
 
   ngOnInit(): void {
-    
-    
+    this.levelChangeSubscription=this.quizService.getLevelChanged()
+    .subscribe((number)=>{
+      if(number){
+        console.log(number);
+        this.levelSelected=number;
+      }
+    });
+    this.quizService.getOverdueSentences();
+    this.overdueSubscription=this.quizService.getOverdueListUpdateListener()
+    .subscribe((sentences:Sentence[])=>{
+      this.overdueSentences=sentences;
+    })
   }
+
   learn():void{
-    this.quizService.getLearnableSentences();
+    this.quizService.getLearnableSentences(this.levelSelected);
     this.learnableSubscription = this.quizService.getSentenceListUpdateListener()
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
   practice():void{
-    this.quizService.getPracticeableSentences();
+    this.quizService.getPracticeableSentences(this.levelSelected);
     this.learnableSubscription = this.quizService.getSentenceListUpdateListener()
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
+  }
+  practiceOverdue():void{
+    this.displaySentence(this.overdueSentences);
   }
   theory():void{
     
@@ -62,6 +80,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnDestroy():void{
     this.learnableSubscription.unsubscribe();
     this.practiceableSubscription.unsubscribe();
+    this.overdueSubscription.unsubscribe();
   }
 
   private displaySentence(sentences:Sentence[]):void{

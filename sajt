@@ -12,6 +12,32 @@
 }
 
 {
+"english":"Lekvár szép",
+"translations":["мармелад красивый", "мармелад красивый."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár vicces",
+"translations":["Мармелад смешный", "Мармелад смешный."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
 "english":"Lekvár okos",
 "translations":["мармелад умный", "мармелад умный."],
 "level":1,
@@ -25,9 +51,113 @@
 }
 
 {
+"english":"Lekvár tiszta",
+"translations":["мармелад чистый", "мармелад чистый."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár tehetséges",
+"translations":["мармелад талантливый", "мармелад талантливый."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár fáradt",
+"translations":["мармелад устал", "мармелад устал."],
+"level":1,
+"lesson":{"BasicsI":"Basics I"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
 "english":"Lekvár álmos, ezért pihen",
 "translations":["мармелад устал, поэтому отдыхает", "мармелад устал, поэтому отдыхает."],
-"level":1,
+"level":2,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár sok nyelven beszél",
+"translations":["Мармелад говорит на многих языках", "Мармелад говорит на многих языках."],
+"level":2,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvárnak négy lába van",
+"translations":["У Мармелада четыре ног", "У Мармелада четыре ног."],
+"level":2,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár alszik a széken",
+"translations":["мармелад спит на стуле", "мармелад спит на стуле."],
+"level":2,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár már nem éhes",
+"translations":["Мармелад больше не голоден", "Мармелад больше не голоден."],
+"level":2,
+"lesson":{"BasicsII":"Basics II"},
+"learned":false,
+"learningProgress":0,
+"consecutiveCorrectAnswers":0,
+"interval":1,
+"difficulty":2.5,
+"nextReviewDate":null
+}
+
+{
+"english":"Lekvár szomorú, mert Dóri edz",
+"translations":["Мармелад грустный, потому что Дори тренируется", "Мармелад грустный, потому что Дори тренируется."],
+"level":2,
 "lesson":{"BasicsII":"Basics II"},
 "learned":false,
 "learningProgress":0,

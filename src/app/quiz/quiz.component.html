@@ -1,14 +1,15 @@
 <nav style="text-align: center;">
-    <button (click)="learn()">Learn</button>
-    <button (click)="practice()">Practice</button>
-    <button (click)="theory()">Theory</button>
+    <button [disabled]="!levelSelected" (click)="learn()">Learn</button>
+    <button [disabled]="!levelSelected" (click)="practice()">Practice</button>
+    <button [disabled]="overdueSentences?.length==0" (click)="practiceOverdue()">Practice overdue Sentences</button>
+    <button disabled=true (click)="theory()">Theory</button>
 </nav>
 <hr>
 <div style="text-align: center;" *ngIf="sentence">
     <label>{{sentence.english}}</label>
 </div>
 <div style="text-align: center;" *ngIf="!sentence">
-    <label>kész</label>
+    <label>Choose a category</label>
 </div>
 <div style="text-align: center;">
     <input #input>
