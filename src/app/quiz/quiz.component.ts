@@ -16,10 +16,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   sentences:Sentence[];
   overdueSentences:Sentence[];
   numberOfSentences:number;
-  overdueSubscription:Subscription;
-  learnableSubscription:Subscription;
-  levelChangeSubscription:Subscription;
-  practiceableSubscription:Subscription;
+  overdueSubscription:Subscription=Subscription.EMPTY;;
+  learnableSubscription:Subscription=Subscription.EMPTY;;
+  levelChangeSubscription:Subscription=Subscription.EMPTY;;
+  practiceableSubscription:Subscription=Subscription.EMPTY;;
   
   constructor(private quizService:QuizService) { }
 
@@ -27,7 +27,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.levelChangeSubscription=this.quizService.getLevelChanged()
     .subscribe((number)=>{
       if(number){
-        console.log(number);
         this.levelSelected=number;
       }
     });
@@ -56,11 +55,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
-  theory():void{
-    
-  }
-
-  
 
   check():void{
     const answer = this.input.nativeElement.value;

@@ -14,4 +14,4 @@ const sentenceSchema = mongoose.Schema({
     nextReviewDate:Date,
 });
 
-module.exports=mongoose.model('RussianSentence', sentenceSchema);
+module.exports=mongoose.model('Sentence', sentenceSchema);

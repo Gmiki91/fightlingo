@@ -2,7 +2,6 @@
     <button [disabled]="!levelSelected" (click)="learn()">Learn</button>
     <button [disabled]="!levelSelected" (click)="practice()">Practice</button>
     <button [disabled]="overdueSentences?.length==0" (click)="practiceOverdue()">Practice overdue Sentences</button>
-    <button disabled=true (click)="theory()">Theory</button>
 </nav>
 <hr>
 <div style="text-align: center;" *ngIf="sentence">
@@ -17,3 +16,4 @@
 <div style="text-align: center;">
     <button [disabled]="!sentence" (click)="check()">Check</button>
 </div>
+<app-level-tree></app-level-tree>

@@ -1,11 +1,10 @@
 //mongoexport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/funlingo --collection sentences --out sajt
 //mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection sentences --type json --file russian
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app=express();
-const Sentence=require('./models/russian-sentence');
+const Sentence=require('./models/sentence');
 
 mongoose.connect(
     "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
@@ -37,8 +36,10 @@ app.get("/api/sentences/overdue",(req,res,next)=>{
  });
 
 app.get("/api/sentences/learnable/:level",(req,res,next)=>{
-    Sentence.find({learned:false, level:req.params.level})
+  //  Sentence.find({learned:false, level:req.params.level})
+  Sentence.find()
     .then(documents=>{
+        console.log(documents);
         res.status(200).json(documents);
     })
  });
