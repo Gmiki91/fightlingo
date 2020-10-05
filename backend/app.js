@@ -37,7 +37,7 @@ app.get("/api/sentences/overdue",(req,res,next)=>{
 
 app.get("/api/sentences/learnable/:level",(req,res,next)=>{
   //  Sentence.find({learned:false, level:req.params.level})
-  Sentence.find()
+  Sentence.find({learned:false, level:req.params.level})
     .then(documents=>{
         console.log(documents);
         res.status(200).json(documents);
