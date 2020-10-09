@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 const app=express();
 const Sentence=require('./models/sentence');
 
+const userRoutes=require('./routes/users');
+
+
 mongoose.connect(
     "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
     {useNewUrlParser: true,useUnifiedTopology: true})
@@ -36,7 +39,6 @@ app.get("/api/sentences/overdue",(req,res,next)=>{
  });
 
 app.get("/api/sentences/learnable/:level",(req,res,next)=>{
-  //  Sentence.find({learned:false, level:req.params.level})
   Sentence.find({learned:false, level:req.params.level})
     .then(documents=>{
         console.log(documents);
@@ -99,5 +101,7 @@ app.get("/api/sentences/practicable/:level",(req,res,next)=>{
          res.status(200).json({message:"sentences updated"});
      }); */
  });
+
+app.use("/api/users", userRoutes);
 
 module.exports=app;
