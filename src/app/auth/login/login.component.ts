@@ -1,19 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  private subscription:Subscription=Subscription.EMPTY;
+
+  constructor(private authService: AuthService, private router:Router) { }
 
   ngOnInit(): void {
+    
   }
   
   onLogin(form:NgForm){
-    console.log(form.value);
+    this.authService.login(form.value.username, form.value.password);
+    this.subscription= this.authService.getUserLoggedIn()
+    .subscribe((user)=>{
+      if(user){
+        this.router.navigate(['/']);
+      }
+    })
+  }
+
+  ngOnDestroy():void{
+    this.subscription.unsubscribe();
   }
 }
