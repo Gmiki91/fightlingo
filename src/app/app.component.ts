@@ -10,6 +10,7 @@ export class AppComponent implements OnInit{
   title = 'fightlingo';
   loggedIn = false;
   userName:string;
+  monsterPic:string;
 
   constructor(private authService:AuthService){
     
@@ -20,6 +21,8 @@ export class AppComponent implements OnInit{
     .subscribe((user)=>{
       if(user){
         this.userName=user.name.toString();
+        this.monsterPic='../assets/'+user.monster+'.jpg';
+        console.log(user.language);
       }});
     console.log(this.userName);
   }

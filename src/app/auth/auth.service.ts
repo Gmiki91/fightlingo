@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Token } from '@angular/compiler/src/ml_parser/lexer';
 import {Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Language } from '../language.enum';
 import { AuthData } from './auth-data.model';
 import { User } from './user.model';
 
@@ -12,9 +13,9 @@ export class AuthService{
     public userName:string;
 
     constructor(private http:HttpClient){}
-    createUser(name:string,password:string){
-        const authData:AuthData = {name,password};
-        this.http.post("http://localhost:3300/api/users/signup", authData)
+    createUser(name:string,password:string, monster:string, language:Language){
+        const user:User = {name,password,monster,language};
+        this.http.post("http://localhost:3300/api/users/signup",user )
         .subscribe(response=>{
                 console.log(response);
         });

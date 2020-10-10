@@ -14,7 +14,13 @@
           <mat-form-field class="example-full-width">
             <input  type="password"  ngModel name="password" #passwordInput="ngModel" matInput placeholder="Password">
           </mat-form-field>
+          <div class="image-selector">
+            <button type="button" (click)="previousPic()"><<</button>
+            <img class="monster-pic" src='../../../assets/{{imagePath}}.jpg'>
+            <button type="button" (click)="nextPic()">>></button>
+          </div>
         </mat-card-content>
+       
         <button mat-stroked-button color="accent" class= "btn-block">Sign in</button>
       </form>
     </mat-card>

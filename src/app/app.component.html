@@ -4,5 +4,8 @@
     <a *ngIf="!userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/login">Log in</a>
     <a *ngIf="!userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/sign-up">Sign up</a>
 </mat-toolbar>
-<p *ngIf="userName">Hello {{userName}}</p>
+<div class="char-menu"> 
+    <p *ngIf="userName">Hello {{userName}}</p>
+    <img src='{{monsterPic}}'>
+</div>
 <router-outlet></router-outlet>

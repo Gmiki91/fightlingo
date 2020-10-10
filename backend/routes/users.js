@@ -10,7 +10,9 @@ router.post('/signup', (req,res,next)=>{
     .then(hash=>{
         const user = new User({
             name: req.body.name,
-            password: hash
+            password: hash,
+            monster: req.body.monster,
+            language:req.body.language
         });
     user.save()
         .then(result=>{

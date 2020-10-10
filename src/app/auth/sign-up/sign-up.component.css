@@ -64,7 +64,12 @@ body {
   -ms-transform: scale(.95);
   z-index: -1;
 }
-
+.image-selector{
+  float:left;
+  display:inline;
+  padding-bottom: 2rem;
+  
+}
 .login-wrapper .example-form {
   min-width: 100%;
   max-width: 300px;
@@ -100,4 +105,9 @@ body {
 
 .login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
   padding: 0.8375em 0;
+}
+.monster-pic{
+  display: inline-block;
+  width: 84%;
+  margin: auto;
 }
