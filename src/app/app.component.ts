@@ -22,8 +22,6 @@ export class AppComponent implements OnInit{
       if(user){
         this.userName=user.name.toString();
         this.monsterPic='../assets/'+user.monster+'.jpg';
-        console.log(user.language);
       }});
-    console.log(this.userName);
   }
 }

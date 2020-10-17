@@ -2,17 +2,26 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+//const Sentence = require('../models/sentence');
 const router = express.Router();
 
 router.post('/signup', (req,res,next)=>{
-    console.log(req.body);
+
+    let firstSentences;
+    const Sentence = require(`../models/${req.body.language}-sentence`);
+    Sentence.find({learned:false, level:1})
+    .then(documents=>{
+        firstSentences=documents;
+    });
     bcrypt.hash(req.body.password,10)
     .then(hash=>{
         const user = new User({
             name: req.body.name,
             password: hash,
             monster: req.body.monster,
-            language:req.body.language
+            level:req.body.level,
+            language:req.body.language,
+            sentences:firstSentences
         });
     user.save()
         .then(result=>{

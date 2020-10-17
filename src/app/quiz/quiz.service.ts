@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
 
 @Injectable()
 export class QuizService{
     
 
-    //private sentences:Sentence[]=[];
     private sentenceListChanged=new Subject<Sentence[]>();
     private overdueListChanged=new Subject<Sentence[]>();
-    //private sentenceChanged=new Subject<Sentence>();
     private levelChanged=new Subject<number>();
+    private user:User;
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private authService:AuthService){}
 
     levelChoosen(level:number){
         this.levelChanged.next(level);
@@ -24,35 +25,32 @@ export class QuizService{
     }
 
     getLearnableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/learnable/'+level)
-        .subscribe((responseData:Sentence[])=>{
-            this.sentenceListChanged.next(responseData);
+       
+        this.http.get('http://localhost:3300/api/sentences/learnable/'+level +'/'+ this.user.name)
+        .subscribe((responseData:User)=>{
+            this.sentenceListChanged.next(responseData[0].sentences);
         });
+        return this.sentenceListChanged.asObservable();
+        
     }
     getPracticeableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/practicable/'+level)
+        this.http.get('http://localhost:3300/api/sentences/practicable/'+level+'/'+ this.user.name)
         .subscribe((responseData:Sentence[])=>{
-            
             this.sentenceListChanged.next(responseData);
-          
         });
+        return this.sentenceListChanged.asObservable();
     }
+
+
     getOverdueSentences(){
-        this.http.get('http://localhost:3300/api/sentences/overdue')
+        this.user=this.authService.user;
+        this.http.get('http://localhost:3300/api/sentences/overdue/'+ this.user.name)
         .subscribe((responseData:Sentence[])=>{
             this.overdueListChanged.next(responseData);
         });
-    }
-
-   /* getSentenceUpdateListener(){
-        return this.sentenceChanged.asObservable();
-    }*/
-    getSentenceListUpdateListener(){
-        return this.sentenceListChanged.asObservable();
-    }
-    getOverdueListUpdateListener(){
         return this.overdueListChanged.asObservable();
     }
+
 
     updateSentence(sentence:Sentence, answerEfficieny:number){
 
@@ -91,11 +89,12 @@ export class QuizService{
                 let now = +new Date();
                 sentence.nextReviewDate = new Date(now + millisecondsInDay*sentence.interval);
             }
-
-            //this.sentences.push(sentence);
-            this.http.patch('http://localhost:3300/api/sentences',sentence)
-            .subscribe((response)=>console.log(response));
         }
+
+        //this.sentences.push(sentence);
+        this.http.patch('http://localhost:3300/api/sentences',[this.user,sentence])
+            .subscribe((response)=>console.log(response));
+        
        
     }
     /* for multiple sentences at once - not working

@@ -14,12 +14,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   levelSelected:number;
   sentence:Sentence;
   sentences:Sentence[];
-  overdueSentences:Sentence[];
+  overduePractice:boolean;
   numberOfSentences:number;
-  overdueSubscription:Subscription=Subscription.EMPTY;;
-  learnableSubscription:Subscription=Subscription.EMPTY;;
-  levelChangeSubscription:Subscription=Subscription.EMPTY;;
-  practiceableSubscription:Subscription=Subscription.EMPTY;;
+  overdueSubscription:Subscription=Subscription.EMPTY;
+  quizSubscription:Subscription=Subscription.EMPTY;
+  levelChangeSubscription:Subscription=Subscription.EMPTY;
   
   constructor(private quizService:QuizService) { }
 
@@ -30,30 +29,27 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.levelSelected=number;
       }
     });
-    this.quizService.getOverdueSentences();
-    this.overdueSubscription=this.quizService.getOverdueListUpdateListener()
+    
+    this.overdueSubscription=this.quizService.getOverdueSentences()
     .subscribe((sentences:Sentence[])=>{
-      this.overdueSentences=sentences;
+      this.sentences=sentences;
+      this.overduePractice=sentences.length==0? false:true;
     });
   }
 
   learn():void{
-    this.quizService.getLearnableSentences(this.levelSelected);
-    this.learnableSubscription = this.quizService.getSentenceListUpdateListener()
+    this.quizSubscription = this.quizService.getLearnableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
   practice():void{
-    this.quizService.getPracticeableSentences(this.levelSelected);
-    this.learnableSubscription = this.quizService.getSentenceListUpdateListener()
+    
+    this.quizSubscription = this.quizService.getPracticeableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
   practiceOverdue():void{
-    this.quizService.getOverdueSentences();
-    this.overdueSubscription=this.quizService.getOverdueListUpdateListener()
-    .subscribe((sentences:Sentence[])=>{
-      this.displaySentence(sentences)});
+      this.displaySentence(this.sentences);
   }
 
   check():void{
@@ -61,23 +57,24 @@ export class QuizComponent implements OnInit, OnDestroy {
     if(this.sentence.translations.find((translation)=> translation===answer)){
       console.log("talált");
       this.quizService.updateSentence(this.sentence, 5);
+      this.numberOfSentences--;
     }else{
       this.quizService.updateSentence(this.sentence, 0);
       console.log("elbasztad");
     }
-    this.numberOfSentences--;
     if(this.numberOfSentences>0){
       this.sentence=this.sentences[this.numberOfSentences-1];
     }else{
     //  this.quizService.sendUpdatedSentences();
       this.sentence=null;
+      if(this.overduePractice) this.overduePractice=false;
     }
   }
 
   ngOnDestroy():void{
-    this.learnableSubscription.unsubscribe();
-    this.practiceableSubscription.unsubscribe();
+    this.quizSubscription.unsubscribe();
     this.overdueSubscription.unsubscribe();
+    this.levelChangeSubscription.unsubscribe();
   }
 
   private displaySentence(sentences:Sentence[]):void{

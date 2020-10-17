@@ -1,12 +1,14 @@
 //mongoexport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/funlingo --collection sentences --out sajt
-//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection sentences --type json --file russian
+//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection french-sentences --type json --file french
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app=express();
-const Sentence=require('./models/sentence');
+const User = require("./models/user");
+//const Sentence=require('./models/sentence');
 
 const userRoutes=require('./routes/users');
+const user = require('./models/user');
 
 
 mongoose.connect(
@@ -30,76 +32,72 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.get("/api/sentences/overdue",(req,res,next)=>{
-    Sentence.find({learned:true,
-                   nextReviewDate:{$lte:new Date()}})
+app.get("/api/sentences/overdue/:username",(req,res,next)=>{
+  User.find({
+        name:req.params.username,
+        "sentences.nextReviewDate":{$lte:new Date()}
+    })
     .then(documents=>{
         res.status(200).json(documents);
     })
  });
 
-app.get("/api/sentences/learnable/:level",(req,res,next)=>{
-  Sentence.find({learned:false, level:req.params.level})
+app.get("/api/sentences/learnable/:level/:username",(req,res,next)=>{
+    User.find({
+        name:req.params.username,
+        "sentences.learned":false,
+        "sentences.level":1
+    })
     .then(documents=>{
-        console.log(documents);
         res.status(200).json(documents);
     })
  });
 
-app.get("/api/sentences/practicable/:level",(req,res,next)=>{
-    Sentence.find({learned:true, level:req.params.level}).then(documents=>{
+app.get("/api/sentences/practicable/:level/:username",(req,res,next)=>{
+    User.find({
+        name:req.params.username,
+        "sentences.learned":true,
+        "sentences.level":req.params.level
+    })
+    .then(documents=>{
         res.status(200).json(documents);
     })
  });
 
  app.patch("/api/sentences", (req,res,next)=>{
-   
-    const sentence = new Sentence({
-         _id: req.body._id,
-         english: req.body.english,
-         translations: req.body.translations,
-         level: req.body.level,
-         russianLesson: req.body.russianLesson,
-         learned: req.body.learned,
-         learningProgress: req.body.learningProgress,
-         consecutiveCorrectAnswers: req.body.consecutiveCorrectAnswers,
-         interval: req.body.interval,
-         difficulty: req.body.difficulty,
-         nextReviewDate: req.body.nextReviewDate
-     });
+     let toBeUpdated;
+    // console.log(req.body[1]._id);
+     User.findById(req.body[0]._id)
+     
+     
+     
+     //user.save();
+     User.find({
+         "sentences.$.id":"5f89bdf7ecf2c51112421e2f"
+     }).then(updatable =>{
+         console.log(updatable);
+     })
 
-     Sentence.updateOne({_id:req.body._id},sentence)
-     .then((response)=>{
-         res.status(200).json({message:"sentence updated"})
-     });
-
-     /* multiple at once?
-     let sentences=[];
-  
-    req.body.forEach(element => {
-         let sentence= new Sentence({
-            _id: element._id,
-            english: element.english,
-            translations: element.translations,
-            level: element.level,
-            lesson: element.lesson,
-            learned: element.learned,
-            learningProgress: element.learningProgress,
-            consecutiveCorrectAnswers: element.consecutiveCorrectAnswers,
-            interval: element.interval,
-            difficulty: element.difficulty,
-            nextReviewDate: element.nextReviewDate
-        });
-        
-        sentences.push(sentence);
-        console.log(sentence);
+    User.updateOne({"sentences.$._id":req.body[1]._id},{
+       /* $set:{sentences:{
+            "learned":req.body[1].learned,
+            "learningProgress":req.body[1].learningProgress,
+            "consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
+            "interval":req.body[1].interval,
+            "difficulty":req.body[1].difficulty,
+            "nextReviewDate":req.body[1].nextReviewDate
+        }}*/
+        $set:{
+            "sentences.0.learningProgress":req.body[1].learningProgress
+        }
+    })
+    .then((response)=>{
+        res.status(200).json({message:"sentence updated"})
     });
-      Sentence.updateMany({}, sentences)
-     .then((response)=>{
-
-         console.log("RESPONSE:"+response);
-         res.status(200).json({message:"sentences updated"});
-     }); */
+   /* User.find(myquery).then((response)=>console.log("hahó"+response+"v"));
+    User.updateOne(myquery,newvalues).then((response)=>{
+        res.status(200).json({message:"sentence updated"})
+    });*/
  });
 
 app.use("/api/users", userRoutes);

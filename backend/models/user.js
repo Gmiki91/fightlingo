@@ -5,7 +5,9 @@ const userSchema = mongoose.Schema({
     name:{type:String,required:true,uniqe:true},
     password:{type:String,required:true},
     monster:String,
-    language:Object
+    level:Number,
+    language:Object,
+    sentences:[Object]
 });
 
 userSchema.plugin(uniqueValidator);

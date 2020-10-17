@@ -1,3 +1,4 @@
 export enum Language{
-    RUSSIAN, FRENCH
+    RUSSIAN="russian",
+    FRENCH="french"
 }

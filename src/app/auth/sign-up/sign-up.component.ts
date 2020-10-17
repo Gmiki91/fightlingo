@@ -16,7 +16,7 @@ export class SignUpComponent implements OnInit {
               'szorny4'];
   imagePathIndex:number=0;
   imagePath:string;
-  language:Language=Language.RUSSIAN;
+  language:Language=Language.FRENCH;
 
   constructor(private authService:AuthService) { }
 
