@@ -94,8 +94,6 @@ export class QuizService{
         //this.sentences.push(sentence);
         this.http.patch('http://localhost:3300/api/sentences',[this.user,sentence])
             .subscribe((response)=>console.log(response));
-        
-       
     }
     /* for multiple sentences at once - not working
     sendUpdatedSentences(){

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app=express();
 const User = require("./models/user");
+const ObjectId = require('mongoose').Types.ObjectId;
 //const Sentence=require('./models/sentence');
 
 const userRoutes=require('./routes/users');
@@ -43,12 +44,14 @@ app.get("/api/sentences/overdue/:username",(req,res,next)=>{
  });
 
 app.get("/api/sentences/learnable/:level/:username",(req,res,next)=>{
+    console.log();
     User.find({
         name:req.params.username,
         "sentences.learned":false,
-        "sentences.level":1
+        "sentences.level":req.params.level
     })
     .then(documents=>{
+        console.log(documents);
         res.status(200).json(documents);
     })
  });
@@ -65,39 +68,19 @@ app.get("/api/sentences/practicable/:level/:username",(req,res,next)=>{
  });
 
  app.patch("/api/sentences", (req,res,next)=>{
-     let toBeUpdated;
-    // console.log(req.body[1]._id);
-     User.findById(req.body[0]._id)
-     
-     
-     
-     //user.save();
-     User.find({
-         "sentences.$.id":"5f89bdf7ecf2c51112421e2f"
-     }).then(updatable =>{
-         console.log(updatable);
-     })
 
-    User.updateOne({"sentences.$._id":req.body[1]._id},{
-       /* $set:{sentences:{
-            "learned":req.body[1].learned,
-            "learningProgress":req.body[1].learningProgress,
-            "consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
-            "interval":req.body[1].interval,
-            "difficulty":req.body[1].difficulty,
-            "nextReviewDate":req.body[1].nextReviewDate
-        }}*/
-        $set:{
-            "sentences.0.learningProgress":req.body[1].learningProgress
-        }
-    })
-    .then((response)=>{
-        res.status(200).json({message:"sentence updated"})
-    });
-   /* User.find(myquery).then((response)=>console.log("hahó"+response+"v"));
-    User.updateOne(myquery,newvalues).then((response)=>{
-        res.status(200).json({message:"sentence updated"})
-    });*/
+     var objId=new ObjectId(req.body[1]._id);
+
+     User.updateOne({_id:req.body[0]._id, "sentences._id":objId},
+     {
+         "sentences.$.learningProgress":req.body[1].learningProgress,
+         "sentences.$.learned":req.body[1].learned,
+         "sentences.$.consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
+         "sentences.$.consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
+         "sentences.$.interval":req.body[1].interval,
+         "sentences.$.difficulty":req.body[1].difficulty,
+         "sentences.$.nextReviewDate":req.body[1].nextReviewDate
+    },() =>console.log("sentence updated"));
  });
 
 app.use("/api/users", userRoutes);
