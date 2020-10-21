@@ -40,6 +40,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   learn():void{
     this.quizSubscription = this.quizService.getLearnableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
+      console.log("component "+sentences);
       this.displaySentence(sentences)});
   }
   practice():void{
@@ -57,11 +58,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     if(this.sentence.translations.find((translation)=> translation===answer)){
       console.log("talált");
       this.quizService.updateSentence(this.sentence, 5);
-      this.numberOfSentences--;
     }else{
       this.quizService.updateSentence(this.sentence, 0);
       console.log("elbasztad");
     }
+    this.numberOfSentences--;
     if(this.numberOfSentences>0){
       this.sentence=this.sentences[this.numberOfSentences-1];
     }else{

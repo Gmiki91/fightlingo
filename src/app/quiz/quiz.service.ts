@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
+import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()
 export class QuizService{
@@ -25,16 +26,24 @@ export class QuizService{
     }
 
     getLearnableSentences(level){
-       
-        this.http.get('http://localhost:3300/api/sentences/learnable/'+level +'/'+ this.user.name)
-        .subscribe((responseData:User)=>{
-            this.sentenceListChanged.next(responseData[0].sentences);
+        this.http.get('http://localhost:3300/api/sentences/'+ this.user.name)
+        .pipe(
+            mergeMap(response=>response=response[0].sentences),
+            filter((data:Sentence)=> data.learned==false && data.level==level),toArray()
+        )
+        .subscribe((filteredData)=>{
+            console.log(filteredData);
+            this.sentenceListChanged.next(filteredData);
         });
         return this.sentenceListChanged.asObservable();
         
     }
     getPracticeableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/practicable/'+level+'/'+ this.user.name)
+        this.http.get('http://localhost:3300/api/sentences/'+ this.user.name)
+        .pipe(
+            mergeMap(response=>response=response[0].sentences),
+            filter((data:Sentence)=> data.learned==true && data.level==level),toArray()
+        )
         .subscribe((responseData:Sentence[])=>{
             this.sentenceListChanged.next(responseData);
         });
@@ -71,7 +80,6 @@ export class QuizService{
                 sentence.consecutiveCorrectAnswers= 0;
             } else {
                 sentence.consecutiveCorrectAnswers+= 1;
-
             }
 
             // interval
@@ -95,22 +103,4 @@ export class QuizService{
         this.http.patch('http://localhost:3300/api/sentences',[this.user,sentence])
             .subscribe((response)=>console.log(response));
     }
-    /* for multiple sentences at once - not working
-    sendUpdatedSentences(){
-        this.http.patch('http://localhost:3300/api/sentences',this.sentences)
-        .subscribe((response)=>console.log(response));
-        this.sentences=[];    
-    }
-
-    getSentence(){
-        this.http.get('http://localhost:3300/api/sentences')
-        .subscribe((responeData:Sentence[])=>{
-            console.log(responeData);
-            responeData.sort((a,b)=> {
-               return +a.nextReviewDate - +b.nextReviewDate;
-            });
-            console.log(responeData);
-            this.sentenceChanged.next(responeData[0]);
-        })
-    }*/
 }

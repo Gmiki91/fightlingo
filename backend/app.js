@@ -4,12 +4,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app=express();
-const User = require("./models/user");
-const ObjectId = require('mongoose').Types.ObjectId;
-//const Sentence=require('./models/sentence');
 
+const sentencesRoutes = require("./routes/sentences");
 const userRoutes=require('./routes/users');
-const user = require('./models/user');
 
 
 mongoose.connect(
@@ -33,56 +30,7 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.get("/api/sentences/overdue/:username",(req,res,next)=>{
-  User.find({
-        name:req.params.username,
-        "sentences.nextReviewDate":{$lte:new Date()}
-    })
-    .then(documents=>{
-        res.status(200).json(documents);
-    })
- });
-
-app.get("/api/sentences/learnable/:level/:username",(req,res,next)=>{
-    console.log();
-    User.find({
-        name:req.params.username,
-        "sentences.learned":false,
-        "sentences.level":req.params.level
-    })
-    .then(documents=>{
-        console.log(documents);
-        res.status(200).json(documents);
-    })
- });
-
-app.get("/api/sentences/practicable/:level/:username",(req,res,next)=>{
-    User.find({
-        name:req.params.username,
-        "sentences.learned":true,
-        "sentences.level":req.params.level
-    })
-    .then(documents=>{
-        res.status(200).json(documents);
-    })
- });
-
- app.patch("/api/sentences", (req,res,next)=>{
-
-     var objId=new ObjectId(req.body[1]._id);
-
-     User.updateOne({_id:req.body[0]._id, "sentences._id":objId},
-     {
-         "sentences.$.learningProgress":req.body[1].learningProgress,
-         "sentences.$.learned":req.body[1].learned,
-         "sentences.$.consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
-         "sentences.$.consecutiveCorrectAnswers":req.body[1].consecutiveCorrectAnswers,
-         "sentences.$.interval":req.body[1].interval,
-         "sentences.$.difficulty":req.body[1].difficulty,
-         "sentences.$.nextReviewDate":req.body[1].nextReviewDate
-    },() =>console.log("sentence updated"));
- });
 
 app.use("/api/users", userRoutes);
-
+app.use("/api/sentences",sentencesRoutes);
 module.exports=app;
