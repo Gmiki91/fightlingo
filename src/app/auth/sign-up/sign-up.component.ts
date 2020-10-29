@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Language } from 'src/app/language.enum';
 import { AuthService } from '../auth.service';
@@ -9,14 +9,14 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-
+  languages = [Language.FRENCH,Language.RUSSIAN];
+  language:Language;
   imagePaths= ['szorny1',
               'szorny2',
               'szorny3',
               'szorny4'];
   imagePathIndex:number=0;
   imagePath:string;
-  language:Language=Language.RUSSIAN;
 
   constructor(private authService:AuthService) { }
 
@@ -26,8 +26,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onSignUp(form:NgForm){
-    console.log(form.value);
-    this.authService.createUser(form.value.username,form.value.password, this.imagePath,this.language);
+    this.authService.createUser(form.value.username,form.value.password, this.imagePath, this.language);
   }
   previousPic(){
     this.imagePathIndex--;

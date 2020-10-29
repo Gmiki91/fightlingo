@@ -7,9 +7,8 @@ const userSchema = mongoose.Schema({
     monster:String,
     level:Number,
     language:Object,
-    sentences:[Object]
 });
 
 userSchema.plugin(uniqueValidator);
 
-module.exports=mongoose.model('User', userSchema);
+module.exports=mongoose.model('User', userSchema); //collections name=> users

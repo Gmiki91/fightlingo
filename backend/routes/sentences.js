@@ -18,7 +18,6 @@ router.get("/:username",(req,res,next)=>{
           name:req.params.username,
       })
       .then(documents=>{
-          console.log(documents);
           res.status(200).json(documents);
       })
    });

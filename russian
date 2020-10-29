@@ -2,167 +2,89 @@
 "english":"Lekvár kicsi",
 "translations":["мармелад маленький", "мармелад маленький."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár szép",
 "translations":["мармелад красивый", "мармелад красивый."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár vicces",
 "translations":["Мармелад смешный", "Мармелад смешный."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár okos",
 "translations":["мармелад умный", "мармелад умный."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár tiszta",
 "translations":["мармелад чистый", "мармелад чистый."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár tehetséges",
 "translations":["мармелад талантливый", "мармелад талантливый."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár fáradt",
 "translations":["мармелад устал", "мармелад устал."],
 "level":1,
-"russianLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_1"
 }
 
 {
 "english":"Lekvár álmos, ezért pihen",
 "translations":["мармелад устал, поэтому отдыхает", "мармелад устал, поэтому отдыхает."],
-"level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"level":1,
+"lesson_id":"ru_basic_2"
 }
 
 {
 "english":"Lekvár sok nyelven beszél",
 "translations":["Мармелад говорит на многих языках", "Мармелад говорит на многих языках."],
 "level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_3"
 }
 
 {
 "english":"Lekvárnak négy lába van",
 "translations":["У Мармелада четыре ног", "У Мармелада четыре ног."],
 "level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_3"
 }
 
 {
 "english":"Lekvár alszik a széken",
 "translations":["мармелад спит на стуле", "мармелад спит на стуле."],
-"level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"level":1,
+"lesson_id":"ru_basic_2"
 }
 
 {
 "english":"Lekvár már nem éhes",
 "translations":["Мармелад больше не голоден", "Мармелад больше не голоден."],
-"level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"level":1,
+"lesson_id":"ru_basic_2"
 }
 
 {
 "english":"Lekvár szomorú, mert Dóri edz",
 "translations":["Мармелад грустный, потому что Дори тренируется", "Мармелад грустный, потому что Дори тренируется."],
 "level":2,
-"russianLesson":{"BasicsII":"Basics II"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"ru_basic_3"
 }

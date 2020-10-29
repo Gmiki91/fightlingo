@@ -40,7 +40,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   learn():void{
     this.quizSubscription = this.quizService.getLearnableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
-      console.log("component "+sentences);
       this.displaySentence(sentences)});
   }
   practice():void{
@@ -68,7 +67,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     }else{
     //  this.quizService.sendUpdatedSentences();
       this.sentence=null;
-      if(this.overduePractice) this.overduePractice=false;
+      if(this.overduePractice) {
+        this.overduePractice=false;
+      }
     }
   }
 

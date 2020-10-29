@@ -2,33 +2,58 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const Progress = require("../models/progress");
 const router = express.Router();
+let Sentence;
+let user;
 
 router.post('/signup', (req,res,next)=>{
 
-    let firstSentences;
-    const Sentence = require(`../models/${req.body.language}-sentence`);
-    Sentence.find({learned:false, level:1})
-    .then(documents=>{
-        firstSentences=documents;
-    });
+    let language = req.body.language;
+    switch (language) {
+        case 'russian':
+            Sentence = require(`../models/sentence`).russian;
+            break;
+        case 'french':
+            Sentence = require(`../models/sentence`).french;
+            break;
+    }
+    
     bcrypt.hash(req.body.password,10)
     .then(hash=>{
-        const user = new User({
+         user = new User({
             name: req.body.name,
             password: hash,
             monster: req.body.monster,
             level:req.body.level,
             language:req.body.language,
-            sentences:firstSentences
         });
     user.save()
-        .then(result=>{
-            res.status(201).json({
-                message:"user created",
-                result:result
-            });
-        })
+    .then(
+        Sentence.find({level:1})
+            .then(documents=>{
+                for (let document of documents) {
+                    console.log(document);
+                    const prog=new Progress({
+                        sentenceId:document._id,
+                        userId:user._id,
+                        learned:false,
+                        learningProgress:0,
+                        consecutiveCorrectAnswers:0,
+                        interval:1,
+                        difficulty:2.5,
+                        nextReviewDate:null
+                    });
+                    prog.save();
+        }
+    })
+    )
+    .then(result=>{
+        res.status(201).json({
+            message:"user created",
+            result:result
+        });
+    })
     })
     .catch(err=>{
         res.status(500).json({error:err});

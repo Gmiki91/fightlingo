@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
@@ -7,7 +7,7 @@ import { Sentence } from './sentence.model';
 import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()
-export class QuizService{
+export class QuizService {
     
 
     private sentenceListChanged=new Subject<Sentence[]>();
@@ -17,7 +17,9 @@ export class QuizService{
 
     constructor(private http: HttpClient, private authService:AuthService){}
 
+
     levelChoosen(level:number){
+        this.user=this.authService.user;
         this.levelChanged.next(level);
     }
 
@@ -32,7 +34,6 @@ export class QuizService{
             filter((data:Sentence)=> data.learned==false && data.level==level),toArray()
         )
         .subscribe((filteredData)=>{
-            console.log(filteredData);
             this.sentenceListChanged.next(filteredData);
         });
         return this.sentenceListChanged.asObservable();

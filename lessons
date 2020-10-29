@@ -1,0 +1,44 @@
+{
+"_id":"fr_basic_1",
+"name":"French basic I",
+"place":1,
+"level":1,
+"language":"french",
+"master_id":"basic_1"
+}
+
+{
+"_id":"fr_basic_2",
+"name":"French basic II",
+"place":2,
+"level":1,
+"language":"french",
+"master_id":"basic_2"
+}
+
+{
+"_id":"ru_basic_1",
+"name":"Russian basic I",
+"place":1,
+"level":1,
+"language":"russian",
+"master_id":"basic_1"
+}
+
+{
+"_id":"ru_basic_2",
+"name":"Russian basic II",
+"place":2,
+"level":1,
+"language":"russian",
+"master_id":"basic_2"
+}
+
+{
+"_id":"ru_basic_3",
+"name":"Russian basic III",
+"place":1,
+"level":2,
+"language":"russian",
+"master_id":"basic_3"
+}

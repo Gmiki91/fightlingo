@@ -1,0 +1,15 @@
+const mongoose=require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
+
+const progressSchema = mongoose.Schema({
+    sentenceId:ObjectId,
+    userId:ObjectId,
+    learned:Boolean,
+    learningProgress:Number,
+    consecutiveCorrectAnswers:Number,
+    interval:Number,
+    difficulty:Number,
+    nextReviewDate:Object
+})
+
+module.exports=mongoose.model("Progress",progressSchema);

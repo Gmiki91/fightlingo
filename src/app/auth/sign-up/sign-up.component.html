@@ -19,6 +19,9 @@
             <img class="monster-pic" src='../../../assets/{{imagePath}}.jpg'>
             <button type="button" (click)="nextPic()">>></button>
           </div>
+          <mat-radio-group [(ngModel)]="language" name="mi">
+            <mat-radio-button *ngFor="let language of languages" [value]="language">{{language}}</mat-radio-button>
+          </mat-radio-group>
         </mat-card-content>
        
         <button mat-stroked-button color="accent" class= "btn-block">Sign in</button>

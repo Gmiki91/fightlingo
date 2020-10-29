@@ -2,37 +2,19 @@
 "english":"Lekvár kicsi",
 "translations":["Lekvár pötit", "Lekvár pötit."],
 "level":1,
-"frenchLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"fr_basic_1"
 }
 
 {
 "english":"Lekvár szép",
 "translations":["Lekvár bell", "Lekvár bell."],
 "level":1,
-"frenchLesson":{"BasicsI":"Basics I"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"lesson_id":"fr_basic_1"
 }
 
 {
 "english":"Lekvár nagyon szép",
 "translations":["Lekvár tres bell", "Lekvár tres bell."],
-"level":2,
-"frenchLesson":{"BasicsIII":"Basics III"},
-"learned":false,
-"learningProgress":0,
-"consecutiveCorrectAnswers":0,
-"interval":1,
-"difficulty":2.5,
-"nextReviewDate":null
+"level":1,
+"lesson_id":"fr_basic_2"
 }
