@@ -1,11 +1,17 @@
 import { Language } from '../language.enum';
-import { Sentence } from '../quiz/sentence.model';
 
 export interface User{
-    name:string;
+    email:string;
     password:string;
-    monster:string;
-    level:number;
+    name:string;
+    pic:string;
     language:Language;
-    sentences:Array<Sentence>;
+    level:number;
+    rank:number;
+    str:number;
+    dex:number;
+    health:number;
+    money:number;
+    equipment:[Object];
+    skills:[Object];
 }

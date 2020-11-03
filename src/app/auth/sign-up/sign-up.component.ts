@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-  languages = [Language.FRENCH,Language.RUSSIAN];
+  languages = [Language.FRENCH,Language.RUSSIAN, Language.SERBIAN];
   language:Language;
   imagePaths= ['szorny1',
               'szorny2',
@@ -26,7 +26,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onSignUp(form:NgForm){
-    this.authService.createUser(form.value.username,form.value.password, this.imagePath, this.language);
+    this.authService.createUser(form.value.email,form.value.password, form.value.fightername, this.imagePath, this.language);
   }
   previousPic(){
     this.imagePathIndex--;

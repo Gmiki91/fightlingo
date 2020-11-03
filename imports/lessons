@@ -1,7 +1,31 @@
 {
-"_id":"fr_basic_1",
-"name":"French basic I",
-"place":1,
+"_id":"sr_0101",
+"name":"Basics",
+"rank":1,
+"level":1,
+"language":"serbian"
+}
+
+{
+"_id":"sr_0102",
+"name":"Verbs",
+"rank":2,
+"level":1,
+"language":"serbian"
+}
+
+{
+"_id":"sr_0201",
+"name":"Personal pronouns",
+"rank":3,
+"level":2,
+"language":"serbian"
+}
+
+{
+"_id":"fr_101",
+"name":"Basics",
+"rank":1,
 "level":1,
 "language":"french",
 "master_id":"basic_1"
@@ -9,7 +33,7 @@
 
 {
 "_id":"fr_basic_2",
-"name":"French basic II",
+"name":"Verbs",
 "place":2,
 "level":1,
 "language":"french",
@@ -37,7 +61,7 @@
 {
 "_id":"ru_basic_3",
 "name":"Russian basic III",
-"place":1,
+"place":3,
 "level":2,
 "language":"russian",
 "master_id":"basic_3"

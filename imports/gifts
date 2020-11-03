@@ -1,0 +1,20 @@
+{
+"_id":"gift_001",
+"equipment":{"name":"fejkötő", "price":10}
+}
+
+{
+"_id":"gift_002",
+"equipment":{"name":"dobócsillag", "price":15, "str":1}
+}
+
+{
+"_id":"gift_003",
+"skill":{"name":"Furry of the tenses", "str":5}
+}
+
+
+{
+"_id":"gift_004",
+"equipment":{"name":"karvédő", "price":10, "dex":1}
+}

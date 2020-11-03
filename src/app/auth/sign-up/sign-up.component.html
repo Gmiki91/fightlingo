@@ -8,11 +8,13 @@
       <form (submit)="onSignUp(signupForm)" #signupForm="ngForm" class="example-form">
         <mat-card-content>
           <mat-form-field class="example-full-width">
-            <input ngModel name="username" #userNameInput="ngModel" matInput placeholder="Username">
+            <input ngModel name="email" #emailInput="ngModel" matInput placeholder="Email">
           </mat-form-field>
-  
           <mat-form-field class="example-full-width">
             <input  type="password"  ngModel name="password" #passwordInput="ngModel" matInput placeholder="Password">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input ngModel name="fightername" #fighternameInput="ngModel" matInput placeholder="Creature name">
           </mat-form-field>
           <div class="image-selector">
             <button type="button" (click)="previousPic()"><<</button>

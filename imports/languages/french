@@ -1,20 +1,17 @@
 {
 "english":"Lekvár kicsi",
 "translations":["Lekvár pötit", "Lekvár pötit."],
-"level":1,
 "lesson_id":"fr_basic_1"
 }
 
 {
 "english":"Lekvár szép",
 "translations":["Lekvár bell", "Lekvár bell."],
-"level":1,
 "lesson_id":"fr_basic_1"
 }
 
 {
 "english":"Lekvár nagyon szép",
 "translations":["Lekvár tres bell", "Lekvár tres bell."],
-"level":1,
 "lesson_id":"fr_basic_2"
 }

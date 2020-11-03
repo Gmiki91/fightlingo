@@ -9,12 +9,12 @@ import { User } from './user.model';
 export class AuthService{
 
     private userLogged = new Subject<User>();
-    public userName:string;
+   // public userName:string;
     public user:User;
 
     constructor(private http:HttpClient){}
-    createUser(name:string,password:string, monster:string, language:Language){
-        const user:User = {name,password,monster,level:1,language,sentences:null};
+    createUser(email:string,password:string, name:string, pic:string, language:Language){
+        const user:User = {email,password,name,pic,language,level:1,rank:1,str:10,dex:10,health:10,money:3,equipment:null,skills:null};
         this.http.post("http://localhost:3300/api/users/signup",user )
         .subscribe(response=>{
                 console.log(response);
@@ -24,7 +24,7 @@ export class AuthService{
         const authData:AuthData = {name,password};
         this.http.post<{token:any, user:User}>("http://localhost:3300/api/users/login",authData)
         .subscribe(response =>{
-            this.userName=response.user.name.toString();
+            //this.userName=response.user.name.toString();
             this.user = response.user;
             this.userLogged.next(response.user);
         });

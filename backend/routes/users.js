@@ -17,23 +17,32 @@ router.post('/signup', (req,res,next)=>{
         case 'french':
             Sentence = require(`../models/sentence`).french;
             break;
+        case 'serbian':
+            Sentence = require(`../models/sentence`).serbian;
+            break;
     }
     
     bcrypt.hash(req.body.password,10)
     .then(hash=>{
          user = new User({
+            email: req.body.mail,
             name: req.body.name,
             password: hash,
-            monster: req.body.monster,
+            pic: req.body.pic,
             level:req.body.level,
             language:req.body.language,
+            rank:req.body.rank,
+            str:req.body.str,
+            dex:req.body.dex,
+            health:req.body.health,
+            equipment:req.body.equipment,
+            skills:req.body.skills
         });
     user.save()
     .then(
         Sentence.find({level:1})
             .then(documents=>{
                 for (let document of documents) {
-                    console.log(document);
                     const prog=new Progress({
                         sentenceId:document._id,
                         userId:user._id,

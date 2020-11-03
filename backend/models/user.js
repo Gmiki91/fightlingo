@@ -2,11 +2,20 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = mongoose.Schema({
-    name:{type:String,required:true,uniqe:true},
+    email:String,
     password:{type:String,required:true},
-    monster:String,
-    level:Number,
+
+    name:{type:String,required:true,uniqe:true},
+    pic:String,
     language:Object,
+    level:Number,
+    rank:Number,
+    str:Number,
+    dex:Number,
+    health:Number,
+    money:Number,
+    equipment:[Object],
+    skills:[Object],
 });
 
 userSchema.plugin(uniqueValidator);

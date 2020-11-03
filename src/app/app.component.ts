@@ -21,7 +21,7 @@ export class AppComponent implements OnInit{
     .subscribe((user)=>{
       if(user){
         this.userName=user.name.toString();
-        this.monsterPic='../assets/'+user.monster+'.jpg';
+        this.monsterPic='../assets/'+user.pic+'.jpg';
       }});
   }
 }
