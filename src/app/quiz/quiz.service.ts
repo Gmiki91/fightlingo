@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
+import { Progress } from './progress.model';
 import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()
@@ -27,7 +28,7 @@ export class QuizService {
         return this.levelChanged.asObservable();
     }
 
-    getLearnableSentences(level){
+    getLearnableSentences(){
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
             this.sentenceListChanged.next(sentences);
@@ -39,7 +40,7 @@ export class QuizService {
         this.http.get('http://localhost:3300/api/sentences/'+ this.user.name)
         .pipe(
             mergeMap(response=>response=response[0].sentences),
-            filter((data:Sentence)=> data.learned==true && data.level==level),toArray()
+           // filter((data:Sentence)=> data.learned==true && data.level==level),toArray()
         )
         .subscribe((responseData:Sentence[])=>{
             this.sentenceListChanged.next(responseData);
@@ -58,46 +59,47 @@ export class QuizService {
     }
 
 
-    updateSentence(sentence:Sentence, answerEfficieny:number){
+    updateSentence(sentenceId:string, answerEfficieny:number){
+    this.http.post<Progress>('http://localhost:3300/api/progress/'+sentenceId,this.user)
+    .subscribe((progress)=>{
 
-        if(!sentence.learned){
+        if(!progress.learned){
             if (answerEfficieny >= 3){
-               sentence.learningProgress++;
+                progress.learningProgress++;
             }
-            if(sentence.learningProgress>=5){
-                sentence.learned=true;
+            if(progress.learningProgress>=5){
+                progress.learned=true;
             }
 
         }else{
 
-            sentence.difficulty =  Math.max(1.3,  sentence.difficulty + 0.1 - (5.0 - answerEfficieny) * (0.08 + (5.0 - answerEfficieny)*0.02));
+            progress.difficulty =  Math.max(1.3,  progress.difficulty + 0.1 - (5.0 - answerEfficieny) * (0.08 + (5.0 - answerEfficieny)*0.02));
 
             //consecutiveCorrectAnswers
             if (answerEfficieny < 3) { //nem talált
-                sentence.consecutiveCorrectAnswers= 0;
+                progress.consecutiveCorrectAnswers= 0;
             } else {
-                sentence.consecutiveCorrectAnswers+= 1;
+                progress.consecutiveCorrectAnswers+= 1;
             }
 
             // interval
-            if (sentence.consecutiveCorrectAnswers<= 1) {
-                sentence.interval = 1;
-            } else if (sentence.consecutiveCorrectAnswers== 2) {
-                sentence.interval = 3;
+            if (progress.consecutiveCorrectAnswers<= 1) {
+                progress.interval = 1;
+            } else if (progress.consecutiveCorrectAnswers== 2) {
+                progress.interval = 3;
             } else {
-                sentence.interval = Math.round(sentence.interval * sentence.difficulty);
+                progress.interval = Math.round(progress.interval * progress.difficulty);
             }
 
             // next practice 
             if(answerEfficieny > 3){
                 let millisecondsInDay = 60 * 60 * 24 * 1000;
                 let now = +new Date();
-                sentence.nextReviewDate = new Date(now + millisecondsInDay*sentence.interval);
+                progress.nextReviewDate = new Date(now + millisecondsInDay*progress.interval);
             }
         }
-
-        //this.sentences.push(sentence);
-        this.http.patch('http://localhost:3300/api/sentences',[this.user,sentence])
-            .subscribe((response)=>console.log(response));
+        this.http.patch('http://localhost:3300/api/sentences',progress)
+        .subscribe((response)=>console.log(response));
+    });       
     }
 }

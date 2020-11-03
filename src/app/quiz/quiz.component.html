@@ -1,6 +1,6 @@
 <nav style="text-align: center;">
-    <button [disabled]="!levelSelected" (click)="learn()">Learn</button>
-    <button [disabled]="!levelSelected" (click)="practice()">Practice</button>
+    <button [disabled]="overduePractice" (click)="learn()">Learn</button>
+    <button [disabled]="!levelSelected || overduePractice" (click)="practice()">Practice</button>
     <button [disabled]="!overduePractice" (click)="practiceOverdue()">Practice overdue Sentences</button>
 </nav>
 <hr>
