@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models/user")
-const Progress = require("../models/progress")
+const User = require("../models/user");
+const Lesson = require("../models/lesson");
 const ObjectId = require('mongoose').Types.ObjectId;
-let Sentence;
+var Sentence;
 
 router.get("/overdue/:username",(req,res,next)=>{
     User.find({
@@ -15,14 +15,10 @@ router.get("/overdue/:username",(req,res,next)=>{
       })
    });
   
-router.get("/:username",(req,res,next)=>{
- 
-    
-     /* User.findOne({
-          name:req.params.username,
-      })
-      .then(user=>{
-        let language=user.language;
+router.post("/",(req,res,next)=>{
+    Lesson.findOne({rank:req.body.rank+1, language:req.body.language}) //user rank starts at 0
+    .then(lesson=>{
+        let language=req.body.language;
         switch (language) {
             case 'russian':
                 Sentence = require(`../models/sentence`).russian;
@@ -33,18 +29,12 @@ router.get("/:username",(req,res,next)=>{
             case 'serbian':
                 Sentence = require(`../models/sentence`).serbian;
                 break;
-        } 
-        var monsterId=new ObjectId(user._id);
-          Progress.find({
-              userId:monsterId,
-              learned:false,
-
+        };
+        Sentence.find({lesson_id:lesson._id})
+        .then(sentences=>{
+            res.status(200).json(sentences);
         })
-          .then(progress=>{
-            var sentenceId=new ObjectId(progress.sentenceId);
-              Sentence.find({_id:sentenceId,})
-              res.status(200).json(progress);});
-      })*/
+    });
    });
   
 router.patch("/", (req,res,next)=>{

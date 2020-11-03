@@ -28,13 +28,9 @@ export class QuizService {
     }
 
     getLearnableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/'+ this.user.name)
-        .pipe(
-            mergeMap(response=>response=response[0].sentences),
-            filter((data:Sentence)=> data.learned==false && data.level==level),toArray()
-        )
-        .subscribe((filteredData)=>{
-            this.sentenceListChanged.next(filteredData);
+        this.http.post('http://localhost:3300/api/sentences/', this.user)
+        .subscribe((sentences:Sentence[])=>{
+            this.sentenceListChanged.next(sentences);
         });
         return this.sentenceListChanged.asObservable();
         
