@@ -31,6 +31,7 @@ app.use((req,res,next)=>{
      "Origin, X-Requested-With, Content-Type, Accept");
     res.setHeader("Access-Control-Allow-Methods", 
     "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+    res.setHeader("Cache-Control", "no-cache");
     next();
 });
 

@@ -19,10 +19,13 @@ export class QuizComponent implements OnInit, OnDestroy {
   overdueSubscription:Subscription=Subscription.EMPTY;
   quizSubscription:Subscription=Subscription.EMPTY;
   levelChangeSubscription:Subscription=Subscription.EMPTY;
+  trainingInProgress:boolean;
   
-  constructor(private quizService:QuizService) { }
+  constructor(private quizService:QuizService) {
+   }
 
   ngOnInit(): void {
+    this.trainingInProgress=false;
     this.levelChangeSubscription=this.quizService.getLevelChanged()
     .subscribe((number)=>{
       if(number){
@@ -38,18 +41,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   learn():void{
+    this.trainingInProgress=true;
     this.quizSubscription = this.quizService.getLearnableSentences()
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
   practice():void{
-    
+    this.trainingInProgress=true;
     this.quizSubscription = this.quizService.getPracticeableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
   practiceOverdue():void{
-      this.displaySentence(this.sentences);
+    this.trainingInProgress=true;
+    this.displaySentence(this.sentences);
   }
 
   check():void{
@@ -67,6 +72,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     }else{
     //  this.quizService.sendUpdatedSentences();
       this.sentence=null;
+      this.trainingInProgress=false;
       if(this.overduePractice) {
         this.overduePractice=false;
       }

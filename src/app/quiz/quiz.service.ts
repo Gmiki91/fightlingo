@@ -29,15 +29,21 @@ export class QuizService {
     }
 
     getLearnableSentences(){
+        console.log("hellóservice");
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
+            console.log("helló subscribe");
             this.sentenceListChanged.next(sentences);
         });
-        return this.sentenceListChanged.asObservable();
+        return this.sentenceListChanged.asObservable();  
         
     }
+    getSentences(){
+       
+    }
+
     getPracticeableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/'+ this.user.name)
+        this.http.get('http://localhost:3300/api/sentences/')
         .pipe(
             mergeMap(response=>response=response[0].sentences),
            // filter((data:Sentence)=> data.learned==true && data.level==level),toArray()

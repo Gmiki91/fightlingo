@@ -6,6 +6,10 @@ const Progress = require("../models/progress");
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
 
+router.get("/", (req, res,next) => {
+    console.log("helló practice");
+});
+
 router.get("/overdue/:username",(req,res,next)=>{
     User.find({
           name:req.params.username,
@@ -47,7 +51,7 @@ router.post("/",(req,res,next)=>{
                 })
                 Sentence.find({_id:{$in:progressIds}})
                 .then(sentences=> {
-                    res.status(200).json(sentences)
+                   return res.status(200).json(sentences);
                 })
             })
         })
@@ -62,7 +66,9 @@ router.patch("/", (req,res,next)=>{
         "interval":req.body.interval,
         "difficulty":req.body.difficulty,
         "nextReviewDate":req.body.nextReviewDate
-       },()=>console.log("sentence updated"));
+       },()=>{
+            res.status(200).send({message: "Sentence updated"});
+        });
    });
 
 module.exports= router;
