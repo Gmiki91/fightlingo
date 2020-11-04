@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
-import { Progress } from './progress.model';
+import { Progress } from '../progress.model';
 import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()

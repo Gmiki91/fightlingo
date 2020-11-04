@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RussianLesson } from '../quiz/language-lessons/russian-lesson.enum';
+import { AuthService } from '../auth/auth.service';
 import { QuizService } from '../quiz/quiz.service';
+import { LessonService } from './lesson.service';
 
 @Component({
   selector: 'app-level-tree',
@@ -9,20 +10,23 @@ import { QuizService } from '../quiz/quiz.service';
 })
 export class LevelTreeComponent implements OnInit {
 
-  items=[
-    {lesson:RussianLesson.BasicsI,number:1},
-    {lesson:RussianLesson.BasicsII,number:2},
-    {lesson:RussianLesson.BasicsIII,number:3},
-    {lesson:RussianLesson.BasicsIII,number:3},
-
-  ];
-  constructor(private quizService:QuizService) {}
+  items=[];
+  userRank:number;
+  constructor(private quizService:QuizService, private lessonService:LessonService, private authService:AuthService) {}
 
   ngOnInit(): void {
+    this.userRank=this.authService.user.rank;
+    this.lessonService.getLessons().subscribe((data)=>{
+      data.sort((a,b)=>{return a.rank - b.rank;});
+      this.items=data;
+    })
   }
 
   onClick(lesson){
     this.quizService.levelChoosen(lesson.number);
-
+  }
+  checkLessonAvailable(itemRank){
+    console.log(itemRank);
+    return this.userRank+1<itemRank;
   }
 }

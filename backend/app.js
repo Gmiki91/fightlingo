@@ -11,6 +11,7 @@ const app=express();
 const sentencesRoutes = require("./routes/sentences");
 const userRoutes=require('./routes/users');
 const progressRoutes = require('./routes/progress');
+const lessonsRoutes=require('./routes/lessons');
 
 
 mongoose.connect(
@@ -39,4 +40,5 @@ app.use((req,res,next)=>{
 app.use("/api/users", userRoutes);
 app.use("/api/sentences",sentencesRoutes);
 app.use("/api/progress",progressRoutes);
+app.use("/api/lessons",lessonsRoutes);
 module.exports=app;

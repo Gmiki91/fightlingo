@@ -21,6 +21,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
+import { LessonService } from './level-tree/lesson.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { AuthService } from './auth/auth.service';
     MatInputModule,
     MatRadioModule,
   ],
-  providers: [QuizService, AuthService],
+  providers: [QuizService, AuthService, LessonService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

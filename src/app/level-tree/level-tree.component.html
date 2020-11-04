@@ -1,7 +1,7 @@
 <hr>
  <div class="scrollmenu" name="fontStyle" aria-label="Font Style">
   <mat-button-toggle-group>
-    <mat-button-toggle [disableRipple]=true  (click)="onClick(item)" *ngFor="let item of items">{{item.lesson}}</mat-button-toggle>
+    <mat-button-toggle [disableRipple]=true [disabled]="checkLessonAvailable(item.rank)"  (click)="onClick(item)" *ngFor="let item of items">{{item.name}}</mat-button-toggle>
   </mat-button-toggle-group>
 
   </div>
