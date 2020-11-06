@@ -22,6 +22,7 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
 import { LessonService } from './level-tree/lesson.service';
+import { GymComponent } from './dojo/gym/gym.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LessonService } from './level-tree/lesson.service';
     DojoComponent,
     LibraryComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    GymComponent
   ],
   imports: [
     FormsModule,

@@ -1,11 +1,7 @@
-<mat-toolbar color="primary">
-    <a *ngIf="userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/gym">Gym</a>
-    <a *ngIf="userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/library">Library</a>
-    <a *ngIf="!userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/login">Log in</a>
-    <a *ngIf="!userName" mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/sign-up">Sign up</a>
-</mat-toolbar>
-<div class="char-menu"> 
-    <p *ngIf="userName">Hello {{userName}}</p>
-    <img src='{{monsterPic}}'>
+<div *ngIf="!loggedIn">
+    <mat-toolbar color="primary">
+        <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/login">Log in</a>
+        <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/sign-up">Sign up</a>
+    </mat-toolbar>
 </div>
 <router-outlet></router-outlet>

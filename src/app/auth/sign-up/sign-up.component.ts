@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Language } from 'src/app/language.enum';
 import { AuthService } from '../auth.service';
 
@@ -18,7 +19,7 @@ export class SignUpComponent implements OnInit {
   imagePathIndex:number=0;
   imagePath:string;
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService, private router:Router) { }
 
   ngOnInit(): void {
     this.imagePathIndex=0;
@@ -27,6 +28,7 @@ export class SignUpComponent implements OnInit {
 
   onSignUp(form:NgForm){
     this.authService.createUser(form.value.email,form.value.password, form.value.fightername, this.imagePath, this.language);
+    this.router.navigate(['/']);
   }
   previousPic(){
     this.imagePathIndex--;

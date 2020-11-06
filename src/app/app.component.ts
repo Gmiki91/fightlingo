@@ -9,8 +9,6 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit{
   title = 'fightlingo';
   loggedIn = false;
-  userName:string;
-  monsterPic:string;
 
   constructor(private authService:AuthService){
     
@@ -20,8 +18,7 @@ export class AppComponent implements OnInit{
     this.authService.getUserLoggedIn()
     .subscribe((user)=>{
       if(user){
-        this.userName=user.name.toString();
-        this.monsterPic='../assets/'+user.pic+'.jpg';
+        this.loggedIn = true;
       }});
   }
 }

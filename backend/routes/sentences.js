@@ -23,7 +23,7 @@ router.get("/overdue/:username",(req,res,next)=>{
 
 // learnable sentences
 router.post("/",(req,res,next)=>{
-    Lesson.findOne({rank:req.body.rank+1, language:req.body.language}) //user rank starts at 0
+    Lesson.findOne({rank:req.body.rank, language:req.body.language})
     .then(lesson=>{
         let language=req.body.language;
         switch (language) {
