@@ -1,2 +1,33 @@
-
-
+.container{
+    position: relative;
+}
+.gym_btn{
+    position: absolute;
+    top: 42rem;
+    left: 12rem;
+    cursor: pointer;
+}
+.library_btn{
+    position: absolute;
+    top: 41rem;
+    left: 49rem;
+    cursor: pointer;
+}
+.city_btn{
+    position: absolute;
+    top: 16rem;
+    left: 43rem;
+    cursor: pointer;
+}
+.arena_btn{
+    position: absolute;
+    top: 16rem;
+    left: 12rem;
+    cursor: pointer;
+}
+.mountains_btn{
+    position: absolute;
+    top: 10rem;
+    left: 73rem;
+    cursor: pointer;
+}

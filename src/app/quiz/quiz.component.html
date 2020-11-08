@@ -1,19 +1,23 @@
-<nav style="text-align: center;" [hidden]="trainingInProgress">
-    <button [disabled]="overduePractice " (click)="learn()">Learn</button>
-    <button [disabled]="!levelSelected || overduePractice" (click)="practice()">Practice</button>
-    <button [disabled]="!overduePractice" (click)="practiceOverdue()">Practice overdue Sentences</button>
-</nav>
-<hr>
-<div style="text-align: center;" *ngIf="sentence">
-    <label>{{sentence.english}}</label>
+<div class="container">
+    <img src="assets/menu.png">
+    <nav >
+        <button class="learn_btn" [disabled]="overduePractice || trainingInProgress " (click)="learn()">Learn</button>
+        <button class="practice_btn" [disabled]="!levelSelected || overduePractice || trainingInProgress" (click)="practice()">Practice</button>
+        <button class="overdue_btn" [disabled]="!overduePractice || trainingInProgress" (click)="practiceOverdue()">Practice overdue Sentences</button>
+        <button class="leave_btn" routerLink="/dojo">Leave</button>
+    </nav>
+    <div class="questions">
+        <div style="text-align: center;" *ngIf="sentence">
+            <label>{{sentence.english}}</label>
+        </div>
+        <div style="text-align: center;" *ngIf="!sentence">
+            <label>Choose a category</label>
+        </div>
+        <div style="text-align: center;">
+            <input #input>
+        </div>
+        <div style="text-align: center;">
+            <button [disabled]="!sentence" (click)="check()">Check</button>
+        </div>
+    </div>
 </div>
-<div style="text-align: center;" *ngIf="!sentence">
-    <label>Choose a category</label>
-</div>
-<div style="text-align: center;">
-    <input #input>
-</div>
-<div style="text-align: center;">
-    <button [disabled]="!sentence" (click)="check()">Check</button>
-</div>
-<app-level-tree></app-level-tree>
