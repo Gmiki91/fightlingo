@@ -1,7 +1,11 @@
-<hr>
  <div class="scrollmenu" name="fontStyle" aria-label="Font Style">
-  <mat-button-toggle-group>
-    <mat-button-toggle [disableRipple]=true [disabled]="checkLessonAvailable(item.rank)"  (click)="onClick(item)" *ngFor="let item of items">{{item.name}}</mat-button-toggle>
+  <mat-form-field appearance="fill">
+    <mat-label>Choose a level</mat-label>
+    <mat-select >
+      <mat-option *ngFor="let level of levels" (click)="onLevelClick(level)">{{level}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-button-toggle-group [hidden]="!showLessons">
+    <mat-button-toggle [disableRipple]=true [disabled]="checkLessonAvailable(lesson.rank)"  (click)="onClick(lesson)" *ngFor="let lesson of lessons">{{lesson.name}}</mat-button-toggle>
   </mat-button-toggle-group>
-
-  </div>
+</div>

@@ -2,10 +2,11 @@
     <img src="assets/menu.png">
     <nav >
         <button class="learn_btn" [disabled]="overduePractice || trainingInProgress " (click)="learn()">Learn</button>
-        <button class="practice_btn" [disabled]="!levelSelected || overduePractice || trainingInProgress" (click)="practice()">Practice</button>
+        <button class="practice_btn" [disabled]="overduePractice || trainingInProgress" (click)="practice()">Practice</button>
         <button class="overdue_btn" [disabled]="!overduePractice || trainingInProgress" (click)="practiceOverdue()">Practice overdue Sentences</button>
         <button class="leave_btn" routerLink="/dojo">Leave</button>
     </nav>
+    <app-level-tree class="level-tree" *ngIf="practiceClicked && !trainingInProgress"></app-level-tree>
     <div class="questions">
         <div style="text-align: center;" *ngIf="sentence">
             <label>{{sentence.english}}</label>

@@ -10,23 +10,32 @@ import { LessonService } from './lesson.service';
 })
 export class LevelTreeComponent implements OnInit {
 
-  items=[];
+  levels=[];
+  lessons=[];
   userRank:number;
+  showLessons:boolean;
   constructor(private quizService:QuizService, private lessonService:LessonService, private authService:AuthService) {}
 
   ngOnInit(): void {
-    this.userRank=this.authService.user.rank;
-    this.lessonService.getLessons().subscribe((data)=>{
-      data.sort((a,b)=>{return a.rank - b.rank;});
-      this.items=data;
-    })
+    for(let i=1;i<=this.lessonService.numberOfLevels;i++) {
+      this.levels.push(i);
+    }
+    this.levels.sort((a,b)=>{return a - b;});
   }
 
   onClick(lesson){
-    this.quizService.levelChoosen(lesson.number);
+    this.quizService.lessonSelected(lesson._id);
   }
   checkLessonAvailable(itemRank){
-    console.log(itemRank);
-    return this.userRank+1<itemRank;
+    return this.userRank<itemRank;
+  }
+  onLevelClick(level){
+    this.showLessons=true;
+    this.userRank=this.authService.user.rank;
+    this.lessonService.getLessons(level).subscribe((data)=>{
+      data.sort((a,b)=>{return a.rank - b.rank;});
+      this.lessons=data;
+    })
+
   }
 }

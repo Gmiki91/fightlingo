@@ -9,37 +9,33 @@ import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()
 export class QuizService {
-    
 
     private sentenceListChanged=new Subject<Sentence[]>();
+    private practiceReady=new Subject<Sentence[]>();
     private overdueListChanged=new Subject<Sentence[]>();
-    private levelChanged=new Subject<number>();
     private user:User;
-
+    
     constructor(private http: HttpClient, private authService:AuthService){}
 
 
-    levelChoosen(level:number){
-        this.user=this.authService.user;
-        this.levelChanged.next(level);
+    lessonSelected(id:string){
+        //this.user=this.authService.user;
+        this.http.post('http://localhost:3300/api/sentences/'+id, this.user)
+        .subscribe((sentences:Sentence[])=>{
+            this.practiceReady.next(sentences);
+        });
     }
-
-    getLevelChanged(){
-        return this.levelChanged.asObservable();
+    getPracticeSentences(){
+        return this.practiceReady.asObservable();  
     }
 
     getLearnableSentences(){
-        console.log("hellóservice");
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
-            console.log("helló subscribe");
             this.sentenceListChanged.next(sentences);
         });
         return this.sentenceListChanged.asObservable();  
         
-    }
-    getSentences(){
-       
     }
 
     getPracticeableSentences(level){

@@ -18,18 +18,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   numberOfSentences:number;
   overdueSubscription:Subscription=Subscription.EMPTY;
   quizSubscription:Subscription=Subscription.EMPTY;
-  levelChangeSubscription:Subscription=Subscription.EMPTY;
+  practiceSubscription:Subscription=Subscription.EMPTY;
   trainingInProgress:boolean;
-  
+  practiceClicked:boolean;
+
   constructor(private quizService:QuizService) {
    }
 
   ngOnInit(): void {
     this.trainingInProgress=false;
-    this.levelChangeSubscription=this.quizService.getLevelChanged()
-    .subscribe((number)=>{
-      if(number){
-        this.levelSelected=number;
+    this.practiceSubscription=this.quizService.getPracticeSentences()
+    .subscribe((result)=>{
+      if(result){
+        console.log(result);
+        this.displaySentence(result);
       }
     });
     
@@ -46,11 +48,13 @@ export class QuizComponent implements OnInit, OnDestroy {
     .subscribe((sentences:Sentence[])=>{
       this.displaySentence(sentences)});
   }
+ 
   practice():void{
-    this.trainingInProgress=true;
+    this.practiceClicked=true;
+   /* this.trainingInProgress=true;
     this.quizSubscription = this.quizService.getPracticeableSentences(this.levelSelected)
     .subscribe((sentences:Sentence[])=>{
-      this.displaySentence(sentences)});
+      this.displaySentence(sentences)});*/
   }
   practiceOverdue():void{
     this.trainingInProgress=true;
@@ -73,6 +77,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     //  this.quizService.sendUpdatedSentences();
       this.sentence=null;
       this.trainingInProgress=false;
+      this.practiceClicked=false;
       if(this.overduePractice) {
         this.overduePractice=false;
       }
@@ -82,7 +87,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnDestroy():void{
     this.quizSubscription.unsubscribe();
     this.overdueSubscription.unsubscribe();
-    this.levelChangeSubscription.unsubscribe();
+    this.practiceSubscription.unsubscribe();
   }
 
   private displaySentence(sentences:Sentence[]):void{

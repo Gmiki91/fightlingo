@@ -7,15 +7,16 @@ import { Lesson } from './lesson.model';
 @Injectable()
 export class LessonService {
 
+  public numberOfLevels = 6
+  
+  constructor(private http: HttpClient, private authService:AuthService){}
 
-    constructor(private http: HttpClient, private authService:AuthService){}
-
-    getLessons(){
-       return this.http.get<Lesson[]>('http://localhost:3300/api/lessons/'+this.authService.user.language);
-      //  .subscribe(response => {
-           // console.log(response);
-           // this.lessons.next(response);
-      //  });
-    }
+  getLessons(levelSelected:number){
+     return this.http.get<Lesson[]>('http://localhost:3300/api/lessons/'+this.authService.user.language+'/'+levelSelected);
+    //  .subscribe(response => {
+         // console.log(response);
+         // this.lessons.next(response);
+    //  });
+  }
    
 }

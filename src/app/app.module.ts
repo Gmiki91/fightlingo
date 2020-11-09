@@ -9,7 +9,7 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input'
 import { MatRadioModule } from '@angular/material/radio';
-
+import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
@@ -48,6 +48,7 @@ import { GymComponent } from './dojo/gym/gym.component';
     MatCardModule,
     MatInputModule,
     MatRadioModule,
+    MatSelectModule,
   ],
   providers: [QuizService, AuthService, LessonService],
   bootstrap: [AppComponent],
