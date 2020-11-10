@@ -6,8 +6,8 @@
         <button class="overdue_btn" [disabled]="!overduePractice || trainingInProgress" (click)="practiceOverdue()">Practice overdue Sentences</button>
         <button class="leave_btn" routerLink="/dojo">Leave</button>
     </nav>
-    <app-level-tree class="level-tree" *ngIf="practiceClicked && !trainingInProgress"></app-level-tree>
-    <div class="questions">
+    <app-level-tree class="level_tree" *ngIf="practiceClicked && !trainingInProgress"></app-level-tree>
+    <div  class="questions" *ngIf="!practiceClicked">
         <div style="text-align: center;" *ngIf="sentence">
             <label>{{sentence.english}}</label>
         </div>

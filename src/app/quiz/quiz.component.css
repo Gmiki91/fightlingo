@@ -35,3 +35,10 @@
     left: 45rem;
     cursor: pointer;
 }
+.level_tree{
+    position: absolute;
+    top: 5rem;
+    left: 25rem;
+    width:60%;
+    cursor: pointer;
+}

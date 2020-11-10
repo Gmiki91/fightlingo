@@ -10,6 +10,7 @@ import { LessonService } from './lesson.service';
 })
 export class LevelTreeComponent implements OnInit {
 
+  selectedLevel:string;
   levels=[];
   lessons=[];
   userRank:number;
@@ -25,11 +26,14 @@ export class LevelTreeComponent implements OnInit {
 
   onClick(lesson){
     this.quizService.lessonSelected(lesson._id);
+    this.selectedLevel=null;
+    this.showLessons=false;
   }
   checkLessonAvailable(itemRank){
     return this.userRank<itemRank;
   }
   onLevelClick(level){
+    this.selectedLevel="Level " + level;
     this.showLessons=true;
     this.userRank=this.authService.user.rank;
     this.lessonService.getLessons(level).subscribe((data)=>{

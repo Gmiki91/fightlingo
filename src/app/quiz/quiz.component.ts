@@ -30,7 +30,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.practiceSubscription=this.quizService.getPracticeSentences()
     .subscribe((result)=>{
       if(result){
-        console.log(result);
+        this.practiceClicked=false;
         this.displaySentence(result);
       }
     });
@@ -43,6 +43,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   learn():void{
+    this.practiceClicked=false;
     this.trainingInProgress=true;
     this.quizSubscription = this.quizService.getLearnableSentences()
     .subscribe((sentences:Sentence[])=>{

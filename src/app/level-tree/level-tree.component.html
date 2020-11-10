@@ -1,11 +1,14 @@
- <div class="scrollmenu" name="fontStyle" aria-label="Font Style">
-  <mat-form-field appearance="fill">
-    <mat-label>Choose a level</mat-label>
+  <div class="container">
+  <mat-form-field class="dropdown_menu" appearance="fill">
+    <mat-label *ngIf="showLessons">{{selectedLevel}}</mat-label>
+    <mat-label *ngIf="!showLessons">Choose a level</mat-label>
     <mat-select >
       <mat-option *ngFor="let level of levels" (click)="onLevelClick(level)">{{level}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-button-toggle-group [hidden]="!showLessons">
+  <div class="scrollmenu"  [hidden]="!showLessons" name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle-group>
     <mat-button-toggle [disableRipple]=true [disabled]="checkLessonAvailable(lesson.rank)"  (click)="onClick(lesson)" *ngFor="let lesson of lessons">{{lesson.name}}</mat-button-toggle>
   </mat-button-toggle-group>
-</div>
+  </div>
+  </div>
