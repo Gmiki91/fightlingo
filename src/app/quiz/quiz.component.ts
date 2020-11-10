@@ -26,6 +26,7 @@ export class QuizComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    console.log("init fut");
     this.trainingInProgress=false;
     this.practiceSubscription=this.quizService.getPracticeSentences()
     .subscribe((result)=>{
@@ -35,11 +36,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     });
     
-    this.overdueSubscription=this.quizService.getOverdueSentences()
-    .subscribe((sentences:Sentence[])=>{
-      this.sentences=sentences;
-      this.overduePractice=sentences.length==0? false:true;
-    });
+   this.checkOverdues();
   }
 
   learn():void{
@@ -68,33 +65,47 @@ export class QuizComponent implements OnInit, OnDestroy {
       console.log("talált");
       this.quizService.updateSentence(this.sentence._id, 5);
     }else{
-      this.quizService.updateSentence(this.sentence._id, 0);
       console.log("elbasztad");
+      this.quizService.updateSentence(this.sentence._id, 0);
     }
-    this.numberOfSentences--;
-    if(this.numberOfSentences>0){
-      this.sentence=this.sentences[this.numberOfSentences-1];
-    }else{
-    //  this.quizService.sendUpdatedSentences();
-      this.sentence=null;
-      this.trainingInProgress=false;
-      this.practiceClicked=false;
-      if(this.overduePractice) {
-        this.overduePractice=false;
+    setTimeout(()=>{ //update happens slower than getting the sentences from checkOverdue. Needs a result pop up.                  
+      this.numberOfSentences--;
+      if(this.numberOfSentences>0){
+        this.sentence=this.sentences[this.numberOfSentences-1];
+      }else{
+      //  this.quizService.sendUpdatedSentences();
+        this.sentence=null;
+        this.trainingInProgress=false;
+        this.practiceClicked=false;
+        if(this.overduePractice) {
+          this.checkOverdues();
+        }
       }
-    }
+ }, 100);
+    
   }
 
   ngOnDestroy():void{
     this.quizSubscription.unsubscribe();
-    this.overdueSubscription.unsubscribe();
+    
     this.practiceSubscription.unsubscribe();
+  }
+
+  private checkOverdues():void{
+    if(this.overdueSubscription){
+      this.overdueSubscription.unsubscribe();
+    }
+    this.overdueSubscription=this.quizService.getOverdueSentences()
+    .subscribe((sentences:Sentence[])=>{
+      this.sentences=sentences;
+      this.overduePractice=sentences.length==0? false:true;
+    });
   }
 
   private displaySentence(sentences:Sentence[]):void{
     this.numberOfSentences=sentences.length;
+    this.sentences=sentences;
     this.sentence=sentences[this.numberOfSentences-1];
-    this.sentences=sentences
   }
 
 }

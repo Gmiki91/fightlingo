@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models/user");
 const Lesson = require("../models/lesson");
 const Progress = require("../models/progress");
+const { resolve } = require('path');
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
 
 //overdue sentences
-router.get("/overdue/:username",(req,res,next)=>{
-    User.find({
-          name:req.params.username,
-          "sentences.nextReviewDate":{$lte:new Date()}
-      })
-      .then(documents=>{
-          res.status(200).json(documents);
+router.post("/overdue",(req,res,next)=>{
+    instantiateSentence(req.body.language);
+    Progress.find({userId:req.body._id, nextReviewDate:{$lte:new Date()}}) 
+    .then(documents=>{
+        documents.forEach(doc =>{console.log(doc)});
+        findSentences(documents)
+        .then(results=>{ 
+            res.status(200).json(results);
+        })
       })
 });
   
@@ -60,12 +62,7 @@ router.patch("/", (req,res,next)=>{
                 sentenceIds.push(new ObjectId(sentence._id));
             })
             Progress.find({userId:new ObjectId(userId),learned:learned,sentenceId:{$in:sentenceIds}})
-            .then(progressData=>{
-                let progressIds=[];
-                progressData.forEach(progress=>{
-                    progressIds.push(new ObjectId(progress.sentenceId));
-                })
-                Sentence.find({_id:{$in:progressIds}})
+            .then(progressData=>{ findSentences(progressData)
                 .then(sentences=> {
                    resolve(sentences);
                 })
@@ -74,6 +71,19 @@ router.patch("/", (req,res,next)=>{
     })
    }
    
+   function findSentences(progressData){
+    return new Promise(function(resolve,reject){
+    let progressIds=[];
+    progressData.forEach(progress=>{
+        progressIds.push(new ObjectId(progress.sentenceId));
+    })
+    Sentence.find({_id:{$in:progressIds}})
+    .then(sentences=> {
+        resolve(sentences)
+    });
+   })
+}
+
    function instantiateSentence(language){
     switch (language) {
         case 'russian':

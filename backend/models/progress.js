@@ -9,7 +9,7 @@ const progressSchema = mongoose.Schema({
     consecutiveCorrectAnswers:Number,
     interval:Number,
     difficulty:Number,
-    nextReviewDate:Object
+    nextReviewDate:Date
 })
 
 module.exports=mongoose.model("Progress",progressSchema);

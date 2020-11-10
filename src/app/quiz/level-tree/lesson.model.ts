@@ -1,4 +1,4 @@
-import { Language } from '../language.enum';
+import { Language } from '../../language.enum';
 
 export interface Lesson{
     _id:string;

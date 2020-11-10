@@ -1,30 +1,28 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
 import { Progress } from '../progress.model';
-import { filter, mergeMap, map, toArray } from 'rxjs/operators';
 
 @Injectable()
 export class QuizService {
 
     private sentenceListChanged=new Subject<Sentence[]>();
     private practiceReady=new Subject<Sentence[]>();
-    private overdueListChanged=new Subject<Sentence[]>();
     private user:User;
     
     constructor(private http: HttpClient, private authService:AuthService){}
 
 
     lessonSelected(id:string){
-        //this.user=this.authService.user;
         this.http.post('http://localhost:3300/api/sentences/'+id, this.user)
         .subscribe((sentences:Sentence[])=>{
             this.practiceReady.next(sentences);
         });
     }
+
     getPracticeSentences(){
         return this.practiceReady.asObservable();  
     }
@@ -35,29 +33,15 @@ export class QuizService {
             this.sentenceListChanged.next(sentences);
         });
         return this.sentenceListChanged.asObservable();  
-        
     }
 
-    getPracticeableSentences(level){
-        this.http.get('http://localhost:3300/api/sentences/')
-        .pipe(
-            mergeMap(response=>response=response[0].sentences),
-           // filter((data:Sentence)=> data.learned==true && data.level==level),toArray()
-        )
+    getOverdueSentences(){
+        this.user=this.authService.user;
+        this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
         .subscribe((responseData:Sentence[])=>{
             this.sentenceListChanged.next(responseData);
         });
         return this.sentenceListChanged.asObservable();
-    }
-
-
-    getOverdueSentences(){
-        this.user=this.authService.user;
-        this.http.get('http://localhost:3300/api/sentences/overdue/'+ this.user.name)
-        .subscribe((responseData:Sentence[])=>{
-            this.overdueListChanged.next(responseData);
-        });
-        return this.overdueListChanged.asObservable();
     }
 
 
@@ -72,9 +56,8 @@ export class QuizService {
             if(progress.learningProgress>=5){
                 progress.learned=true;
             }
-
-        }else{
-
+        }
+        if(progress.learned){
             progress.difficulty =  Math.max(1.3,  progress.difficulty + 0.1 - (5.0 - answerEfficieny) * (0.08 + (5.0 - answerEfficieny)*0.02));
 
             //consecutiveCorrectAnswers

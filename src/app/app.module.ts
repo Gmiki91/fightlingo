@@ -14,14 +14,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuizService } from './quiz/quiz.service';
-import { LevelTreeComponent } from './level-tree/level-tree.component';
+import { LevelTreeComponent } from './quiz/level-tree/level-tree.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
-import { LessonService } from './level-tree/lesson.service';
+import { LessonService } from './quiz/level-tree/lesson.service';
 import { GymComponent } from './dojo/gym/gym.component';
 
 @NgModule({
