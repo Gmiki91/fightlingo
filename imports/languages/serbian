@@ -6,57 +6,57 @@
 }
 
 {
-"english":"11",
-"translations":["11", "11."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"111",
-"translations":["111", "111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"1111",
-"translations":["1111", "1111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"11111",
-"translations":["11111", "11111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"111111",
-"translations":["111111", "111111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"111111111",
-"translations":["111111111", "111111111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
-"english":"1111111111",
-"translations":["1111111111", "1111111111."],
-"level":1,
-"lesson_id":"sr_0101"
-}
-
-{
 "english":"2",
 "translations":["2", "2."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"3",
+"translations":["3", "3."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"4",
+"translations":["4", "4."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"5",
+"translations":["5", "5."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"6",
+"translations":["6", "6."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"7",
+"translations":["7", "7."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"8",
+"translations":["8", "8."],
+"level":1,
+"lesson_id":"sr_0101"
+}
+
+{
+"english":"21",
+"translations":["21", "21."],
 "level":1,
 "lesson_id":"sr_0102"
 }
@@ -70,64 +70,64 @@
 
 
 {
-"english":"222",
-"translations":["222", "222."],
+"english":"23",
+"translations":["23", "23."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"2222",
-"translations":["2222", "2222."],
+"english":"24",
+"translations":["24", "24."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"22222",
-"translations":["22222", "22222."],
+"english":"25",
+"translations":["25", "25."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"222222",
-"translations":["222222", "222222."],
+"english":"26",
+"translations":["26", "26."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"2222222",
-"translations":["2222222", "2222222."],
+"english":"27",
+"translations":["27", "27."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"22222222",
-"translations":["22222222", "22222222."],
+"english":"28",
+"translations":["28", "28."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"222222222",
-"translations":["222222222", "222222222."],
+"english":"29",
+"translations":["29", "29."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"2222222222",
-"translations":["2222222222", "2222222222."],
+"english":"291",
+"translations":["291", "291."],
 "level":1,
 "lesson_id":"sr_0102"
 }
 
 {
-"english":"22222222222",
-"translations":["22222222222", "22222222222."],
+"english":"292",
+"translations":["292", "292."],
 "level":1,
 "lesson_id":"sr_0102"
 }
@@ -140,6 +140,20 @@
 }
 
 {
+"english":"31",
+"translations":["31", "31."],
+"level":2,
+"lesson_id":"sr_0201"
+}
+
+{
+"english":"32",
+"translations":["32", "32."],
+"level":2,
+"lesson_id":"sr_0201"
+}
+
+{
 "english":"33",
 "translations":["33", "33."],
 "level":2,
@@ -147,29 +161,15 @@
 }
 
 {
-"english":"333",
-"translations":["333", "333."],
+"english":"34",
+"translations":["34", "34."],
 "level":2,
 "lesson_id":"sr_0201"
 }
 
 {
-"english":"3333",
-"translations":["3333", "3333."],
-"level":2,
-"lesson_id":"sr_0201"
-}
-
-{
-"english":"33333",
-"translations":["33333", "33333."],
-"level":2,
-"lesson_id":"sr_0201"
-}
-
-{
-"english":"333333",
-"translations":["333333", "333333."],
+"english":"35",
+"translations":["35", "35."],
 "level":2,
 "lesson_id":"sr_0201"
 }

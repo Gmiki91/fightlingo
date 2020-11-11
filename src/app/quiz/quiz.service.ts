@@ -1,23 +1,29 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
 import { Progress } from '../progress.model';
+import { catchError } from 'rxjs/operators';
+import { Lesson } from './level-tree/lesson.model';
 
 @Injectable()
 export class QuizService {
-
-    private sentenceListChanged=new Subject<Sentence[]>();
+    private overdueListChanged=new Subject<Sentence[]>();
+    private learnableListChanged=new Subject<Sentence[]>();
     private practiceReady=new Subject<Sentence[]>();
     private user:User;
     
     constructor(private http: HttpClient, private authService:AuthService){}
-
+    
+    getLessonByPlayerRank(){
+       return this.http.post('http://localhost:3300/api/lessons/',this.user);
+       
+    }
 
     lessonSelected(id:string){
-        this.http.post('http://localhost:3300/api/sentences/'+id, this.user)
+       return this.http.post('http://localhost:3300/api/sentences/'+id, this.user)
         .subscribe((sentences:Sentence[])=>{
             this.practiceReady.next(sentences);
         });
@@ -30,18 +36,18 @@ export class QuizService {
     getLearnableSentences(){
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
-            this.sentenceListChanged.next(sentences);
+            this.learnableListChanged.next(sentences);
         });
-        return this.sentenceListChanged.asObservable();  
+        return this.learnableListChanged.asObservable();  
     }
 
     getOverdueSentences(){
         this.user=this.authService.user;
         this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
         .subscribe((responseData:Sentence[])=>{
-            this.sentenceListChanged.next(responseData);
+            this.overdueListChanged.next(responseData);
         });
-        return this.sentenceListChanged.asObservable();
+        return this.overdueListChanged.asObservable();
     }
 
 
@@ -87,4 +93,8 @@ export class QuizService {
         .subscribe((response)=>console.log(response));
     });       
     }
+
+    errorHandler(error: HttpErrorResponse) {
+        return throwError(error.message || 'server Error');
+      }
 }

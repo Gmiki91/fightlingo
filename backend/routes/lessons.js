@@ -3,12 +3,22 @@ const router = express.Router();
 const Lesson = require("../models/lesson");
 
 router.get('/:language/:level', (req, res, next) => {
-    Lesson.find({ 
+    Lesson.find({
         language: req.params.language,
         level: req.params.level
-                 })
-    .then((result) => {
-        return res.json(result);
     })
+        .then((result) => {
+            return res.json(result);
+        })
 })
-module.exports= router;
+
+router.post('/', (req, res, next) => {
+    Lesson.findOne({
+        language: req.body.language,
+        rank: req.body.rank
+    },'name')
+        .then((result) => {
+            return res.json(result.name);
+        })
+})
+module.exports = router;

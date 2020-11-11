@@ -11,7 +11,6 @@ router.post("/overdue",(req,res,next)=>{
     instantiateSentence(req.body.language);
     Progress.find({userId:req.body._id, nextReviewDate:{$lte:new Date()}}) 
     .then(documents=>{
-        documents.forEach(doc =>{console.log(doc)});
         findSentences(documents)
         .then(results=>{ 
             res.status(200).json(results);
