@@ -12,7 +12,7 @@ import { Lesson } from './level-tree/lesson.model';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit, OnDestroy {
+export class QuizComponent implements OnInit {
 
   @ViewChild("input") input;
   levelSelected: number;
@@ -20,7 +20,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   sentence: Sentence;
   sentences: Sentence[];
   overdueSubscription: Subscription = Subscription.EMPTY;
-  quizSubscription: Subscription = Subscription.EMPTY;
   practiceSubscription: Subscription = Subscription.EMPTY;
   trainingInProgress: boolean;
   overduePractice: boolean;
@@ -47,10 +46,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   learn(): void {
-    if (this.quizSubscription) {
-      this.quizSubscription.unsubscribe();
-    }
-    this.quizSubscription = this.quizService.getLearnableSentences()
+    this.quizService.getLearnableSentences().pipe(first())
     .subscribe((sentences: Sentence[]) => {
         if(sentences.length!=0){
           this.learning=true;
@@ -85,7 +81,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.sentence = this.sentences[this.numberOfSentences - 1];
     } else {
       swal("Well done!", "...You finished the quiz!");
-      this.quizSubscription.unsubscribe();
       setTimeout(() => {
         this.sentence = null;
         this.trainingInProgress = false;
@@ -118,11 +113,6 @@ export class QuizComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy(): void {
-    this.quizSubscription.unsubscribe();
-    this.overdueSubscription.unsubscribe();
-    this.practiceSubscription.unsubscribe();
-  }
 
   private checkOverdues(): void {
     if (this.overdueSubscription) {
@@ -155,7 +145,7 @@ export class QuizComponent implements OnInit, OnDestroy {
           .subscribe((lessonName:string)=>{
             console.log("You've mastered the ways of the " + lessonName)
           });
-          
+
         }
       })
       this.learning = false;
