@@ -1,7 +1,7 @@
 {
 "name":"Tien Shinhan",
 "pic":null,
-"rank":1,
+"rank":2,
 "level":1,
 "str":10,
 "dex":10,
@@ -14,7 +14,7 @@
 {
 "name":"Chiaotzu",
 "pic":null,
-"rank":2,
+"rank":4,
 "level":1,
 "str":10,
 "dex":10,
@@ -27,7 +27,7 @@
 {
 "name":"Dóri",
 "pic":null,
-"rank":3,
+"rank":5,
 "level":1,
 "str":10,
 "dex":10,
@@ -41,12 +41,12 @@
 {
 "name":"Lekvár",
 "pic":null,
-"rank":4,
+"rank":6,
 "level":2,
 "str":10,
 "dex":10,
 "health":10,
-"gm":false,
+"gm":true,
 "language":"serbian",
 "gift_id":"gift_004"
 }

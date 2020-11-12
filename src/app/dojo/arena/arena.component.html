@@ -1,0 +1,19 @@
+<div class="container">
+    <img class="bg" src="assets/arenabg.png">
+    <div class="rankings_list">
+
+        <h2></h2>
+        <div class="list_bg">
+            <ul class="masters">
+                <li *ngFor="let master of masters" (click)="onSelect(master)">
+                    <!--[class.selected]="master === selectedMaster"-->
+                    <span class="badge">{{master.str}}</span> {{master.name}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="selected_master" *ngIf="selectedMaster">
+        <h2>{{selectedMaster.name | uppercase}} Details</h2>
+        <div><span>name: </span>{{selectedMaster.name}}</div>
+    </div>
+</div>

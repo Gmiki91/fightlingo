@@ -139,13 +139,15 @@ export class QuizComponent implements OnInit {
 
   private checkAvailablePromotion():void{
     this.quizService.getLearnableSentences()
-    .subscribe((sentences: Sentence[]) => {
+    .subscribe(async (sentences: Sentence[]) => {
         if(sentences.length===0){
-          this.quizService.getLessonByPlayerRank().pipe(first())
+          let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
+          let masterName = "béla"
+          console.log(`You've mastered the ways of the  ${lessonName}, ${masterName} would like to see it in practice`);
+         /* this.quizService.getLessonByPlayerRank().pipe(first())
           .subscribe((lessonName:string)=>{
             console.log("You've mastered the ways of the " + lessonName)
-          });
-
+          });*/
         }
       })
       this.learning = false;

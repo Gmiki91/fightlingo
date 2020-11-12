@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ArenaService } from './arena/arena.service';
+
 
 @Component({
   selector: 'app-dojo',
@@ -11,5 +13,4 @@ export class DojoComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

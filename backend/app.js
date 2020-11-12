@@ -12,7 +12,7 @@ const sentencesRoutes = require("./routes/sentences");
 const userRoutes=require('./routes/users');
 const progressRoutes = require('./routes/progress');
 const lessonsRoutes=require('./routes/lessons');
-
+const mastersRoutes=require('./routes/masters');
 
 mongoose.connect(
     "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
@@ -36,9 +36,9 @@ app.use((req,res,next)=>{
     next();
 });
 
-
 app.use("/api/users", userRoutes);
 app.use("/api/sentences",sentencesRoutes);
 app.use("/api/progress",progressRoutes);
 app.use("/api/lessons",lessonsRoutes);
+app.use("/api/masters",mastersRoutes)
 module.exports=app;
