@@ -15,12 +15,13 @@
     position: absolute;
     background-image: url('/assets/arena_list_bg.jpg');
     margin:1rem;
+    border-radius: 1rem;
 }
 .rankings_list{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    top:3rem;
+    top:auto;
     width:13rem;
     z-index: 2;
     
@@ -36,45 +37,23 @@
 }
 
 .masters {
-    margin: 0 0 2em 0;
+    margin: 2rem 0 2em 0;
     list-style-type: none;
     padding: 0;
     width: 15em;
   }
+
   .masters li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
+margin:1rem;
   }
-  .masters li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  .masters li.selected {
-    background-color: #CFD8DC;
-    color: white;
-  }
-  .masters li.selected:hover {
-    background-color: #BBD8DC;
-    color: white;
-  }
-  .masters .badge {
+  li button{
     display: inline-block;
-    font-size: small;
-    color: white;
-    padding: 0.8em 0.7em 0 0.7em;
-    background-color:#626f7c;
-    line-height: 1em;
-    position: relative;
-    left: -1px;
-    top: -4px;
-    height: 1.8em;
-    margin-right: .8em;
-    border-radius: 4px 0 0 4px;
+    vertical-align: middle;
+    margin:0 auto;
+  }
+  li  img{
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 25%;
+    max-height: 25%;
   }

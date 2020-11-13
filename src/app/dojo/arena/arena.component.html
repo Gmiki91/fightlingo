@@ -5,9 +5,9 @@
         <h2></h2>
         <div class="list_bg">
             <ul class="masters">
-                <li *ngFor="let master of masters" (click)="onSelect(master)">
-                    <!--[class.selected]="master === selectedMaster"-->
-                    <span class="badge">{{master.str}}</span> {{master.name}}
+                <li *ngFor="let master of masters" >
+                    <img src="assets/{{master.pic}}">
+                    <button mat-button disabled="!isMasterAvailable(master)" *ngIf="isMasterAvailable(master)" (click)="onSelect(master)">{{master.name}}</button>
                 </li>
             </ul>
         </div>
