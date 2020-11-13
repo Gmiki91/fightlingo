@@ -32,4 +32,11 @@ export class AuthService{
     getUserLoggedIn(){
         return this.userLogged.asObservable();
     }
+
+    updateRank(){
+        this.http.patch("http://localhost:3300/api/users/",this.user)
+        .subscribe((response)=>console.log(response));
+    }
+
+
 }

@@ -47,7 +47,7 @@ router.post('/signup', (req,res,next)=>{
                         sentenceId:document._id,
                         userId:user._id,
                         learned:false,
-                        learningProgress:0,
+                        learningProgress:4,
                         consecutiveCorrectAnswers:0,
                         interval:1,
                         difficulty:2.5,
@@ -103,5 +103,13 @@ router.post('/login', (req,res,next)=>{
         });
     })
 })
+
+router.patch('/', (req,res,next)=>{
+
+    User.updateOne({_id: req.body._id},
+        {$set:{ "rank": req.body.rank+1 }},
+        ()=>{res.status(200).send({message: "User rank updated"});
+    });
+});
 
 module.exports= router;
