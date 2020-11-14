@@ -23,8 +23,6 @@ export class ArenaComponent implements OnInit {
   }
   
   isMasterAvailable(master: Master): boolean {
-
     return this.authService.user.rank <= master.rank;
-    
   }
 }

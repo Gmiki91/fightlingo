@@ -23,6 +23,7 @@ export class QuizComponent implements OnInit {
   sentences: Sentence[];
   overdueSubscription: Subscription = Subscription.EMPTY;
   practiceSubscription: Subscription = Subscription.EMPTY;
+  learningSubscription: Subscription = Subscription.EMPTY;
   trainingInProgress: boolean;
   overduePractice: boolean;
   practiceClicked: boolean;
@@ -33,30 +34,20 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.trainingInProgress = false;
-    if (this.practiceSubscription) {
-      this.practiceSubscription.unsubscribe();
-    }
-    this.practiceSubscription = this.quizService.getPracticeSentences()
-      .subscribe((sentences: Sentence[]) => {
-        if (sentences.length != 0) {
-          this.startQuiz(sentences);
-        } else {
-          swal("Oops", "You haven't learned anything from this lesson yet.");
-        }
-      });
-    this.checkOverdues();
+
+    this.subscribeToLearn();
+    this.subscribeToPractice();
+    this.subscribeToOverdue();
+
+    this.getOverdues();
+  }
+
+  getOverdues(): void {
+    this.quizService.getOverdueSentences();
   }
 
   learn(): void {
-    this.quizService.getLearnableSentences().pipe(first())
-      .subscribe((sentences: Sentence[]) => {
-        if (sentences.length != 0) {
-          this.learning = true;
-          this.startQuiz(sentences);
-        } else {
-          swal("Oops", "There is nothing new to learn");
-        }
-      });
+    this.quizService.getLearnableSentences();
   }
 
   practice(): void {
@@ -82,17 +73,19 @@ export class QuizComponent implements OnInit {
     if (this.numberOfSentences > 0) {
       this.sentence = this.sentences[this.numberOfSentences - 1];
     } else {
-      swal("Well done!", "...You finished the quiz!");
-      setTimeout(() => {
+      this.quizService.getPromotionRequest();
+      swal("Well done!", "...You finished the quiz!")
+      .then(() => {
         this.sentence = null;
         this.trainingInProgress = false;
         this.practiceClicked = false;
         if (this.learning) {
           this.checkAvailablePromotion();
+          this.learning = false;
         } else if (this.overduePractice) {
-          this.checkOverdues();
+          this.getOverdues();
         }
-      }, 250)
+      })
     }
   }
 
@@ -110,22 +103,9 @@ export class QuizComponent implements OnInit {
       },
     }).then((answer) => {
       if (answer == "yes") {
-        // console.log(this.router);
         this.router.navigate(['/dojo']);
       }
     })
-  }
-
-
-  private checkOverdues(): void {
-    if (this.overdueSubscription) {
-      this.overdueSubscription.unsubscribe();
-    }
-    this.overdueSubscription = this.quizService.getOverdueSentences()
-      .subscribe((sentences: Sentence[]) => {
-        this.sentences = sentences;
-        this.overduePractice = sentences.length == 0 ? false : true;
-      });
   }
 
   private displaySentence(sentences: Sentence[]): void {
@@ -140,20 +120,55 @@ export class QuizComponent implements OnInit {
     this.displaySentence(sentences)
   }
 
-  private checkAvailablePromotion(): void {
+  private async checkAvailablePromotion() {
+    if (this.quizService.isPromotionDue()) {
+      let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
+      let master = await this.arenaService.getMasterByRank().pipe(first()).toPromise();
+      swal(`You've mastered the ways of the ${lessonName}, well done!`)
+      .then(() => {
+        swal(`Master ${master.name} has been impressed with your progress and challenges you to a match in the arena.`);
+      });
+      this.authService.updateRank();
+    }
+  }
 
-    this.quizService.getLearnableSentences()
-      .subscribe(async (sentences: Sentence[]) => {
-        if (this.learning) {
-          if (sentences.length === 0) {
-            this.authService.updateRank();
-            let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
-            swal(`You've mastered the ways of the ${lessonName}, well done!`);
-            let master = await this.arenaService.getMasterByRank().pipe(first()).toPromise();
-            swal(`Master ${master.name} has been impressed with your progress and challenges you to a match in the arena.`);
-          }
-          this.learning = false;
-        }
-      })
+  private subscribeToLearn(){
+    if (this.learningSubscription) {
+      this.learningSubscription.unsubscribe();
+    }
+    this.learningSubscription = this.quizService.getLearnableList()
+    .subscribe((sentences: Sentence[]) => {
+      if (sentences.length != 0) {
+        this.learning = true;
+        this.startQuiz(sentences);
+      } else {
+        swal("Oops", "There is nothing new to learn. Prove yourself in the arena to unlock new techniques.");
+      }
+    })
+  }
+
+  private subscribeToPractice():void{
+    if (this.practiceSubscription) {
+      this.practiceSubscription.unsubscribe();
+    }
+    this.practiceSubscription = this.quizService.getPracticeSentences()
+    .subscribe((sentences: Sentence[]) => {
+      if (sentences.length != 0) {
+        this.startQuiz(sentences);
+      } else {
+        swal("Oops", "You haven't learned anything from this lesson yet.");
+      }
+    });
+  }
+
+  private subscribeToOverdue():void{
+    if (this.overdueSubscription) {
+      this.overdueSubscription.unsubscribe();
+    }
+    this.overdueSubscription = this.quizService.getOverdueList()
+      .subscribe((sentences: Sentence[]) => {
+        this.sentences = sentences;
+        this.overduePractice = sentences.length == 0 ? false : true;
+      });
   }
 }

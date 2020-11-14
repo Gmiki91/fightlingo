@@ -9,7 +9,6 @@ import { User } from './user.model';
 export class AuthService{
 
     private userLogged = new Subject<User>();
-   // public userName:string;
     public user:User;
 
     constructor(private http:HttpClient){}
@@ -24,7 +23,6 @@ export class AuthService{
         const authData:AuthData = {name,password};
         this.http.post<{token:any, user:User}>("http://localhost:3300/api/users/login",authData)
         .subscribe(response =>{
-            //this.userName=response.user.name.toString();
             this.user = response.user;
             this.userLogged.next(response.user);
         });
@@ -37,6 +35,4 @@ export class AuthService{
         this.http.patch("http://localhost:3300/api/users/",this.user)
         .subscribe((response)=>console.log(response));
     }
-
-
 }

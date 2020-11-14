@@ -12,9 +12,8 @@ router.get('/level/:level',(req,res,next)=>{
 })
 
 router.get('/rank/:rank',(req,res,next)=>{
-    console.log("helló");
     Master.findOne({
-        rank:req.params.rank
+        rank:2 //req.params.rank+1
     })
     .then((master)=>{
         console.log(master);
