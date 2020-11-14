@@ -15,14 +15,18 @@ export class ArenaComponent implements OnInit {
   constructor(private arenaService: ArenaService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.arenaService.getMastersByLevel().pipe(first()).subscribe(masters => this.masters = masters);
+    this.arenaService.getMastersByLevel().pipe(first()).subscribe(masters => {
+      this.masters = masters;
+      this.masters.sort((a, b) => {return b.rank-a.rank})
+    });
   }
 
   onSelect(master: Master): void {
+    console.log("clicked");
     this.selectedMaster = master;
   }
   
   isMasterAvailable(master: Master): boolean {
-    return this.authService.user.rank <= master.rank;
+    return this.authService.user.rank >= master.rank;
   }
 }

@@ -14,7 +14,7 @@
 .list_bg{
     position: absolute;
     background-image: url('/assets/arena_list_bg.jpg');
-    margin:1rem;
+    margin-top:25%;
     border-radius: 1rem;
 }
 .rankings_list{
@@ -44,16 +44,16 @@
   }
 
   .masters li {
-margin:1rem;
+    margin:1rem;
   }
-  li button{
-    display: inline-block;
-    vertical-align: middle;
-    margin:0 auto;
-  }
+  
   li  img{
     display: inline-block;
     vertical-align: middle;
     max-width: 25%;
     max-height: 25%;
+  }
+
+  li span{
+    padding:16px;
   }

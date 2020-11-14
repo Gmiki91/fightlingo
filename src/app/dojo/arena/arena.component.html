@@ -7,7 +7,8 @@
             <ul class="masters">
                 <li *ngFor="let master of masters" >
                     <img src="assets/{{master.pic}}">
-                    <button mat-button disabled="!isMasterAvailable(master)" *ngIf="isMasterAvailable(master)" (click)="onSelect(master)">{{master.name}}</button>
+                    <span mat-button *ngIf="!isMasterAvailable(master)">{{master.name}}</span>
+                    <a mat-button *ngIf="isMasterAvailable(master)" (click)="onSelect(master)">{{master.name}}</a>
                 </li>
             </ul>
         </div>
