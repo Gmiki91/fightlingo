@@ -104,6 +104,13 @@ router.post('/login', (req,res,next)=>{
     })
 })
 
+router.post('/byId', (req,res,next)=>{
+    User.findOne({_id:req.body._id})
+    .then((user)=>{
+        console.log("user: "+user);
+        return res.status(200).send(user)})
+})
+
 router.patch('/', (req,res,next)=>{
 
     User.updateOne({_id: req.body._id},

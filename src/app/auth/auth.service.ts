@@ -31,8 +31,15 @@ export class AuthService{
         return this.userLogged.asObservable();
     }
 
+    getUserById(){
+        this.http.post("http://localhost:3300/api/users/byId",this.user)
+        .subscribe((user:User) => this.user=user);
+    }
+
     updateRank(){
         this.http.patch("http://localhost:3300/api/users/",this.user)
-        .subscribe((response)=>console.log(response));
+        .subscribe(()=>{
+            this.getUserById();
+        });
     }
 }

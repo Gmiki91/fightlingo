@@ -128,7 +128,7 @@ export class QuizComponent implements OnInit {
       .then(() => {
         swal(`Master ${master.name} has been impressed with your progress and challenges you to a match in the arena.`);
       });
-      this.authService.updateRank();
+      this.authService.updateRank()
     }
   }
 
