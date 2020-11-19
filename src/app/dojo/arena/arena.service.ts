@@ -10,7 +10,7 @@ export class ArenaService{
     getMastersByLevel(){
         return this.http.get<Master[]>("http://localhost:3300/api/masters/level/"+this.authService.user.level);
     }
-    getMasterByRank(){
-        return this.http.get<Master>("http://localhost:3300/api/masters/rank/"+this.authService.user.rank);
+    getMasterByRank(rank:number){
+        return this.http.get<Master>("http://localhost:3300/api/masters/rank/"+rank);
     }
 }

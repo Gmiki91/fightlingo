@@ -1,6 +1,6 @@
 {
-"name":"Tien Shinhan",
-"pic":null,
+"name":"Sárkány",
+"pic":"m_av_1.png",
 "rank":2,
 "level":1,
 "str":10,
@@ -12,8 +12,8 @@
 }
 
 {
-"name":"Chiaotzu",
-"pic":null,
+"name":"Retardált jegesmedve",
+"pic":"m_av_2.png",
 "rank":4,
 "level":1,
 "str":10,
@@ -26,27 +26,117 @@
 
 {
 "name":"Dóri",
-"pic":null,
-"rank":5,
+"pic":"m_av_3.png",
+"rank":6,
+"level":1,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_003"
+}
+
+{
+"name":"Lekvár I",
+"pic":"m_av_1.png",
+"rank":7,
 "level":1,
 "str":10,
 "dex":10,
 "health":10,
 "gm":true,
 "language":"serbian",
-"gift_id":"gift_003"
+"gift_id":"gift_004"
 }
 
+{
+"name":"Lekvár II",
+"pic":"m_av_2.png",
+"rank":8,
+"level":2,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_004"
+}
 
 {
-"name":"Lekvár",
-"pic":null,
-"rank":6,
+"name":"Lekvár III",
+"pic":"m_av_3.png",
+"rank":10,
+"level":2,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_004"
+}
+
+{
+"name":"Lekvár IV",
+"pic":"m_av_1.png",
+"rank":12,
+"level":2,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_004"
+}
+
+{
+"name":"Lekvár V",
+"pic":"m_av_2.png",
+"rank":13,
 "level":2,
 "str":10,
 "dex":10,
 "health":10,
 "gm":true,
+"language":"serbian",
+"gift_id":"gift_004"
+}
+
+{
+"name":"Szuper Lekvár I",
+"pic":"m_av_3.png",
+"rank":14,
+"level":3,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_004"
+}
+
+{
+"name":"Szuper Lekvár II",
+"pic":"m_av_1.png",
+"rank":16,
+"level":3,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
+"language":"serbian",
+"gift_id":"gift_004"
+}
+
+{
+"name":"Szuper Lekvár III",
+"pic":"m_av_2.png",
+"rank":18,
+"level":3,
+"str":10,
+"dex":10,
+"health":10,
+"gm":false,
 "language":"serbian",
 "gift_id":"gift_004"
 }

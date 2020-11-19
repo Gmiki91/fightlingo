@@ -25,6 +25,7 @@ import { LessonService } from './quiz/level-tree/lesson.service';
 import { GymComponent } from './dojo/gym/gym.component';
 import { ArenaComponent } from './dojo/arena/arena.component';
 import { ArenaService } from './dojo/arena/arena.service';
+import { FightComponent } from './dojo/arena/fight/fight.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ArenaService } from './dojo/arena/arena.service';
     LoginComponent,
     SignUpComponent,
     GymComponent,
-    ArenaComponent
+    ArenaComponent,
+    FightComponent
   ],
   imports: [
     FormsModule,

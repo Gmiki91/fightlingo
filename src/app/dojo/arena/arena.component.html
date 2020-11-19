@@ -1,6 +1,6 @@
 <div class="container">
     <img class="bg" src="assets/arenabg.png">
-    <div class="rankings_list">
+    <div *ngIf="!fightOn" class="rankings_list">
 
         <h2></h2>
         <div class="list_bg">
@@ -13,8 +13,5 @@
             </ul>
         </div>
     </div>
-    <div class="selected_master" *ngIf="selectedMaster">
-        <h2>{{selectedMaster.name | uppercase}} Details</h2>
-        <div><span>name: </span>{{selectedMaster.name}}</div>
-    </div>
 </div>
+<app-fight  *ngIf="fightOn" [master]="selectedMaster"></app-fight>

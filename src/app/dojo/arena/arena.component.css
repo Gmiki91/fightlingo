@@ -1,14 +1,13 @@
 .container{
     position: relative;
+    height: 80%;
 }
 .bg{
-    position: fixed; 
+    position: absolute; 
     top: 2%; 
     left: 2%;
     right: 2%;
     bottom: 2%; 
-    min-height: 96%;
-    z-index: 0;
     
 }
 .list_bg{
@@ -25,15 +24,6 @@
     width:13rem;
     z-index: 2;
     
-}
-
-.selected_master{
-    position:absolute;
-    left: 30rem;
-    top:2rem;
-    padding:1rem;
-    z-index: 2;
-    background-color: rgb(214, 134, 59);
 }
 
 .masters {
@@ -56,4 +46,8 @@
 
   li span{
     padding:16px;
+  }
+
+  app-fight{
+    z-index: 2;
   }

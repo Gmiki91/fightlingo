@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class ArenaComponent implements OnInit {
   masters: Master[];
   selectedMaster: Master;
+  fightOn:boolean;
 
   constructor(private arenaService: ArenaService, private authService: AuthService) { }
 
@@ -22,8 +23,8 @@ export class ArenaComponent implements OnInit {
   }
 
   onSelect(master: Master): void {
-    console.log("clicked");
     this.selectedMaster = master;
+    this.fightOn=true;
   }
   
   isMasterAvailable(master: Master): boolean {

@@ -123,7 +123,7 @@ export class QuizComponent implements OnInit {
   private async checkAvailablePromotion() {
     if (this.quizService.isPromotionDue()) {
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
-      let master = await this.arenaService.getMasterByRank().pipe(first()).toPromise();
+      let master = await this.arenaService.getMasterByRank(this.authService.user.rank+1).pipe(first()).toPromise();
       swal(`You've mastered the ways of the ${lessonName}, well done!`)
       .then(() => {
         swal(`Master ${master.name} has been impressed with your progress and challenges you to a match in the arena.`);

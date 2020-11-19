@@ -3,11 +3,12 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Progress = require("../models/progress");
+const Lesson = require("../models/lesson");
 const router = express.Router();
 let Sentence;
 let user;
 
-router.post('/signup', (req,res,next)=>{
+router.post('/signup', (req, res, next) => {
 
     let language = req.body.language;
     switch (language) {
@@ -21,102 +22,123 @@ router.post('/signup', (req,res,next)=>{
             Sentence = require(`../models/sentence`).serbian;
             break;
     }
-    
-    bcrypt.hash(req.body.password,10)
-    .then(hash=>{
-         user = new User({
-            email: req.body.mail,
-            name: req.body.name,
-            password: hash,
-            pic: req.body.pic,
-            level:req.body.level,
-            language:req.body.language,
-            rank:req.body.rank,
-            str:req.body.str,
-            dex:req.body.dex,
-            health:req.body.health,
-            equipment:req.body.equipment,
-            skills:req.body.skills
-        });
-    user.save()
-    .then(
-        Sentence.find({level:1})
-            .then(documents=>{
-                for (let document of documents) {
-                    const prog=new Progress({
-                        sentenceId:document._id,
-                        userId:user._id,
-                        learned:false,
-                        learningProgress:4,
-                        consecutiveCorrectAnswers:0,
-                        interval:1,
-                        difficulty:2.5,
-                        nextReviewDate:null
+
+    bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            user = new User({
+                email: req.body.mail,
+                name: req.body.name,
+                password: hash,
+                pic: req.body.pic,
+                level: req.body.level,
+                language: req.body.language,
+                rank: req.body.rank,
+                str: req.body.str,
+                dex: req.body.dex,
+                health: req.body.health,
+                equipment: req.body.equipment,
+                skills: req.body.skills
+            });
+            user.save()
+                .then(initProgress(req.body.language, req.body.rank))
+                .then(result => {
+                    res.status(201).json({
+                        message: "user created",
+                        result: result
                     });
-                    prog.save();
-        }
-    })
-    )
-    .then(result=>{
-        res.status(201).json({
-            message:"user created",
-            result:result
-        });
-    })
-    })
-    .catch(err=>{
-        res.status(500).json({error:err});
-    })
+                })
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        })
 });
 
-router.post('/login', (req,res,next)=>{
+router.post('/login', (req, res, next) => {
     let userData;
-    User.findOne({name: req.body.name})
-    .then(user=>{
-        if(!user){
-          return res.status(404).json({
-              message:"User not found"
-          });
-        }
-        userData=user;
-       return bcrypt.compare(req.body.password,user.password);
-    })
-    .then(result => {
-        if(!result){
+    User.findOne({ name: req.body.name })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({
+                    message: "User not found"
+                });
+            }
+            userData = user;
+            return bcrypt.compare(req.body.password, user.password);
+        })
+        .then(result => {
+            if (!result) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                });
+            }
+            const token = jwt.sign(
+                { name: userData.name, userId: userData._id },
+                'lol_not_very_cryptic',
+                { expiresIn: '1h' }
+            );
+            res.status(200).json({
+                token: token,
+                user: userData
+            });
+        })
+        .catch(err => {
             return res.status(401).json({
                 message: "Auth failed"
             });
-        }
-        const token = jwt.sign(
-            {name:userData.name, userId: userData._id},
-            'lol_not_very_cryptic',
-            {expiresIn: '1h'}
-        );
-        res.status(200).json({
-            token:token,
-            user:userData
-        });
-    })
-    .catch(err=>{
-        return res.status(401).json({
-            message: "Auth failed"
-        });
-    })
+        })
 })
 
-router.post('/byId', (req,res,next)=>{
-    User.findOne({_id:req.body._id})
-    .then((user)=>{
-        console.log("user: "+user);
-        return res.status(200).send(user)})
+router.post('/byId', (req, res, next) => {
+    User.findOne({ _id: req.body._id })
+        .then((user) => {
+            return res.status(200).send(user)
+        })
 })
 
-router.patch('/', (req,res,next)=>{
+router.patch('/rank', (req, res, next) => {
 
-    User.updateOne({_id: req.body._id},
-        {$set:{ "rank": req.body.rank+1 }},
-        ()=>{res.status(200).send({message: "User rank updated"});
-    });
+    console.log(req.body.rank);
+    initProgress(req.body.language,req.body.rank + 1);
+    User.updateOne({ _id: req.body._id },
+        { $set: { "rank": req.body.rank + 1 } },
+        () => {
+            res.status(200).send({ message: "User rank updated" });
+        });
 });
 
-module.exports= router;
+router.patch('/level', (req, res, next) => {
+
+    User.updateOne({ _id: req.body._id },
+        { $set: { "level": req.body.level + 1 } },
+        () => {
+            res.status(200).send({ message: "User leveled up" });
+        });
+});
+
+function initProgress(language, rank) {
+    console.log("rank: " + rank);
+    Lesson.findOne({
+        language: language,
+        rank: rank
+    }, '_id')
+        .then(id => Sentence.find({"lesson_id": id._id })
+            .then(documents => {
+                console.log(id._id);
+                console.log(documents);
+                for (let document of documents) {
+                    const prog = new Progress({
+                        sentenceId: document._id,
+                        userId: user._id,
+                        learned: false,
+                        learningProgress: 4,
+                        consecutiveCorrectAnswers: 0,
+                        interval: 1,
+                        difficulty: 2.5,
+                        nextReviewDate: null
+                    });
+                    prog.save();
+                }
+            })
+        )
+}
+module.exports = router;

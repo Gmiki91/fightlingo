@@ -5,8 +5,6 @@ import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Sentence } from './sentence.model';
 import { Progress } from '../progress.model';
-import { catchError } from 'rxjs/operators';
-import { Lesson } from './level-tree/lesson.model';
 
 @Injectable()
 export class QuizService {

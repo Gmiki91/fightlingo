@@ -12,13 +12,11 @@ router.get('/level/:level',(req,res,next)=>{
 })
 
 router.get('/rank/:rank',(req,res,next)=>{
-    let rank = Number(req.params.rank)+1;
-    console.log("ranks "+rank);
+    let rank = Number(req.params.rank);
     Master.findOne({
         rank:rank
     })
     .then((master)=>{
-        console.log(master);
         return res.json(master);
     })
 })

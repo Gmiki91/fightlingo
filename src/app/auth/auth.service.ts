@@ -37,7 +37,14 @@ export class AuthService{
     }
 
     updateRank(){
-        this.http.patch("http://localhost:3300/api/users/",this.user)
+        this.http.patch("http://localhost:3300/api/users/rank",this.user)
+        .subscribe(()=>{
+            this.getUserById();
+        });
+    }
+
+    levelUp(){
+        this.http.patch("http://localhost:3300/api/users/level",this.user)
         .subscribe(()=>{
             this.getUserById();
         });
