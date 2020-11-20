@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 import { ArenaService } from './arena/arena.service';
 
 
@@ -9,8 +11,14 @@ import { ArenaService } from './arena/arena.service';
 })
 export class DojoComponent implements OnInit {
 
-  constructor() { }
+  user: User;
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.user=this.authService.user;
+  }
+  cityClosed():boolean{
+
+    return this.user.level<2;
   }
 }

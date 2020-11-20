@@ -26,6 +26,8 @@ import { GymComponent } from './dojo/gym/gym.component';
 import { ArenaComponent } from './dojo/arena/arena.component';
 import { ArenaService } from './dojo/arena/arena.service';
 import { FightComponent } from './dojo/arena/fight/fight.component';
+import { ShopComponent } from './dojo/city/shop/shop.component';
+import { GmDojoComponent } from './dojo/city/gm-dojo/gm-dojo.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { FightComponent } from './dojo/arena/fight/fight.component';
     SignUpComponent,
     GymComponent,
     ArenaComponent,
-    FightComponent
+    FightComponent,
+    GmDojoComponent,
+    ShopComponent
   ],
   imports: [
     FormsModule,
