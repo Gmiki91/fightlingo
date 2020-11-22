@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { QuizService } from './quiz.service';
 import { Sentence } from './sentence.model';
 import swal from 'sweetalert';
 import { first } from 'rxjs/operators'
 import { Router } from '@angular/router';
-import { Lesson } from './level-tree/lesson.model';
 import { ArenaService } from '../dojo/arena/arena.service';
 import { AuthService } from '../auth/auth.service';
+import { QuizType } from './quiz-type.enum';
 
 @Component({
   selector: 'app-quiz',
@@ -16,6 +16,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class QuizComponent implements OnInit {
 
+  @Input() quizType: QuizType;
   @ViewChild("input") input;
   levelSelected: number;
   numberOfSentences: number;
@@ -41,7 +42,13 @@ export class QuizComponent implements OnInit {
 
     this.getOverdues();
   }
-
+  isLibrary():boolean{
+    return this.quizType===QuizType.LIBRARY;
+  }
+  isGym():boolean{
+    return this.quizType===QuizType.GYM;
+  }
+ 
   getOverdues(): void {
     this.quizService.getOverdueSentences();
   }

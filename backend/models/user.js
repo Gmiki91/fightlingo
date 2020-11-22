@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
     dex:Number,
     health:Number,
     money:Number,
+    fame:Number,
     equipment:[Object],
     skills:[Object],
 });

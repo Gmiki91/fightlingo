@@ -1,9 +1,13 @@
 <div class="container">
     <img src="assets/menu.png">
-    <nav >
-        <button class="learn_btn" [disabled]="overduePractice || trainingInProgress " (click)="learn()">Learn</button>
-        <button class="practice_btn" [disabled]="overduePractice || trainingInProgress" (click)="practice()">Practice</button>
-        <button class="overdue_btn" [disabled]="!overduePractice || trainingInProgress" (click)="practiceOverdue()">Practice overdue Sentences</button>
+    <nav *ngIf=isLibrary()>
+        <button class="first_btn" (click)="learn()">Learn</button>
+        <button class="second_btn">Write a letter</button>
+        <button class="leave_btn" (click)="onLeave()" >Leave</button>
+    </nav>
+    <nav *ngIf="isGym()">
+        <button class="first_btn" [disabled]="overduePractice || trainingInProgress" (click)="practice()">Practice</button>
+        <button class="second_btn" [disabled]="!overduePractice || trainingInProgress" (click)="practiceOverdue()">Practice overdue Sentences</button>
         <button class="leave_btn" (click)="onLeave()" >Leave</button>
     </nav>
     <app-level-tree class="level_tree" *ngIf="practiceClicked "></app-level-tree>

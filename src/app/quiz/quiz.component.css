@@ -2,21 +2,21 @@
     position: relative;
 }
 
-.learn_btn{
+.first_btn{
     position: absolute;
     top: 7rem;
     left: 10rem;
     cursor: pointer;
 }
 
-.practice_btn{
+.second_btn{
     position: absolute;
     top: 9rem;
     left: 10rem;
     cursor: pointer;
 }
 
-.overdue_btn{
+.third_btn{
     position: absolute;
     top: 11rem;
     left: 10rem;

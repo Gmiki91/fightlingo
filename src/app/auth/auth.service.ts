@@ -13,7 +13,7 @@ export class AuthService{
 
     constructor(private http:HttpClient){}
     createUser(email:string,password:string, name:string, pic:string, language:Language){
-        const user:User = {email,password,name,pic,language,level:1,rank:1,str:10,dex:10,health:10,money:3,equipment:null,skills:null};
+        const user:User = {email,password,name,pic,language,level:1,rank:1,str:10,dex:10,health:10,money:3,fame:0,equipment:null,skills:null};
         this.http.post("http://localhost:3300/api/users/signup",user )
         .subscribe(response=>{
                 console.log(response);

@@ -36,6 +36,8 @@ router.post('/signup', (req, res, next) => {
                 str: req.body.str,
                 dex: req.body.dex,
                 health: req.body.health,
+                money: req.body.money,
+                fame: req.body.fame,
                 equipment: req.body.equipment,
                 skills: req.body.skills
             });

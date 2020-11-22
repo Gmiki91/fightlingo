@@ -12,6 +12,7 @@ export interface User{
     dex:number;
     health:number;
     money:number;
+    fame:number;
     equipment:[Object];
     skills:[Object];
 }
