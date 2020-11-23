@@ -97,14 +97,14 @@ export class QuizComponent implements OnInit {
   }
 
   onLeave() {
-    swal("Do you want to finish your training for now?", {
+    swal("Take a break?", {
       buttons: {
         yes: {
           text: "Yes!",
           value: "yes"
         },
         no: {
-          text: "Actually, no...",
+          text: "No!",
           value: "no",
         },
       },
@@ -149,7 +149,7 @@ export class QuizComponent implements OnInit {
         this.learning = true;
         this.startQuiz(sentences);
       } else {
-        swal("Oops", "There is nothing new to learn. Prove yourself in the arena to unlock new techniques.");
+        swal("You have a challanger", "Prove yourself in the arena before you continue your work.");
       }
     })
   }

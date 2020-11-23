@@ -11,14 +11,7 @@ import { ArenaService } from './arena/arena.service';
 })
 export class DojoComponent implements OnInit {
 
-  user: User;
-  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.user=this.authService.user;
-  }
-  cityClosed():boolean{
-
-    return this.user.level<2;
   }
 }
