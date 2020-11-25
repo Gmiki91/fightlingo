@@ -2,162 +2,167 @@
 "english":"1",
 "translations":["1", "1."],
 "lesson_id":"sr_0101",
+"level":1
 }
 
 {
 "english":"2",
 "translations":["2", "2."],
 "lesson_id":"sr_0101",
+"level":1
 }
 
 {
 "english":"3",
 "translations":["3", "3."],
 "lesson_id":"sr_0101",
+"level":1
 }
 
 {
 "english":"4",
 "translations":["4", "4."],
-"lesson_id":"sr_0102"
+"lesson_id":"sr_0102",
+"level":1
 }
 
 {
 "english":"5",
 "translations":["5", "5."],
-"lesson_id":"sr_0102"
+"lesson_id":"sr_0102",
+"level":1
 }
 
 {
 "english":"6",
 "translations":["6", "6."],
-"lesson_id":"sr_0102"
-}
+"lesson_id":"sr_0102",
+"level":1}
 
 {
 "english":"7",
 "translations":["7", "7."],
-"lesson_id":"sr_0103"
-}
+"lesson_id":"sr_0103",
+"level":1}
 
 {
 "english":"8",
 "translations":["8", "8."],
-"lesson_id":"sr_0103"
-}
+"lesson_id":"sr_0103",
+"level":1}
 
 {
 "english":"21",
 "translations":["21", "21."],
-"lesson_id":"sr_0103"
-}
+"lesson_id":"sr_0103",
+"level":1}
 
 {
 "english":"22",
 "translations":["22", "22."],
-"lesson_id":"sr_0201"
-}
+"lesson_id":"sr_0201",
+"level":2}
 
 
 {
 "english":"23",
 "translations":["23", "23."],
-"lesson_id":"sr_0201"
-}
+"lesson_id":"sr_0201",
+"level":2}
 
 {
 "english":"24",
 "translations":["24", "24."],
-"lesson_id":"sr_0201"
-}
+"lesson_id":"sr_0201",
+"level":2}
 
 {
 "english":"25",
 "translations":["25", "25."],
-"lesson_id":"sr_0202"
-}
+"lesson_id":"sr_0202",
+"level":2}
 
 {
 "english":"26",
 "translations":["26", "26."],
-"lesson_id":"sr_0202"
-}
+"lesson_id":"sr_0202",
+"level":2}
 
 {
 "english":"27",
 "translations":["27", "27."],
-"lesson_id":"sr_0202"
-}
+"lesson_id":"sr_0202",
+"level":2}
 
 {
 "english":"28",
 "translations":["28", "28."],
-"lesson_id":"sr_0203"
-}
+"lesson_id":"sr_0203",
+"level":2}
 
 {
 "english":"29",
 "translations":["29", "29."],
-"lesson_id":"sr_0203"
-}
+"lesson_id":"sr_0203",
+"level":2}
 
 {
 "english":"291",
 "translations":["291", "291."],
-"lesson_id":"sr_0203"
-}
+"lesson_id":"sr_0203",
+"level":2}
 
 {
 "english":"292",
 "translations":["292", "292."],
-"lesson_id":"sr_0301"
-}
+"lesson_id":"sr_0301",
+"level":2}
 
 {
 "english":"3",
 "translations":["3", "3."],
-"lesson_id":"sr_0301"
-}
+"lesson_id":"sr_0301",
+"level":3}
 
 {
 "english":"31",
 "translations":["31", "31."],
-"lesson_id":"sr_0301"
-}
+"lesson_id":"sr_0301",
+"level":3}
 
 {
 "english":"32",
 "translations":["32", "32."],
-"lesson_id":"sr_0302"
-}
+"lesson_id":"sr_0302",
+"level":3}
 
 {
 "english":"33",
 "translations":["33", "33."],
-"lesson_id":"sr_0302"
-}
+"lesson_id":"sr_0302",
+"level":3}
 
 {
 "english":"34",
 "translations":["34", "34."],
-"lesson_id":"sr_0302"
-}
+"lesson_id":"sr_0302",
+"level":3}
 
 {
 "english":"3033",
 "translations":["3033", "3033."],
-"lesson_id":"sr_0303"
-}
+"lesson_id":"sr_0303",
+"level":3}
 
 {
 "english":"303",
 "translations":["303", "303."],
-"lesson_id":"sr_0303"
-}
+"lesson_id":"sr_0303",
+"level":3}
 
 {
 "english":"3032",
 "translations":["3032", "3032."],
-"lesson_id":"sr_0303"
-}
+"lesson_id":"sr_0303",
+"level":3}
 

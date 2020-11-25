@@ -20,6 +20,10 @@ export class QuizService {
        return this.http.post('http://localhost:3300/api/lessons/',this.user);
        
     }
+    getSentencesByLevel(level:number){
+        let body = {level:level, language:this.authService.user.language};
+        return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/all',body);
+    }
 
     lessonSelected(id:string){
        return this.http.post('http://localhost:3300/api/sentences/'+id, this.user)

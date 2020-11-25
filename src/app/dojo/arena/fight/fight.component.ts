@@ -1,8 +1,11 @@
+import { ViewChild } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Sentence } from 'src/app/quiz/sentence.model';
 import swal from 'sweetalert';
+import { QuizService } from '../../../quiz/quiz.service';
 import { Master } from '../../master.model';
 import { ArenaService } from '../arena.service';
 
@@ -14,12 +17,52 @@ import { ArenaService } from '../arena.service';
 export class FightComponent implements OnInit {
 
   @Input() master: Master;
+  @ViewChild("input") input;
+  sentences: Sentence[];
+  sentence: Sentence;
+  count: number = 0;
 
-  constructor(private authService: AuthService, private arenaService: ArenaService, private router: Router) { }
+  constructor(private quizService: QuizService, private authService: AuthService, private arenaService: ArenaService, private router: Router) { }
 
   ngOnInit(): void {
     console.log(this.master);
-    this.youwon();
+    this.start();
+  }
+
+  start(): void {
+    if (this.master.gm) {
+      console.log(this.master.gm);
+      this.quizService.getSentencesByLevel(this.master.level).subscribe(sentences => {
+        
+        this.sentences = sentences;
+        this.displaySentence();
+      })
+    } else {
+      this.arenaService.getSentencesOfMastersLesson(this.master.rank).subscribe(sentences => {
+        this.sentences = sentences;
+        this.displaySentence();
+      })
+    }
+  }
+
+  displaySentence(): void {
+    console.log("na", this.sentences);
+    this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length - 1) + 1];
+    console.log("sentence", this.sentence);
+  }
+
+  check(): void {
+    const answer = this.input.nativeElement.value;
+    if (this.sentence.translations.find((translation) => translation === answer)) {
+      this.count++;
+      this.quizService.updateSentence(this.sentence._id, 5);
+    } else {
+      this.quizService.updateSentence(this.sentence._id, 0);
+    }
+    console.log(this.count);
+    this.displaySentence();
+    if (this.count == 5)
+      this.youwon();
   }
 
   youwon(): void {

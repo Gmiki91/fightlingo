@@ -6,5 +6,15 @@
         <button class="overdue_btn">Skills</button>
         <button class="leave_btn" >Items</button>
     </nav>
-    <div class="questions"></div> 
+    <div class="questions">
+        <div style="text-align: center;" *ngIf="sentence">
+            <label>{{sentence.english}}</label>
+        </div>
+        <div style="text-align: center;">
+            <input #input>
+        </div>
+        <div style="text-align: center;">
+            <button [disabled]="!sentence" (click)="check()">Check</button>
+        </div>
+    </div> 
 </div>
