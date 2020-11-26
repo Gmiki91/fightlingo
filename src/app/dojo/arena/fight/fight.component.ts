@@ -33,7 +33,7 @@ export class FightComponent implements OnInit {
     if (this.master.gm) {
       console.log(this.master.gm);
       this.quizService.getSentencesByLevel(this.master.level).subscribe(sentences => {
-        
+
         this.sentences = sentences;
         this.displaySentence();
       })
@@ -46,9 +46,7 @@ export class FightComponent implements OnInit {
   }
 
   displaySentence(): void {
-    console.log("na", this.sentences);
     this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length - 1) + 1];
-    console.log("sentence", this.sentence);
   }
 
   check(): void {
@@ -61,8 +59,15 @@ export class FightComponent implements OnInit {
     }
     console.log(this.count);
     this.displaySentence();
-    if (this.count == 5)
+
+  }
+
+  attack(): void {
+    this.master.health -= this.count;
+    if (this.master.health < 1)
       this.youwon();
+    this.count=0;
+    this.displaySentence();
   }
 
   youwon(): void {

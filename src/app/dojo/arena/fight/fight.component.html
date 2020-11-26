@@ -14,7 +14,9 @@
             <input #input>
         </div>
         <div style="text-align: center;">
-            <button [disabled]="!sentence" (click)="check()">Check</button>
+            <button [disabled]="!sentence || count==5" (click)="check()">Check</button>
+            <button [disabled]="count==0" (click)="attack()">Attack</button>
         </div>
+
     </div> 
 </div>
