@@ -1,8 +1,7 @@
 <div class="container">
     <img class="bg" src="assets/arenabg.png">
+    <img #tank class="tank" src="assets/chi-tank/tank-empty.png">
     <div *ngIf="!fightOn" class="rankings_list">
-
-        <h2></h2>
         <div class="list_bg">
             <ul class="masters">
                 <li *ngFor="let master of masters" >
@@ -14,4 +13,4 @@
         </div>
     </div>
 </div>
-<app-fight  *ngIf="fightOn" [master]="selectedMaster"></app-fight>
+<app-fight (onTank)="tankChanged($event)" *ngIf="fightOn" [master]="selectedMaster"></app-fight>

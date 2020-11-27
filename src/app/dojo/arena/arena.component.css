@@ -8,8 +8,14 @@
     left: 2%;
     right: 2%;
     bottom: 2%; 
-    
 }
+
+.tank{
+  position:absolute;
+  bottom:10%;
+
+}
+
 .list_bg{
     position: absolute;
     background-image: url('/assets/arena_list_bg.jpg');
@@ -47,6 +53,7 @@
   li span{
     padding:16px;
   }
+
 
   app-fight{
     z-index: 2;

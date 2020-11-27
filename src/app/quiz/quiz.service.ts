@@ -76,6 +76,7 @@ export class QuizService {
 
 
     updateSentence(sentenceId:string, answerEfficieny:number){
+        this.user=this.authService.user;
     this.http.post<Progress>('http://localhost:3300/api/progress/'+sentenceId,this.user)
     .subscribe((progress)=>{
 

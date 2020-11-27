@@ -4,9 +4,7 @@ const Progress= require("../models/progress");
 const ObjectId = require('mongoose').Types.ObjectId;
 
 router.post('/:sentenceId',(req,res,next)=>{
-    let sentenceId=new ObjectId(req.params.sentenceId);
-    let userId=new ObjectId(req.body._id);
-    Progress.findOne({sentenceId:sentenceId, userId:userId})
+    Progress.findOne({sentenceId:ObjectId(req.params.sentenceId), userId:ObjectId(req.body._id)})
     .then(progress => {
         res.status(200).json(progress);})
 });

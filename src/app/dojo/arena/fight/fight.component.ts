@@ -1,4 +1,6 @@
 import { ViewChild } from '@angular/core';
+import { Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -18,6 +20,7 @@ export class FightComponent implements OnInit {
 
   @Input() master: Master;
   @ViewChild("input") input;
+  @Output() onTank = new EventEmitter<number>();
   sentences: Sentence[];
   sentence: Sentence;
   count: number = 0;
@@ -52,22 +55,32 @@ export class FightComponent implements OnInit {
   check(): void {
     const answer = this.input.nativeElement.value;
     if (this.sentence.translations.find((translation) => translation === answer)) {
-      this.count++;
+      this.count += 0.25;
+      this.onTank.emit(this.count);
       this.quizService.updateSentence(this.sentence._id, 5);
     } else {
       this.quizService.updateSentence(this.sentence._id, 0);
     }
-    console.log(this.count);
-    this.displaySentence();
-
+    if (this.count == 1) {
+      this.sentence = null;
+    } else {
+      this.displaySentence();
+    }
   }
 
   attack(): void {
-    this.master.health -= this.count;
-    if (this.master.health < 1)
+    let rnd = Math.random();
+    console.log("rnd", rnd);
+    if (rnd > this.count) {
+      console.log("miss");
+    } else {
+      this.master.health -= 2;
+      if (this.master.health < 1)
       this.youwon();
-    this.count=0;
-    this.displaySentence();
+    }
+      this.onTank.emit(0);
+      this.count = 0;
+      this.displaySentence();
   }
 
   youwon(): void {
