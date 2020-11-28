@@ -91,6 +91,9 @@ export class QuizComponent implements OnInit {
           this.learning = false;
         } else if (this.overduePractice) {
           this.getOverdues();
+        }else if(this.quizType == QuizType.GYM){
+          swal("Cha ching!", `You recieved ${this.authService.user.fame[0]} gold`);
+          this.authService.addGold(this.authService.user.fame[0]);
         }
       })
     }

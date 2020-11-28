@@ -74,7 +74,7 @@ export class FightComponent implements OnInit {
     if (rnd > this.count) {
       console.log("miss");
     } else {
-      this.master.health -= 2;
+      this.master.health -= 10;
       if (this.master.health < 1)
       this.youwon();
     }
@@ -86,6 +86,7 @@ export class FightComponent implements OnInit {
   youwon(): void {
     let currentRank = this.authService.user.rank;
     swal(`You beat ${this.master.name}!`).then(async () => {
+      this.authService.addFame(2);
       if (currentRank == this.master.rank) {
         if (this.master.gm) {
           this.authService.levelUp();

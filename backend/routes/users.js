@@ -9,17 +9,20 @@ let Sentence;
 let user;
 
 router.post('/signup', (req, res, next) => {
-
+    let maxFame;
     let language = req.body.language;
     switch (language) {
         case 'russian':
             Sentence = require(`../models/sentence`).russian;
+            maxFame=30;
             break;
         case 'french':
             Sentence = require(`../models/sentence`).french;
+            maxFame=39;
             break;
         case 'serbian':
             Sentence = require(`../models/sentence`).serbian;
+            maxFame=33;
             break;
     }
 
@@ -34,12 +37,10 @@ router.post('/signup', (req, res, next) => {
                 language: req.body.language,
                 rank: req.body.rank,
                 str: req.body.str,
-                dex: req.body.dex,
                 health: req.body.health,
                 money: req.body.money,
-                fame: req.body.fame,
-                equipment: req.body.equipment,
-                skills: req.body.skills
+                fame: [0,maxFame],
+                items: req.body.items,
             });
             user.save()
                 .then(initProgress(req.body.language, req.body.rank))
@@ -98,9 +99,8 @@ router.post('/byId', (req, res, next) => {
 })
 
 router.patch('/rank', (req, res, next) => {
-
-    console.log(req.body.rank);
-    initProgress(req.body.language,req.body.rank + 1);
+    if((req.body.rank+1)%2==1)
+        initProgress(req.body.language,req.body.rank + 1);
     User.updateOne({ _id: req.body._id },
         { $set: { "rank": req.body.rank + 1 } },
         () => {
@@ -117,6 +117,24 @@ router.patch('/level', (req, res, next) => {
         });
 });
 
+router.patch('/money/:money', (req, res, next) => {
+    console.log("money!");
+    User.updateOne({ _id: req.body._id },
+        { $inc: { "money": req.params.money } },
+        () => {
+            res.status(200).send({ message: "Cha ching!" });
+        });
+});
+
+router.patch('/fame/:fame', (req, res, next) => {
+    console.log("famous!");
+    User.updateOne({ _id: req.body._id },
+        { $inc: { "fame.0":  req.params.fame } },
+        () => {
+            res.status(200).send({ message: "Famous!" });
+        });
+});
+
 function initProgress(language, rank) {
     console.log("rank: " + rank);
     Lesson.findOne({
@@ -125,8 +143,6 @@ function initProgress(language, rank) {
     }, '_id')
         .then(id => Sentence.find({"lesson_id": id._id })
             .then(documents => {
-                console.log(id._id);
-                console.log(documents);
                 for (let document of documents) {
                     const prog = new Progress({
                         sentenceId: document._id,

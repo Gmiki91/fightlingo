@@ -9,10 +9,8 @@ export interface User{
     level:number;
     rank:number;
     str:number;
-    dex:number;
     health:number;
     money:number;
-    fame:number;
-    equipment:[Object];
-    skills:[Object];
+    fame:[number,number];
+    items:[Object];
 }

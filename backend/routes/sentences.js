@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Lesson = require("../models/lesson");
 const Progress = require("../models/progress");
-const { resolve } = require('path');
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
 
