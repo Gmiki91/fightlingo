@@ -5,7 +5,6 @@ import { Sentence } from './sentence.model';
 import swal from 'sweetalert';
 import { first } from 'rxjs/operators'
 import { Router } from '@angular/router';
-import { ArenaService } from '../dojo/arena/arena.service';
 import { AuthService } from '../auth/auth.service';
 import { QuizType } from './quiz-type.enum';
 
@@ -29,11 +28,14 @@ export class QuizComponent implements OnInit {
   overduePractice: boolean;
   practiceClicked: boolean;
   learning: boolean;
+  isPromotionDue:boolean;
 
-  constructor(private quizService: QuizService, private arenaService: ArenaService, private router: Router, private authService: AuthService) {
+  constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {
   }
 
   ngOnInit(): void {
+    this.isPromotionDue=this.authService.user.isPromotionDue;
+    console.log(this.isPromotionDue);
     this.trainingInProgress = false;
 
     this.subscribeToLearn();
@@ -42,6 +44,12 @@ export class QuizComponent implements OnInit {
 
     this.getOverdues();
   }
+
+  ////////////////////////////////////////////////////
+  learn(): void {
+    this.quizService.getLearnableSentences();
+  }
+
   isLibrary():boolean{
     return this.quizType===QuizType.LIBRARY;
   }
@@ -53,10 +61,7 @@ export class QuizComponent implements OnInit {
     this.quizService.getOverdueSentences();
   }
 
-  learn(): void {
-    this.quizService.getLearnableSentences();
-  }
-
+  
   practice(): void {
     this.practiceClicked = true;
   }
@@ -65,6 +70,8 @@ export class QuizComponent implements OnInit {
     this.trainingInProgress = true;
     this.displaySentence(this.sentences);
   }
+
+  ////////////////////////////////////////////////////
 
   check(): void {
     const answer = this.input.nativeElement.value;
@@ -91,9 +98,6 @@ export class QuizComponent implements OnInit {
           this.learning = false;
         } else if (this.overduePractice) {
           this.getOverdues();
-        }else if(this.quizType == QuizType.GYM){
-          swal("Cha ching!", `You recieved ${this.authService.user.fame[0]} gold`);
-          this.authService.addGold(this.authService.user.fame[0]);
         }
       })
     }
@@ -127,18 +131,16 @@ export class QuizComponent implements OnInit {
   private startQuiz(sentences: Sentence[]): void {
     this.practiceClicked = false;
     this.trainingInProgress = true;
-    this.displaySentence(sentences)
+    this.displaySentence(sentences);
   }
 
   private async checkAvailablePromotion() {
     if (this.quizService.isPromotionDue()) {
+      this.authService.promotionDue();
+      this.isPromotionDue=true;
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
-      let master = await this.arenaService.getMasterByRank(this.authService.user.rank+1).pipe(first()).toPromise();
-      swal(`You've mastered the ways of the ${lessonName}, well done!`)
-      .then(() => {
-        swal(`Master ${master.name} has been impressed with your progress and challenges you to a match in the arena.`);
-      });
-      this.authService.updateRank()
+      swal(`You've mastered the ways of the ${lessonName}, well done!`);
+      this.authService.updateRank();
     }
   }
 
@@ -152,7 +154,7 @@ export class QuizComponent implements OnInit {
         this.learning = true;
         this.startQuiz(sentences);
       } else {
-        swal("You have a challanger", "Prove yourself in the arena before you continue your work.");
+        swal("Hold your horses!", "Your latest translation is under approval. Wait until tomorrow.");
       }
     })
   }
@@ -181,4 +183,5 @@ export class QuizComponent implements OnInit {
         this.overduePractice = sentences.length == 0 ? false : true;
       });
   }
+  
 }

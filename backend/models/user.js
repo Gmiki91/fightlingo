@@ -9,11 +9,12 @@ const userSchema = mongoose.Schema({
     language:Object,
     level:Number,
     rank:Number,
-    str:Number,
-    health:Number,
     money:Number,
-    fame:[Number,Number],
-    items:[Object],
+    hasShipTicket:Boolean,
+    currentStoryId:String,
+    lastLoggedIn:Date,
+    isPromotionDue:Boolean
+
 });
 
 userSchema.plugin(uniqueValidator);

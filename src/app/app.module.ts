@@ -23,11 +23,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
 import { LessonService } from './quiz/level-tree/lesson.service';
 import { GymComponent } from './dojo/gym/gym.component';
-import { ArenaComponent } from './dojo/arena/arena.component';
-import { ArenaService } from './dojo/arena/arena.service';
-import { FightComponent } from './dojo/arena/fight/fight.component';
-import { ShopComponent } from './dojo/city/shop/shop.component';
-import { GmDojoComponent } from './dojo/city/gm-dojo/gm-dojo.component';
 
 @NgModule({
   declarations: [
@@ -39,10 +34,6 @@ import { GmDojoComponent } from './dojo/city/gm-dojo/gm-dojo.component';
     LoginComponent,
     SignUpComponent,
     GymComponent,
-    ArenaComponent,
-    FightComponent,
-    GmDojoComponent,
-    ShopComponent
   ],
   imports: [
     FormsModule,
@@ -59,7 +50,7 @@ import { GmDojoComponent } from './dojo/city/gm-dojo/gm-dojo.component';
     MatRadioModule,
     MatSelectModule,
   ],
-  providers: [QuizService, AuthService, LessonService, ArenaService],
+  providers: [QuizService, AuthService, LessonService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

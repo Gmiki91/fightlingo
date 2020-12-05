@@ -13,7 +13,7 @@ export class AuthService{
 
     constructor(private http:HttpClient){}
     createUser(email:string,password:string, name:string, pic:string, language:Language){
-        const user:User = {email,password,name,pic,language,level:1,rank:1,str:10,health:10,money:3,fame:null,items:null};
+        const user:User = {email,password,name,pic,language,level:1,rank:1,money:3, hasShipTicket:false,currentStoryId:null,lastLoggedIn:new Date(), isPromotionDue:false};
         this.http.post("http://localhost:3300/api/users/signup",user )
         .subscribe(response=>{
                 console.log(response);
@@ -43,6 +43,16 @@ export class AuthService{
         });
     }
 
+    promotionDue(){
+        this.user.isPromotionDue=true;
+        console.log("promotionDue!", this.user)
+        this.http.patch("http://localhost:3300/api/users/promotion",this.user)
+        .subscribe(()=>{
+            this.getUserById();
+        });
+    }
+
+
     levelUp(){
         this.http.patch("http://localhost:3300/api/users/level",this.user)
         .subscribe(()=>{
@@ -57,10 +67,4 @@ export class AuthService{
         });
     }
 
-    addFame(fame:number){
-        this.http.patch("http://localhost:3300/api/users/fame/"+fame,this.user)
-        .subscribe(()=>{
-            this.getUserById();
-        });
-    }
 }

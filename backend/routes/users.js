@@ -9,20 +9,16 @@ let Sentence;
 let user;
 
 router.post('/signup', (req, res, next) => {
-    let maxFame;
     let language = req.body.language;
     switch (language) {
         case 'russian':
             Sentence = require(`../models/sentence`).russian;
-            maxFame=30;
             break;
         case 'french':
             Sentence = require(`../models/sentence`).french;
-            maxFame=39;
             break;
         case 'serbian':
             Sentence = require(`../models/sentence`).serbian;
-            maxFame=33;
             break;
     }
 
@@ -36,11 +32,11 @@ router.post('/signup', (req, res, next) => {
                 level: req.body.level,
                 language: req.body.language,
                 rank: req.body.rank,
-                str: req.body.str,
-                health: req.body.health,
                 money: req.body.money,
-                fame: [0,maxFame],
-                items: req.body.items,
+                hasShipTicket:req.body.hasShipTicket,
+                currentStoryId: req.body.currentStoryId,
+                lastLoggedIn: req.body.lastLoggedIn,
+                isPromotionDue: req.body.isPromotionDue
             });
             user.save()
                 .then(initProgress(req.body.language, req.body.rank))
@@ -99,7 +95,7 @@ router.post('/byId', (req, res, next) => {
 })
 
 router.patch('/rank', (req, res, next) => {
-    if((req.body.rank+1)%2==1)
+    if((req.body.rank+1)%2==1) //new lesson only available after beating a master
         initProgress(req.body.language,req.body.rank + 1);
     User.updateOne({ _id: req.body._id },
         { $set: { "rank": req.body.rank + 1 } },
@@ -117,8 +113,17 @@ router.patch('/level', (req, res, next) => {
         });
 });
 
+
+
+router.patch('/promotion', (req, res, next) => {
+    User.updateOne({ _id: req.body._id },
+        { $set: { "isPromotionDue": req.body.isPromotionDue } },
+        () => {
+            res.status(200).send({ message: "User leveled up" });
+        });
+});
+
 router.patch('/money/:money', (req, res, next) => {
-    console.log("money!");
     User.updateOne({ _id: req.body._id },
         { $inc: { "money": req.params.money } },
         () => {
@@ -126,14 +131,6 @@ router.patch('/money/:money', (req, res, next) => {
         });
 });
 
-router.patch('/fame/:fame', (req, res, next) => {
-    console.log("famous!");
-    User.updateOne({ _id: req.body._id },
-        { $inc: { "fame.0":  req.params.fame } },
-        () => {
-            res.status(200).send({ message: "Famous!" });
-        });
-});
 
 function initProgress(language, rank) {
     console.log("rank: " + rank);

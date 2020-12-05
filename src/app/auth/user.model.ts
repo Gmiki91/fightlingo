@@ -8,9 +8,9 @@ export interface User{
     language:Language;
     level:number;
     rank:number;
-    str:number;
-    health:number;
     money:number;
-    fame:[number,number];
-    items:[Object];
+    hasShipTicket:boolean;
+    currentStoryId:string;
+    lastLoggedIn:Date;
+    isPromotionDue:boolean;
 }

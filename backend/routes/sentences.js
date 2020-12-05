@@ -5,16 +5,6 @@ const Progress = require("../models/progress");
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
 
-router.post("/speed_gauge", (req, res, next) => {
-    instantiateSentence(req.body.language);
-    Lesson.findOne({rank: req.body.rank-1, language:req.body.language})
-    .then((lesson) => {
-        Sentence.find({lesson_id: lesson._id})
-        .then((sentences) => {
-            res.status(200).send(sentences)
-        })
-    })
-})
 
 router.post("/all", (req, res, next)=>{
     instantiateSentence(req.body.language);
@@ -47,7 +37,7 @@ router.post("/:lessonId", (req, res, next) => {
 
 // learnable sentences
 router.post("/", (req, res, next) => {
-    Lesson.findOne({ rank: req.body.rank, level: req.body.level, language: req.body.language })
+    Lesson.findOne({ rank: req.body.rank, language: req.body.language })
         .then(lesson => findProgress(lesson, false, req.body._id)
             .then(result => {
                 res.status(200).send(result);
