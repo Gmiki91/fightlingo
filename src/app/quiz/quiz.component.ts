@@ -26,13 +26,13 @@ export class QuizComponent implements OnInit {
   overduePractice: boolean;
   practiceClicked: boolean;
   learning: boolean;
-  isPromotionDue:boolean;
+  currentLessonFinished: boolean;
 
   constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.isPromotionDue=this.authService.user.isPromotionDue;
+    this.currentLessonFinished = this.authService.user.currentLessonFinished;
     this.trainingInProgress = false;
 
     this.subscribeToLearn();
@@ -46,12 +46,12 @@ export class QuizComponent implements OnInit {
   learn(): void {
     this.quizService.getLearnableSentences();
   }
- 
+
   getOverdues(): void {
     this.quizService.getOverdueSentences();
   }
 
-  
+
   practice(): void {
     this.practiceClicked = true;
   }
@@ -77,19 +77,19 @@ export class QuizComponent implements OnInit {
     if (this.numberOfSentences > 0) {
       this.sentence = this.sentences[this.numberOfSentences - 1];
     } else {
-      this.quizService.getPromotionRequest();
+      this.quizService.checkIfLessonLearned();
       swal("Well done!", "...You finished the quiz!")
-      .then(() => {
-        this.sentence = null;
-        this.trainingInProgress = false;
-        this.practiceClicked = false;
-        if (this.learning) {
-          this.checkAvailablePromotion();
-          this.learning = false;
-        } else if (this.overduePractice) {
-          this.getOverdues();
-        }
-      })
+        .then(() => {
+          this.sentence = null;
+          this.trainingInProgress = false;
+          this.practiceClicked = false;
+          if (this.learning) {
+            this.checkAvailablePromotion();
+            this.learning = false;
+          } else if (this.overduePractice) {
+            this.getOverdues();
+          }
+        })
     }
   }
 
@@ -125,45 +125,45 @@ export class QuizComponent implements OnInit {
   }
 
   private async checkAvailablePromotion() {
-    if (this.quizService.isPromotionDue()) {
-      this.authService.promotionDue();
-      this.isPromotionDue=true;
+    if (this.quizService.isCurrentLessonLearned()) {
+      this.authService.currentLessonFinished();
+      this.currentLessonFinished = true;
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
       swal(`You've mastered the ways of the ${lessonName}, well done!`);
-      this.authService.updateRank();
+      
     }
   }
 
-  private subscribeToLearn(){
+  private subscribeToLearn() {
     if (this.learningSubscription) {
       this.learningSubscription.unsubscribe();
     }
     this.learningSubscription = this.quizService.getLearnableList()
-    .subscribe((sentences: Sentence[]) => {
-      if (sentences.length != 0) {
-        this.learning = true;
-        this.startQuiz(sentences);
-      } else {
-        swal("Hold your horses!", "Your latest translation is under approval. Wait until tomorrow.");
-      }
-    })
+      .subscribe((sentences: Sentence[]) => {
+        if (sentences.length != 0) {
+          this.learning = true;
+          this.startQuiz(sentences);
+        } else {
+          swal("Hold your horses!", "Your latest translation is under approval. Wait until tomorrow.");
+        }
+      })
   }
 
-  private subscribeToPractice():void{
+  private subscribeToPractice(): void {
     if (this.practiceSubscription) {
       this.practiceSubscription.unsubscribe();
     }
     this.practiceSubscription = this.quizService.getPracticeSentences()
-    .subscribe((sentences: Sentence[]) => {
-      if (sentences.length != 0) {
-        this.startQuiz(sentences);
-      } else {
-        swal("Oops", "You haven't learned anything from this lesson yet.");
-      }
-    });
+      .subscribe((sentences: Sentence[]) => {
+        if (sentences.length != 0) {
+          this.startQuiz(sentences);
+        } else {
+          swal("Oops", "You haven't learned anything from this lesson yet.");
+        }
+      });
   }
 
-  private subscribeToOverdue():void{
+  private subscribeToOverdue(): void {
     if (this.overdueSubscription) {
       this.overdueSubscription.unsubscribe();
     }
@@ -173,5 +173,5 @@ export class QuizComponent implements OnInit {
         this.overduePractice = sentences.length == 0 ? false : true;
       });
   }
-  
+
 }

@@ -11,7 +11,7 @@ export class QuizService {
     private overdueListChanged=new Subject<Sentence[]>();
     private learnableListChanged=new Subject<Sentence[]>();
     private practiceReady=new Subject<Sentence[]>();
-    private promotionReady:boolean;
+    private currentLessonLearned:boolean;
     private user:User;
     
     constructor(private http: HttpClient, private authService:AuthService){}
@@ -47,19 +47,19 @@ export class QuizService {
         return this.learnableListChanged.asObservable();  
     }
 
-    getPromotionRequest(){
+    checkIfLessonLearned(){
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
             if(sentences.length === 0){
-                this.promotionReady=true;
+                this.currentLessonLearned=true;
             }else{
-                this.promotionReady=false;
+                this.currentLessonLearned=false;
             }
         })
     }
 
-    isPromotionDue():boolean{
-        return this.promotionReady;
+    isCurrentLessonLearned():boolean{
+        return this.currentLessonLearned;
     }
 
     getOverdueSentences(){

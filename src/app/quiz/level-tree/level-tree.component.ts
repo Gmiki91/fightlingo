@@ -30,7 +30,7 @@ export class LevelTreeComponent implements OnInit {
     this.showLessons=false;
   }
   checkLessonAvailable(itemRank){
-    return this.userRank<itemRank;
+    return this.userRank<=itemRank;
   }
   onLevelClick(level){
     this.selectedLevel="Level " + level;

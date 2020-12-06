@@ -34,9 +34,9 @@ router.post('/signup', (req, res, next) => {
                 rank: req.body.rank,
                 money: req.body.money,
                 hasShipTicket:req.body.hasShipTicket,
-                currentStoryId: req.body.currentStoryId,
+                currentStoryFinished: req.body.currentStoryFinished,
+                currentLessonFinished:req.body.currentLessonFinished,
                 lastLoggedIn: req.body.lastLoggedIn,
-                isPromotionDue: req.body.isPromotionDue
             });
             user.save()
                 .then(initProgress(req.body.language, req.body.rank))
@@ -64,8 +64,10 @@ router.post('/login', (req, res, next) => {
             }
             let today = new Date();
             today.setHours(0,0,0,0);
-            if(user.lastLoggedIn<today){
-                user.isPromotionDue=false;
+            if(user.lastLoggedIn<today && user.currentLessonFinished && user.currentStoryFinished){
+                user.rank = user.rank+1;
+                user.currentLessonFinished=false;
+                user.currentStoryFinished=false;
             }
             user.lastLoggedIn=new Date();
             user.save();
@@ -123,9 +125,9 @@ router.patch('/level', (req, res, next) => {
 
 
 
-router.patch('/promotion', (req, res, next) => {
+router.patch('/currentLessonFinished', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
-        { $set: { "isPromotionDue": req.body.isPromotionDue } },
+        { $set: { "currentLessonFinished": req.body.currentLessonFinished } },
         () => {
             res.status(200).send({ message: "Lesson learned" });
         });

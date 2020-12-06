@@ -10,7 +10,7 @@ export interface User{
     rank:number;
     money:number;
     hasShipTicket:boolean;
-    currentStoryId:string;
+    currentStoryFinished:boolean;
+    currentLessonFinished:boolean;
     lastLoggedIn:Date;
-    isPromotionDue:boolean;
 }

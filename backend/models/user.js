@@ -11,10 +11,9 @@ const userSchema = mongoose.Schema({
     rank:Number,
     money:Number,
     hasShipTicket:Boolean,
-    currentStoryId:String,
-    lastLoggedIn:Date,
-    isPromotionDue:Boolean
-
+    currentStoryFinished:Boolean,
+    currentLessonFinished:Boolean,
+    lastLoggedIn:Date
 });
 
 userSchema.plugin(uniqueValidator);

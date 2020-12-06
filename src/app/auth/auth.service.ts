@@ -12,8 +12,9 @@ export class AuthService{
     public user:User;
 
     constructor(private http:HttpClient){}
+
     createUser(email:string,password:string, name:string, pic:string, language:Language){
-        const user:User = {email,password,name,pic,language,level:1,rank:1,money:3, hasShipTicket:false,currentStoryId:null,lastLoggedIn:new Date(), isPromotionDue:false};
+        const user:User = {email,password,name,pic,language,level:1,rank:1,money:3, hasShipTicket:false,currentStoryFinished:false,currentLessonFinished:false,lastLoggedIn:new Date()};
         this.http.post("http://localhost:3300/api/users/signup",user )
         .subscribe(response=>{
                 console.log(response);
@@ -43,10 +44,9 @@ export class AuthService{
         });
     }
 
-    promotionDue(){
-        this.user.isPromotionDue=true;
-        console.log("promotionDue!", this.user)
-        this.http.patch("http://localhost:3300/api/users/promotion",this.user)
+    currentLessonFinished(){
+        this.user.currentLessonFinished=true;
+        this.http.patch("http://localhost:3300/api/users/currentLessonFinished",this.user)
         .subscribe(()=>{
             this.getUserById();
         });
