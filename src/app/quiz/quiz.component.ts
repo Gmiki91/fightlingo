@@ -6,7 +6,6 @@ import swal from 'sweetalert';
 import { first } from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { QuizType } from './quiz-type.enum';
 
 @Component({
   selector: 'app-quiz',
@@ -15,7 +14,6 @@ import { QuizType } from './quiz-type.enum';
 })
 export class QuizComponent implements OnInit {
 
-  @Input() quizType: QuizType;
   @ViewChild("input") input;
   levelSelected: number;
   numberOfSentences: number;
@@ -35,7 +33,6 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.isPromotionDue=this.authService.user.isPromotionDue;
-    console.log(this.isPromotionDue);
     this.trainingInProgress = false;
 
     this.subscribeToLearn();
@@ -48,13 +45,6 @@ export class QuizComponent implements OnInit {
   ////////////////////////////////////////////////////
   learn(): void {
     this.quizService.getLearnableSentences();
-  }
-
-  isLibrary():boolean{
-    return this.quizType===QuizType.LIBRARY;
-  }
-  isGym():boolean{
-    return this.quizType===QuizType.GYM;
   }
  
   getOverdues(): void {

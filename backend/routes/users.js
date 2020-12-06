@@ -56,11 +56,14 @@ router.post('/login', (req, res, next) => {
     let userData;
     User.findOne({ name: req.body.name })
         .then(user => {
+            
             if (!user) {
                 return res.status(404).json({
                     message: "User not found"
                 });
             }
+            user.lastLoggedIn=new Date();
+            user.save();
             userData = user;
             return bcrypt.compare(req.body.password, user.password);
         })
