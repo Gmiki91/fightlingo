@@ -62,6 +62,11 @@ router.post('/login', (req, res, next) => {
                     message: "User not found"
                 });
             }
+            let today = new Date();
+            today.setHours(0,0,0,0);
+            if(user.lastLoggedIn<today){
+                user.isPromotionDue=false;
+            }
             user.lastLoggedIn=new Date();
             user.save();
             userData = user;
@@ -122,7 +127,7 @@ router.patch('/promotion', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
         { $set: { "isPromotionDue": req.body.isPromotionDue } },
         () => {
-            res.status(200).send({ message: "User leveled up" });
+            res.status(200).send({ message: "Lesson learned" });
         });
 });
 
