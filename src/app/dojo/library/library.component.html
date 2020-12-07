@@ -1,3 +1,5 @@
 <p>library works!</p>
 <button *ngIf="storyRecievedBack" (click)="finishStory()">Answer questions about story</button>
-<app-quiz></app-quiz>
+<button (click)="onTranslate()">Translate</button>
+<button (click)="onStudy()">Study</button>
+<app-quiz [quizType]="quizType"></app-quiz>

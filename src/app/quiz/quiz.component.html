@@ -13,7 +13,7 @@
         <button class="leave_btn" (click)="onLeave()" >Leave</button>
     </nav>
     -->
-    <app-level-tree class="level_tree" *ngIf="practiceClicked "></app-level-tree>
+    <app-level-tree class="level_tree" *ngIf="practiceClicked"></app-level-tree>
     <div  class="questions" *ngIf="trainingInProgress">
         <div style="text-align: center;" *ngIf="sentence">
             <label>{{sentence.english}}</label>

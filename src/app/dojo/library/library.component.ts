@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LibraryComponent implements OnInit {
 
+  quizType:string;
   storyRecievedBack:boolean;
   constructor(private authService: AuthService) { }
 
@@ -17,6 +18,14 @@ export class LibraryComponent implements OnInit {
     }else{
       this.storyRecievedBack=false;
     }
+  }
+
+  onTranslate():void{
+    this.quizType="translate";
+  }
+
+  onStudy():void{
+    this.quizType="study";
   }
 
   finishStory():void{

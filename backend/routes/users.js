@@ -65,15 +65,6 @@ router.post('/login', (req, res, next) => {
                     message: "User not found"
                 });
             }
-            /* let today = new Date();
-             today
-             if(user.lastLoggedIn<today && user.currentLessonFinished && user.currentStoryFinished){
-                 user.rank = user.rank+1;
-                 user.currentLessonFinished=false;
-                 user.currentStoryFinished=false;
-             }
-             user.lastLoggedIn=new Date();
-             user.save();*/
             userData = user;
             return bcrypt.compare(req.body.password, user.password);
         })

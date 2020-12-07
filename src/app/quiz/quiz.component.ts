@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
@@ -12,9 +12,10 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnChanges {
 
   @ViewChild("input") input;
+  @Input() quizType: string;
   levelSelected: number;
   numberOfSentences: number;
   sentence: Sentence;
@@ -31,8 +32,17 @@ export class QuizComponent implements OnInit {
   constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes["quizType"]["currentValue"]);
+    if (changes["quizType"]["currentValue"]=="translate"){
+      this.quizService.getLearnableSentences();
+    }
+    if (changes["quizType"]["currentValue"]=="study")
+      this.practiceClicked = true;
+  }
+
   ngOnInit(): void {
-    this.currentLessonFinished = this.authService.user.currentLessonFinished!=null;
+    this.currentLessonFinished = this.authService.user.currentLessonFinished != null;
     this.trainingInProgress = false;
 
     this.subscribeToLearn();
@@ -130,7 +140,6 @@ export class QuizComponent implements OnInit {
       this.currentLessonFinished = true;
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
       swal(`You've mastered the ways of the ${lessonName}, well done!`);
-      
     }
   }
 
