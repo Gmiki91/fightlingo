@@ -17,7 +17,7 @@ export class CityComponent implements OnInit {
   constructor(private authService: AuthService, private lessonService: LessonService) { }
 
   ngOnInit(): void {
-    if (!this.authService.user.currentStoryFinished) {
+    if (!this.authService.user.currentStoryLearned) {
       swal("", "You hear a familiar tone nearby.");
       this.storyPresent = true;
     }
@@ -27,10 +27,9 @@ export class CityComponent implements OnInit {
     this.lessonService.getStoryByRank(this.authService.user.rank)
       .subscribe((story) => {
         this.story = story;
-        this.authService.currentStoryFinished();
+        this.authService.currentStoryLearned();
         console.log(story);
-      
+        this.storyPresent=false;
       })
-
   }
 }

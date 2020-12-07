@@ -33,9 +33,12 @@ router.post('/signup', (req, res, next) => {
                 language: req.body.language,
                 rank: req.body.rank,
                 money: req.body.money,
-                hasShipTicket:req.body.hasShipTicket,
-                currentStoryFinished: req.body.currentStoryFinished,
-                currentLessonFinished:req.body.currentLessonFinished,
+                hasShipTicket: req.body.hasShipTicket,
+                currentStoryLearned: false,
+                currentStorySent: null,
+                currentStoryRecieved: false,
+                currentStoryFinished: null,
+                currentLessonFinished: null,
                 lastLoggedIn: req.body.lastLoggedIn,
             });
             user.save()
@@ -56,21 +59,21 @@ router.post('/login', (req, res, next) => {
     let userData;
     User.findOne({ name: req.body.name })
         .then(user => {
-            
+
             if (!user) {
                 return res.status(404).json({
                     message: "User not found"
                 });
             }
-            let today = new Date();
-            today.setHours(0,0,0,0);
-            if(user.lastLoggedIn<today && user.currentLessonFinished && user.currentStoryFinished){
-                user.rank = user.rank+1;
-                user.currentLessonFinished=false;
-                user.currentStoryFinished=false;
-            }
-            user.lastLoggedIn=new Date();
-            user.save();
+            /* let today = new Date();
+             today
+             if(user.lastLoggedIn<today && user.currentLessonFinished && user.currentStoryFinished){
+                 user.rank = user.rank+1;
+                 user.currentLessonFinished=false;
+                 user.currentStoryFinished=false;
+             }
+             user.lastLoggedIn=new Date();
+             user.save();*/
             userData = user;
             return bcrypt.compare(req.body.password, user.password);
         })
@@ -105,10 +108,18 @@ router.post('/byId', (req, res, next) => {
 })
 
 router.patch('/rank', (req, res, next) => {
-    if((req.body.rank+1)%2==1) //new lesson only available after beating a master
-        initProgress(req.body.language,req.body.rank + 1);
+    initProgress(req.body.language, req.body.rank + 1);
     User.updateOne({ _id: req.body._id },
-        { $set: { "rank": req.body.rank + 1 } },
+        {
+            $set: {
+                "rank": req.body.rank + 1,
+                "currentStoryLearned": false,
+                "currentStorySent": null,
+                "currentStoryRecieved": false,
+                "currentStoryFinished": null,
+                "currentLessonFinished": null
+            }
+        },
         () => {
             res.status(200).send({ message: "User rank updated" });
         });
@@ -124,7 +135,6 @@ router.patch('/level', (req, res, next) => {
 });
 
 
-
 router.patch('/currentLessonFinished', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
         { $set: { "currentLessonFinished": req.body.currentLessonFinished } },
@@ -133,22 +143,38 @@ router.patch('/currentLessonFinished', (req, res, next) => {
         });
 });
 
-router.patch('/currentStoryFinished', (req, res, next) => {
+
+router.patch('/currentStoryLearned', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
-        { $set: { "currentStoryFinished": req.body.currentStoryFinished } },
+        { $set: { "currentStoryLearned": req.body.currentStoryLearned } },
         () => {
             res.status(200).send({ message: "Story learned" });
         });
 });
 
-router.patch('/money/:money', (req, res, next) => {
+router.patch('/currentStorySent', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
-        { $inc: { "money": req.params.money } },
+        { $set: { "currentStorySent": req.body.currentStorySent } },
         () => {
-            res.status(200).send({ message: "Cha ching!" });
+            res.status(200).send({ message: "Story sent" });
         });
 });
 
+router.patch('/currentStoryRecieved', (req, res, next) => {
+    User.updateOne({ _id: req.body._id },
+        { $set: { "currentStoryRecieved": req.body.currentStoryRecieved } },
+        () => {
+            res.status(200).send({ message: "Story recieved back" });
+        });
+});
+
+router.patch('/currentStoryFinished', (req, res, next) => {
+    User.updateOne({ _id: req.body._id },
+        { $set: { "currentStoryFinished": req.body.currentStoryFinished } },
+        () => {
+            res.status(200).send({ message: "Story sent back" });
+        });
+});
 
 function initProgress(language, rank) {
     console.log("rank: " + rank);
@@ -156,7 +182,7 @@ function initProgress(language, rank) {
         language: language,
         rank: rank
     }, '_id')
-        .then(id => Sentence.find({"lesson_id": id._id })
+        .then(id => Sentence.find({ "lesson_id": id._id })
             .then(documents => {
                 for (let document of documents) {
                     const prog = new Progress({

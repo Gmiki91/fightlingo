@@ -32,7 +32,7 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentLessonFinished = this.authService.user.currentLessonFinished;
+    this.currentLessonFinished = this.authService.user.currentLessonFinished!=null;
     this.trainingInProgress = false;
 
     this.subscribeToLearn();

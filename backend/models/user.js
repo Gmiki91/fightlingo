@@ -11,8 +11,11 @@ const userSchema = mongoose.Schema({
     rank:Number,
     money:Number,
     hasShipTicket:Boolean,
-    currentStoryFinished:Boolean,
-    currentLessonFinished:Boolean,
+    currentStoryLearned:Boolean,
+    currentStorySent:Date,
+    currentStoryRecieved:Boolean,
+    currentStoryFinished:Date,
+    currentLessonFinished:Date,
     lastLoggedIn:Date
 });
 
