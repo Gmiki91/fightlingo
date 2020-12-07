@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { QuizService } from './quiz.service';
-import { Sentence } from './sentence.model';
+import { QuizService } from '../services/quiz.service';
+import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
 import { first } from 'rxjs/operators'
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-quiz',

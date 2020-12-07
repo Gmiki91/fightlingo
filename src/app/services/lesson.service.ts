@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
-import { Lesson } from './lesson.model';
+import { AuthService } from './auth.service';
+import { Lesson } from '../models/lesson.model';
+import { Story } from '../models/story.model';
 
 @Injectable()
 export class LessonService {
@@ -17,6 +18,9 @@ export class LessonService {
          // console.log(response);
          // this.lessons.next(response);
     //  });
+  }
+  getStoryByRank(rank:number){
+    return this.http.get<Story>('http://localhost:3300/api/lessons/story/'+this.authService.user.language+'/'+rank);
   }
    
 }

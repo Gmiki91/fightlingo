@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import {Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Language } from '../language.enum';
-import { AuthData } from './auth-data.model';
-import { User } from './user.model';
+import { AuthData } from '../models/auth-data.model';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService{
@@ -47,6 +47,14 @@ export class AuthService{
     currentLessonFinished(){
         this.user.currentLessonFinished=true;
         this.http.patch("http://localhost:3300/api/users/currentLessonFinished",this.user)
+        .subscribe(()=>{
+            this.getUserById();
+        });
+    }
+
+    currentStoryFinished(){
+        this.user.currentStoryFinished=true;
+        this.http.patch("http://localhost:3300/api/users/currentStoryFinished",this.user)
         .subscribe(()=>{
             this.getUserById();
         });

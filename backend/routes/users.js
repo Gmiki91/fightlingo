@@ -133,6 +133,14 @@ router.patch('/currentLessonFinished', (req, res, next) => {
         });
 });
 
+router.patch('/currentStoryFinished', (req, res, next) => {
+    User.updateOne({ _id: req.body._id },
+        { $set: { "currentStoryFinished": req.body.currentStoryFinished } },
+        () => {
+            res.status(200).send({ message: "Story learned" });
+        });
+});
+
 router.patch('/money/:money', (req, res, next) => {
     User.updateOne({ _id: req.body._id },
         { $inc: { "money": req.params.money } },

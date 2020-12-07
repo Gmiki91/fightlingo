@@ -1,10 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, throwError } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user.model';
-import { Sentence } from './sentence.model';
-import { Progress } from '../progress.model';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
+import { Sentence } from '../models/sentence.model';
+import { Progress } from '../models/progress.model';
 
 @Injectable()
 export class QuizService {

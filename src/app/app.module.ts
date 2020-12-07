@@ -13,16 +13,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
-import { QuizService } from './quiz/quiz.service';
+import { QuizService } from './services/quiz.service';
 import { LevelTreeComponent } from './quiz/level-tree/level-tree.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from './auth/auth.service';
-import { LessonService } from './quiz/level-tree/lesson.service';
+import { AuthService } from './services/auth.service';
+import { LessonService } from './services/lesson.service';
 import { GymComponent } from './dojo/gym/gym.component';
+import { CityComponent } from './city/city.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { GymComponent } from './dojo/gym/gym.component';
     LoginComponent,
     SignUpComponent,
     GymComponent,
+    CityComponent,
   ],
   imports: [
     FormsModule,

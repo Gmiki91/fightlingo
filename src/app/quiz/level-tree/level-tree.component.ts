@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { QuizService } from '../../quiz/quiz.service';
-import { LessonService } from './lesson.service';
+import { AuthService } from '../../services/auth.service';
+import { QuizService } from '../../services/quiz.service';
+import { LessonService } from '../../services/lesson.service';
 
 @Component({
   selector: 'app-level-tree',
