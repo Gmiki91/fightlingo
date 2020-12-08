@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { QuizService } from '../../services/quiz.service';
 import { LessonService } from '../../services/lesson.service';
 
 @Component({
@@ -15,7 +14,7 @@ export class LevelTreeComponent implements OnInit {
   lessons=[];
   userRank:number;
   showLessons:boolean;
-  constructor(private quizService:QuizService, private lessonService:LessonService, private authService:AuthService) {}
+  constructor(private lessonService:LessonService, private authService:AuthService) {}
 
   ngOnInit(): void {
     for(let i=1;i<=this.lessonService.numberOfLevels;i++) {
@@ -25,7 +24,7 @@ export class LevelTreeComponent implements OnInit {
   }
 
   onClick(lesson){
-    this.quizService.lessonSelected(lesson._id);
+    this.lessonService.getReviewByLessonId(lesson._id);
     this.selectedLevel=null;
     this.showLessons=false;
   }

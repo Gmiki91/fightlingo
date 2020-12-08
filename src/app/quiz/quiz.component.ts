@@ -14,8 +14,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class QuizComponent implements OnInit, OnChanges {
 
-  @ViewChild("input") input;
-  @Input() quizType: string;
+  @ViewChild("input") userAnswer;
+  @Input() clickedButton: string;
   levelSelected: number;
   numberOfSentences: number;
   sentence: Sentence;
@@ -23,58 +23,41 @@ export class QuizComponent implements OnInit, OnChanges {
   overdueSubscription: Subscription = Subscription.EMPTY;
   practiceSubscription: Subscription = Subscription.EMPTY;
   learningSubscription: Subscription = Subscription.EMPTY;
-  trainingInProgress: boolean;
+  quizInProgress: boolean;
   overduePractice: boolean;
-  practiceClicked: boolean;
+  showLevelTree: boolean;
   learning: boolean;
-  currentLessonFinished: boolean;
 
-  constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {
-  }
+  constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes["quizType"]["currentValue"]);
-    if (changes["quizType"]["currentValue"]=="translate"){
+    console.log(changes["clickedButton"]["currentValue"]);
+    if (changes["clickedButton"]["currentValue"]=="translate"){
       this.quizService.getLearnableSentences();
     }
-    if (changes["quizType"]["currentValue"]=="study")
-      this.practiceClicked = true;
+    if (changes["clickedButton"]["currentValue"]=="study")
+      this.showLevelTree = true;
   }
 
   ngOnInit(): void {
-    this.currentLessonFinished = this.authService.user.currentLessonFinished != null;
-    this.trainingInProgress = false;
-
+    this.quizInProgress = false;
     this.subscribeToLearn();
-    this.subscribeToPractice();
+    //this.subscribeToPractice();
     this.subscribeToOverdue();
-
     this.getOverdues();
-  }
-
-  ////////////////////////////////////////////////////
-  learn(): void {
-    this.quizService.getLearnableSentences();
   }
 
   getOverdues(): void {
     this.quizService.getOverdueSentences();
   }
 
-
-  practice(): void {
-    this.practiceClicked = true;
-  }
-
   practiceOverdue(): void {
-    this.trainingInProgress = true;
+    this.quizInProgress = true;
     this.displaySentence(this.sentences);
   }
 
-  ////////////////////////////////////////////////////
-
   check(): void {
-    const answer = this.input.nativeElement.value;
+    const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translations.find((translation) => translation === answer)) {
       console.log("talált");
       this.quizService.updateSentence(this.sentence._id, 5);
@@ -91,8 +74,8 @@ export class QuizComponent implements OnInit, OnChanges {
       swal("Well done!", "...You finished the quiz!")
         .then(() => {
           this.sentence = null;
-          this.trainingInProgress = false;
-          this.practiceClicked = false;
+          this.quizInProgress = false;
+          this.showLevelTree = false;
           if (this.learning) {
             this.checkAvailablePromotion();
             this.learning = false;
@@ -103,24 +86,6 @@ export class QuizComponent implements OnInit, OnChanges {
     }
   }
 
-  onLeave() {
-    swal("Take a break?", {
-      buttons: {
-        yes: {
-          text: "Yes!",
-          value: "yes"
-        },
-        no: {
-          text: "No!",
-          value: "no",
-        },
-      },
-    }).then((answer) => {
-      if (answer == "yes") {
-        this.router.navigate(['/dojo']);
-      }
-    })
-  }
 
   private displaySentence(sentences: Sentence[]): void {
     this.numberOfSentences = sentences.length;
@@ -129,15 +94,14 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   private startQuiz(sentences: Sentence[]): void {
-    this.practiceClicked = false;
-    this.trainingInProgress = true;
+    this.showLevelTree = false;
+    this.quizInProgress = true;
     this.displaySentence(sentences);
   }
 
   private async checkAvailablePromotion() {
     if (this.quizService.isCurrentLessonLearned()) {
       this.authService.currentLessonFinished();
-      this.currentLessonFinished = true;
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
       swal(`You've mastered the ways of the ${lessonName}, well done!`);
     }
@@ -158,7 +122,7 @@ export class QuizComponent implements OnInit, OnChanges {
       })
   }
 
-  private subscribeToPractice(): void {
+ /* private subscribeToPractice(): void {
     if (this.practiceSubscription) {
       this.practiceSubscription.unsubscribe();
     }
@@ -170,7 +134,7 @@ export class QuizComponent implements OnInit, OnChanges {
           swal("Oops", "You haven't learned anything from this lesson yet.");
         }
       });
-  }
+  }*/
 
   private subscribeToOverdue(): void {
     if (this.overdueSubscription) {

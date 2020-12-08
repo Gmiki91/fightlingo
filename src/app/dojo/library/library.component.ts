@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-library',
@@ -8,27 +10,50 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LibraryComponent implements OnInit {
 
-  quizType:string;
-  storyRecievedBack:boolean;
-  constructor(private authService: AuthService) { }
+  clickedButton: string;
+  storyRecievedBack: boolean;
+  currentLessonFinished:boolean;
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    if(this.authService.user.currentStoryRecieved && this.authService.user.currentStoryFinished==null){
-      this.storyRecievedBack=true;
-    }else{
-      this.storyRecievedBack=false;
+    this.currentLessonFinished = this.authService.user.currentLessonFinished != null;
+
+    if (this.authService.user.currentStoryRecieved && this.authService.user.currentStoryFinished == null) {
+      this.storyRecievedBack = true;
+    } else {
+      this.storyRecievedBack = false;
     }
   }
 
-  onTranslate():void{
-    this.quizType="translate";
+  onTranslate(): void {
+    this.clickedButton = "translate";
   }
 
-  onStudy():void{
-    this.quizType="study";
+  onStudy(): void {
+    this.clickedButton = "study";
   }
 
-  finishStory():void{
+  onLeave() {
+    swal("Take a break?", {
+      buttons: {
+        yes: {
+          text: "Yes!",
+          value: "yes"
+        },
+        no: {
+          text: "No!",
+          value: "no",
+        },
+      },
+    }).then((answer) => {
+      if (answer == "yes") {
+        this.router.navigate(['/dojo']);
+      }
+    })
+  }
+
+
+  finishStory(): void {
     this.authService.currentStoryFinished();
   }
 

@@ -22,5 +22,8 @@ export class LessonService {
   getStoryByRank(rank:number){
     return this.http.get<Story>('http://localhost:3300/api/lessons/story/'+this.authService.user.language+'/'+rank);
   }
+  getReviewByLessonId(lessonId:string){
+    return this.http.get<string>('http://localhost:3300/api/lessons/story/overview/'+lessonId);
+  }
    
 }

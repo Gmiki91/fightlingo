@@ -10,7 +10,7 @@ import { Progress } from '../models/progress.model';
 export class QuizService {
     private overdueListChanged=new Subject<Sentence[]>();
     private learnableListChanged=new Subject<Sentence[]>();
-    private practiceReady=new Subject<Sentence[]>();
+    //private practiceReady=new Subject<Sentence[]>();
     private currentLessonLearned:boolean;
     private user:User;
     
@@ -25,6 +25,7 @@ export class QuizService {
         return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/all',body);
     }
 
+   /* Maybe in multiplayer this will be useful for selecting sentences of a lesson
     lessonSelected(id:string){
        return this.http.post('http://localhost:3300/api/sentences/'+id, this.user)
         .subscribe((sentences:Sentence[])=>{
@@ -34,7 +35,7 @@ export class QuizService {
 
     getPracticeSentences(){
         return this.practiceReady.asObservable();  
-    }
+    }*/
 
     getLearnableSentences(){
         this.http.post('http://localhost:3300/api/sentences/', this.user)
