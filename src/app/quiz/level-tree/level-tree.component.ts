@@ -30,7 +30,6 @@ export class LevelTreeComponent implements OnInit {
   }
 
   checkLessonAvailable(itemRank){
-    console.log(this.userRank, itemRank, this.userRank>=itemRank);
     return this.userRank>=itemRank;
   }
 

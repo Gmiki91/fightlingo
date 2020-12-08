@@ -1,8 +1,8 @@
 const mongoose=require('mongoose');
 
 const sentenceSchema = mongoose.Schema({
-    english: String,
-    translations: [String],
+    english: [String],
+    translation: [String],
     lessonId: String,
 });
 

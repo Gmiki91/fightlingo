@@ -28,7 +28,8 @@ export class CityComponent implements OnInit {
       .subscribe((story) => {
         this.story = story;
         this.authService.currentStoryLearned();
-        console.log(story);
+        swal(story.content).
+        then(()=>swal("That's interesting, you better report this to the guild"));
         this.storyPresent=false;
       })
   }

@@ -18,6 +18,7 @@ export class QuizComponent implements OnInit, OnChanges {
   @Input() clickedButton: string;
   levelSelected: number;
   numberOfSentences: number;
+  displayedSentence:string;
   sentence: Sentence;
   sentences: Sentence[];
   overdueSubscription: Subscription = Subscription.EMPTY;
@@ -58,7 +59,7 @@ export class QuizComponent implements OnInit, OnChanges {
 
   check(): void {
     const answer = this.userAnswer.nativeElement.value;
-    if (this.sentence.translations.find((translation) => translation === answer)) {
+    if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
       this.quizService.updateSentence(this.sentence._id, 5);
     } else {
@@ -69,6 +70,7 @@ export class QuizComponent implements OnInit, OnChanges {
     this.numberOfSentences--;
     if (this.numberOfSentences > 0) {
       this.sentence = this.sentences[this.numberOfSentences - 1];
+      this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
       this.quizService.checkIfLessonLearned();
       swal("Well done!", "...You finished the quiz!")
@@ -91,6 +93,7 @@ export class QuizComponent implements OnInit, OnChanges {
     this.numberOfSentences = sentences.length;
     this.sentences = sentences;
     this.sentence = sentences[this.numberOfSentences - 1];
+    this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
   }
 
   private startQuiz(sentences: Sentence[]): void {

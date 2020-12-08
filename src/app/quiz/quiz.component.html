@@ -3,7 +3,7 @@
     <app-level-tree class="level_tree" *ngIf="showLevelTree"></app-level-tree>
     <div  class="questions" *ngIf="quizInProgress">
         <div style="text-align: center;" *ngIf="sentence">
-            <label>{{sentence.english}}</label>
+            <label>{{displayedSentence}}</label>
         </div>
         <div style="text-align: center;" *ngIf="!sentence">
             <label>Choose a category</label>

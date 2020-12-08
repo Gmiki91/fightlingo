@@ -168,7 +168,7 @@ router.patch('/currentStoryFinished', (req, res, next) => {
 });
 
 function initProgress(language, rank) {
-    console.log("rank: " + rank);
+    console.log("language: " + language);
     Lesson.findOne({
         language: language,
         rank: rank

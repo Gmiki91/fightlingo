@@ -38,6 +38,7 @@ export class QuizService {
     }*/
 
     getLearnableSentences(){
+        this.user=this.authService.user;
         this.http.post('http://localhost:3300/api/sentences/', this.user)
         .subscribe((sentences:Sentence[])=>{
                 this.learnableListChanged.next(sentences);
