@@ -26,7 +26,7 @@ router.post("/overdue", (req, res, next) => {
         })
 });
 
-//practicable sentences
+/*practicable sentences
 router.post("/:lessonId", (req, res, next) => {
     Lesson.findOne({ _id: req.params.lessonId })
         .then(lesson => findProgress(lesson, true, req.body._id)
@@ -34,6 +34,7 @@ router.post("/:lessonId", (req, res, next) => {
                 res.status(200).send(result);
             }))
 })
+*/
 
 // learnable sentences
 router.post("/", (req, res, next) => {
