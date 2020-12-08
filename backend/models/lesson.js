@@ -6,7 +6,7 @@ const lessonSchema = mongoose.Schema({
     rank:Number,
     language:Object,
     level:Number,
-    overView:String
+    overview:String
 })
 
 module.exports=mongoose.model("Lesson",lessonSchema);

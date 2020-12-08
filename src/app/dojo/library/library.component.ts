@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { LessonService } from 'src/app/services/lesson.service';
 import swal from 'sweetalert';
 
 @Component({
@@ -10,13 +12,16 @@ import swal from 'sweetalert';
 })
 export class LibraryComponent implements OnInit {
 
+  review:string;
   clickedButton: string;
   storyRecievedBack: boolean;
   currentLessonFinished:boolean;
-  constructor(private authService: AuthService, private router: Router) { }
+  reviewSubscription: Subscription=Subscription.EMPTY;
+  constructor(private authService: AuthService, private lessonService: LessonService,private router: Router) { }
 
   ngOnInit(): void {
     this.currentLessonFinished = this.authService.user.currentLessonFinished != null;
+    this.subscribeToReview();
 
     if (this.authService.user.currentStoryRecieved && this.authService.user.currentStoryFinished == null) {
       this.storyRecievedBack = true;
@@ -31,6 +36,16 @@ export class LibraryComponent implements OnInit {
 
   onStudy(): void {
     this.clickedButton = "study";
+  }
+
+  subscribeToReview(){
+    if(this.reviewSubscription){
+      this.reviewSubscription.unsubscribe();
+    }
+    this.reviewSubscription = this.lessonService.getReview()
+    .subscribe((review) => {
+      this.review=review;
+    })
   }
 
   onLeave() {

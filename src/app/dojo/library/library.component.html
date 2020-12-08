@@ -3,4 +3,5 @@
 <button [disabled]="currentLessonFinished" (click)="onTranslate()">Translate</button>
 <button (click)="onStudy()">Study</button>
 <button (click)="onLeave()">Leave</button>
-<app-quiz [clickedButton]="quizType"></app-quiz>
+<p>{{review}}</p>
+<app-quiz [clickedButton]="clickedButton"></app-quiz>

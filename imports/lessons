@@ -3,15 +3,17 @@
 "name":"Basics",
 "rank":1,
 "level":1,
-"language":"serbian"
+"language":"serbian",
+"overview":"The basics of serbian"
 }
 
 {
 "_id":"sr_0102",
 "name":"Verbs",
-"rank":3,
+"rank":2,
 "level":1,
-"language":"serbian"
+"language":"serbian",
+"overview":"Serbian verbs"
 }
 
 {

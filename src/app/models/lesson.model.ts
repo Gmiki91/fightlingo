@@ -6,4 +6,5 @@ export interface Lesson{
     rank:number;
     language:Language;
     level:number;
+    overview:string;
 }

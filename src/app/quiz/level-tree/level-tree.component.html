@@ -8,7 +8,7 @@
   </mat-form-field>
   <div class="scrollmenu"  [hidden]="!showLessons" name="fontStyle" aria-label="Font Style">
   <mat-button-toggle-group>
-    <mat-button-toggle [disableRipple]=true [disabled]="checkLessonAvailable(lesson.rank)"  (click)="onClick(lesson)" *ngFor="let lesson of lessons">{{lesson.name}}</mat-button-toggle>
+    <mat-button-toggle [disableRipple]=true [disabled]="!checkLessonAvailable(lesson.rank)"  (click)="onClick(lesson)" *ngFor="let lesson of lessons">{{lesson.name}}</mat-button-toggle>
   </mat-button-toggle-group>
   </div>
   </div>
