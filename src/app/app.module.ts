@@ -14,27 +14,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuizService } from './services/quiz.service';
-import { LevelTreeComponent } from './quiz/level-tree/level-tree.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
-import { LessonService } from './services/lesson.service';
-import { GymComponent } from './dojo/gym/gym.component';
+import { ScrollService } from './services/scroll.service';
 import { CityComponent } from './city/city.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuizComponent,
-    LevelTreeComponent,
     DojoComponent,
     LibraryComponent,
     LoginComponent,
     SignUpComponent,
-    GymComponent,
     CityComponent,
   ],
   imports: [
@@ -52,7 +48,7 @@ import { CityComponent } from './city/city.component';
     MatRadioModule,
     MatSelectModule,
   ],
-  providers: [QuizService, AuthService, LessonService],
+  providers: [QuizService, AuthService, ScrollService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

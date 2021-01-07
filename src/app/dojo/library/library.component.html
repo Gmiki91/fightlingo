@@ -1,7 +1,4 @@
 <p>library works!</p>
-<button *ngIf="storyRecievedBack" (click)="finishStory()">Answer questions about story</button>
-<button [disabled]="currentLessonFinished" (click)="onTranslate()">Translate</button>
-<button (click)="onStudy()">Study</button>
+<button (click)="onChooseScroll()">Choose a scroll</button>
 <button (click)="onLeave()">Leave</button>
-<p>{{review}}</p>
-<app-quiz [clickedButton]="clickedButton"></app-quiz>
+<!--<app-quiz [clickedButton]="clickedButton"></app-quiz>-->

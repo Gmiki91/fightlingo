@@ -26,7 +26,6 @@ export class QuizComponent implements OnInit, OnChanges {
   learningSubscription: Subscription = Subscription.EMPTY;
   quizInProgress: boolean;
   overduePractice: boolean;
-  showLevelTree: boolean;
   learning: boolean;
 
   constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {}
@@ -36,8 +35,8 @@ export class QuizComponent implements OnInit, OnChanges {
     if (changes["clickedButton"]["currentValue"]=="translate"){
       this.quizService.getLearnableSentences();
     }
-    if (changes["clickedButton"]["currentValue"]=="study")
-      this.showLevelTree = true;
+   
+
   }
 
   ngOnInit(): void {
@@ -77,7 +76,6 @@ export class QuizComponent implements OnInit, OnChanges {
         .then(() => {
           this.sentence = null;
           this.quizInProgress = false;
-          this.showLevelTree = false;
           if (this.learning) {
             this.checkAvailablePromotion();
             this.learning = false;
@@ -97,7 +95,6 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   private startQuiz(sentences: Sentence[]): void {
-    this.showLevelTree = false;
     this.quizInProgress = true;
     this.displaySentence(sentences);
   }

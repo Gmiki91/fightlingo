@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { Scroll } from 'src/app/models/scroll.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { LessonService } from 'src/app/services/lesson.service';
+import { ScrollService } from 'src/app/services/scroll.service';
 import swal from 'sweetalert';
 
 @Component({
@@ -12,42 +14,27 @@ import swal from 'sweetalert';
 })
 export class LibraryComponent implements OnInit {
 
-  review:string;
-  clickedButton: string;
-  storyRecievedBack: boolean;
-  currentLessonFinished:boolean;
-  reviewSubscription: Subscription=Subscription.EMPTY;
-  constructor(private authService: AuthService, private lessonService: LessonService,private router: Router) { }
+ scrolls:Scroll[];
+
+  constructor(private authService: AuthService, private ScrollService: ScrollService,private router: Router) { }
 
   ngOnInit(): void {
-    this.currentLessonFinished = this.authService.user.currentLessonFinished != null;
-    this.subscribeToReview();
-
-    if (this.authService.user.currentStoryRecieved && this.authService.user.currentStoryFinished == null) {
-      this.storyRecievedBack = true;
-    } else {
-      this.storyRecievedBack = false;
-    }
   }
 
-  onTranslate(): void {
-    this.clickedButton = "translate";
+ async onChooseScroll(){
+    this.scrolls= await this.ScrollService.getScrolls().pipe(first()).toPromise();
+    console.log(this.scrolls);
   }
 
-  onStudy(): void {
-    this.clickedButton = "study";
+  onScrollClicked(scrollnumber):void{
+
   }
 
-  subscribeToReview(){
-    if(this.reviewSubscription){
-      this.reviewSubscription.unsubscribe();
-    }
-    this.reviewSubscription = this.lessonService.getReview()
-    .subscribe((review) => {
-      this.review=review;
-    })
+  onWrite():void{
+
   }
 
+  
   onLeave() {
     swal("Take a break?", {
       buttons: {
@@ -65,11 +52,6 @@ export class LibraryComponent implements OnInit {
         this.router.navigate(['/dojo']);
       }
     })
-  }
-
-
-  finishStory(): void {
-    this.authService.currentStoryFinished();
   }
 
 }

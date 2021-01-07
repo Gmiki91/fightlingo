@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Lesson = require("../models/lesson");
 const Progress = require("../models/progress");
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
@@ -34,17 +33,17 @@ router.post("/:lessonId", (req, res, next) => {
                 res.status(200).send(result);
             }))
 })
-*/
+
 
 // learnable sentences
 router.post("/", (req, res, next) => {
-    Lesson.findOne({ rank: req.body.rank, language: req.body.language })
-        .then(lesson => findProgress(lesson, false, req.body._id)
+    Scroll.findOne({ rank: req.body.rank, language: req.body.language })
+        .then(Scroll => findProgress(lesson, false, req.body._id)
             .then(result => {
                 res.status(200).send(result);
             }))
 })
-
+*/
 //update sentences
 router.patch("/", (req, res, next) => {
     Progress.updateOne({ _id: req.body._id }, {
@@ -58,7 +57,7 @@ router.patch("/", (req, res, next) => {
         res.status(200).send({ message: "Sentence updated" });
     });
 });
-
+/*
 function findProgress(lesson, learned, userId) {
     return new Promise(function (resolve, reject) {
         let language = lesson.language;
@@ -79,7 +78,7 @@ function findProgress(lesson, learned, userId) {
             })
     })
 }
-
+*/
 function findSentences(progressData) {
     return new Promise(function (resolve, reject) {
         let progressIds = [];

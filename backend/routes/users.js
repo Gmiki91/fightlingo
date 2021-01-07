@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Progress = require("../models/progress");
-const Lesson = require("../models/lesson");
+const Scroll = require("../models/scroll");
 const router = express.Router();
 let Sentence;
 let user;
@@ -34,11 +34,6 @@ router.post('/signup', (req, res, next) => {
                 rank: req.body.rank,
                 money: req.body.money,
                 hasShipTicket: req.body.hasShipTicket,
-                currentStoryLearned: false,
-                currentStorySent: null,
-                currentStoryRecieved: false,
-                currentStoryFinished: null,
-                currentLessonFinished: null,
                 lastLoggedIn: req.body.lastLoggedIn,
             });
             user.save()
@@ -169,9 +164,9 @@ router.patch('/currentStoryFinished', (req, res, next) => {
 
 function initProgress(language, rank) {
     console.log("language: " + language);
-    Lesson.findOne({
+    Scroll.findOne({
         language: language,
-        rank: rank
+        storyNumber: rank
     }, '_id')
         .then(id => Sentence.find({ "lesson_id": id._id })
             .then(documents => {
