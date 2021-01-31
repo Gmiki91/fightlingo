@@ -50,14 +50,7 @@ export class QuizService {
     }
 
     checkIfLessonLearned(){
-        this.http.post('http://localhost:3300/api/sentences/', this.user)
-        .subscribe((sentences:Sentence[])=>{
-            if(sentences.length === 0){
-                this.currentLessonLearned=true;
-            }else{
-                this.currentLessonLearned=false;
-            }
-        })
+       return this.http.post('http://localhost:3300/api/sentences/', this.user);
     }
 
     isCurrentLessonLearned():boolean{

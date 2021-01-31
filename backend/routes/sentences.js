@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Progress = require("../models/progress");
+const Scroll = require("../models/scroll");
 const ObjectId = require('mongoose').Types.ObjectId;
 var Sentence;
 
@@ -9,7 +10,6 @@ router.post("/all", (req, res, next)=>{
     instantiateSentence(req.body.language);
     Sentence.find({level: req.body.level})
     .then((sentences) => {
-        console.log("all", sentences);
         res.status(200).send(sentences)})
 })
 
@@ -25,25 +25,24 @@ router.post("/overdue", (req, res, next) => {
         })
 });
 
-/*practicable sentences
+//practicable sentences
 router.post("/:lessonId", (req, res, next) => {
     Lesson.findOne({ _id: req.params.lessonId })
         .then(lesson => findProgress(lesson, true, req.body._id)
             .then(result => {
                 res.status(200).send(result);
             }))
-})
+});
 
-
-// learnable sentences
+//learnable sentences
 router.post("/", (req, res, next) => {
-    Scroll.findOne({ rank: req.body.rank, language: req.body.language })
-        .then(Scroll => findProgress(lesson, false, req.body._id)
+    Scroll.findOne({ number: req.body.rank, language: req.body.language })
+        .then(scroll => findProgress(scroll, false, req.body._id)
             .then(result => {
                 res.status(200).send(result);
             }))
-})
-*/
+});
+
 //update sentences
 router.patch("/", (req, res, next) => {
     Progress.updateOne({ _id: req.body._id }, {
@@ -57,12 +56,12 @@ router.patch("/", (req, res, next) => {
         res.status(200).send({ message: "Sentence updated" });
     });
 });
-/*
+
 function findProgress(lesson, learned, userId) {
     return new Promise(function (resolve, reject) {
         let language = lesson.language;
         instantiateSentence(language);
-        Sentence.find({ lesson_id: lesson._id })
+        Sentence.find({ scroll_id: lesson._id })
             .then(sentences => {
                 let sentenceIds = [];
                 sentences.forEach(sentence => {
@@ -78,7 +77,7 @@ function findProgress(lesson, learned, userId) {
             })
     })
 }
-*/
+
 function findSentences(progressData) {
     return new Promise(function (resolve, reject) {
         let progressIds = [];

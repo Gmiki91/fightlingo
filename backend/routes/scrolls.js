@@ -3,6 +3,15 @@ const router = express.Router();
 const Scroll = require("../models/scroll");
 
 
+router.get('/:language', (req, res, next) => {
+    Scroll.find({
+        language: req.params.language,
+    })
+        .then((result) => {
+            return res.json(result);
+        })
+})
+/*
 router.get('/oflevel/:language/:level', (req, res, next) => {
     Scroll.find({
         language: req.params.language,
@@ -13,26 +22,17 @@ router.get('/oflevel/:language/:level', (req, res, next) => {
         })
 })
 
-router.get('/:language', (req, res, next) => {
-    Scroll.find({
-        language: req.params.language,
-    })
-        .then((result) => {
-            return res.json(result);
-        })
-})
-
 router.get('/:language/:storyRank', (req, res, next) => {
-    Lesson.findOne({
+    Scroll.findOne({
         language: req.params.language,
-        rank: req.params.storyRank
+        number: req.params.storyRank
     }, '_id')
         .then((id) => {
-            Scroll.findOne({ lessonId: id })
+            Scroll.findOne({ _id: id })
                 .then((result) => { return res.json(result) })
         })
 })
-/*
+
 router.post('/', (req, res, next) => {
     Lesson.findOne({
         language: req.body.language,

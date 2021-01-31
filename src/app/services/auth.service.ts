@@ -40,16 +40,23 @@ export class AuthService {
                 this.userLogged.next(response.user);
             });
     }
+    pushUser(){
+        this.userLogged.next(this.user);
+    }
     getUserLoggedIn() {
         return this.userLogged.asObservable();
     }
 
     getUserById() {
         this.http.post("http://localhost:3300/api/users/byId", this.user)
-            .subscribe((user: User) => this.user = user);
+            .subscribe((user: User) => {
+                this.user = user;
+                this.pushUser();
+            });
     }
 
     updateRank() {
+        console.log("user", this.user);
         this.http.patch("http://localhost:3300/api/users/rank", this.user)
             .subscribe(() => {
                 this.getUserById();

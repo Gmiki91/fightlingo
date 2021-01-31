@@ -1,102 +1,102 @@
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["привет"],
    "english": ["hi"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["как дела"],
    "english": ["how's it going","how are things"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0102",
    "level": 1,
    "translation": ["хорошо"],
    "english": ["good","well"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0102",
    "level": 1,
    "translation": ["а у тебя"],
    "english": ["and you","how about you"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["так себе"],
    "english": ["so-so"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["извини"],
    "english": ["excuse me","pardon me", "pardon", "sorry"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["мне некогда"],
    "english": ["i'm in a hurry","i have to run"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["пока"],
    "english": ["goodbye","bye","see you later"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["ну"],
    "english": ["well"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["ладно"],
    "english": ["ok","alright"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["до свидания"],
    "english": ["goodbye","bye","see you later"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["нахал"],
    "english": ["jerk"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["что слышно"],
    "english": ["what's up","what's new"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["не спрашивай"],
    "english": ["don't ask","don't even ask"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["ничего"],
    "english": ["nothing","not bad","ok"]
  }
  {
-   "lesson_id": "ru_0101",
+   "scroll_id": "ru_0101",
    "level": 1,
    "translation": ["нахалка"],
    "english": ["jerk"]
  }
 
  {
-   "lesson_id": "ru_0102",
+   "scroll_id": "ru_0102",
    "level": 1,
    "translation": ["чё"],
    "english": ["what"]

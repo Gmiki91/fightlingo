@@ -1,24 +1,24 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
-import { first } from 'rxjs/operators'
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit, OnChanges {
+export class QuizComponent implements OnInit {
 
   @ViewChild("input") userAnswer;
-  @Input() clickedButton: string;
+  @Input() quizType: string;
+  @Output() readyForPromotion: EventEmitter<boolean> = new EventEmitter();
+
   levelSelected: number;
   numberOfSentences: number;
-  displayedSentence:string;
+  displayedSentence: string;
   sentence: Sentence;
   sentences: Sentence[];
   overdueSubscription: Subscription = Subscription.EMPTY;
@@ -26,36 +26,34 @@ export class QuizComponent implements OnInit, OnChanges {
   learningSubscription: Subscription = Subscription.EMPTY;
   quizInProgress: boolean;
   overduePractice: boolean;
-  learning: boolean;
 
-  constructor(private quizService: QuizService, private router: Router, private authService: AuthService) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes["clickedButton"]["currentValue"]);
-    if (changes["clickedButton"]["currentValue"]=="translate"){
-      this.quizService.getLearnableSentences();
+  constructor(private quizService: QuizService) { }
+  /*
+    ngOnChanges(changes: SimpleChanges) {
+      console.log(changes["clickedButton"]["currentValue"]);
+      if (changes["clickedButton"]["currentValue"]=="translate"){
+        this.quizService.getLearnableSentences();
+      }
     }
-   
-
-  }
-
+  */
   ngOnInit(): void {
-    this.quizInProgress = false;
-    this.subscribeToLearn();
-    //this.subscribeToPractice();
-    this.subscribeToOverdue();
-    this.getOverdues();
+    console.log(this.quizType);
+    if (this.quizType === 'learn')
+      this.subscribeToLearn();
+    if (this.quizType === 'overdue')
+      this.subscribeToOverdue();
+
   }
 
-  getOverdues(): void {
+  /*getOverdues(): void {
     this.quizService.getOverdueSentences();
-  }
+  }*/
 
-  practiceOverdue(): void {
+ /* practiceOverdue(): void {
     this.quizInProgress = true;
     this.displaySentence(this.sentences);
   }
-
+*/
   check(): void {
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
@@ -71,17 +69,26 @@ export class QuizComponent implements OnInit, OnChanges {
       this.sentence = this.sentences[this.numberOfSentences - 1];
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
-      this.quizService.checkIfLessonLearned();
+      ;
       swal("Well done!", "...You finished the quiz!")
         .then(() => {
           this.sentence = null;
           this.quizInProgress = false;
-          if (this.learning) {
+          this.quizService.checkIfLessonLearned()
+          .subscribe((sentences:Sentence[])=>{
+            if(sentences.length === 0){
+              this.readyForPromotion.emit(true);
+            }else{
+              this.readyForPromotion.emit(false);
+            }
+        })
+          
+         /* if (this.learning) {
             this.checkAvailablePromotion();
             this.learning = false;
           } else if (this.overduePractice) {
             this.getOverdues();
-          }
+          }*/
         })
     }
   }
@@ -99,14 +106,14 @@ export class QuizComponent implements OnInit, OnChanges {
     this.displaySentence(sentences);
   }
 
-  private async checkAvailablePromotion() {
+/*  private async checkAvailablePromotion() {
     if (this.quizService.isCurrentLessonLearned()) {
       this.authService.currentLessonFinished();
       let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
       swal(`You've mastered the ways of the ${lessonName}, well done!`);
     }
   }
-
+*/
   private subscribeToLearn() {
     if (this.learningSubscription) {
       this.learningSubscription.unsubscribe();
@@ -114,27 +121,27 @@ export class QuizComponent implements OnInit, OnChanges {
     this.learningSubscription = this.quizService.getLearnableList()
       .subscribe((sentences: Sentence[]) => {
         if (sentences.length != 0) {
-          this.learning = true;
           this.startQuiz(sentences);
         } else {
-          swal("Hold your horses!", "Your latest translation is under approval. Wait until tomorrow.");
-        }
-      })
-  }
-
- /* private subscribeToPractice(): void {
-    if (this.practiceSubscription) {
-      this.practiceSubscription.unsubscribe();
-    }
-    this.practiceSubscription = this.quizService.getPracticeSentences()
-      .subscribe((sentences: Sentence[]) => {
-        if (sentences.length != 0) {
-          this.startQuiz(sentences);
-        } else {
-          swal("Oops", "You haven't learned anything from this lesson yet.");
+          swal("Hold your horses!", "There is nothing to learn :(");
         }
       });
-  }*/
+      this.quizService.getLearnableSentences();
+  }
+
+  /* private subscribeToPractice(): void {
+     if (this.practiceSubscription) {
+       this.practiceSubscription.unsubscribe();
+     }
+     this.practiceSubscription = this.quizService.getPracticeSentences()
+       .subscribe((sentences: Sentence[]) => {
+         if (sentences.length != 0) {
+           this.startQuiz(sentences);
+         } else {
+           swal("Oops", "You haven't learned anything from this lesson yet.");
+         }
+       });
+   }*/
 
   private subscribeToOverdue(): void {
     if (this.overdueSubscription) {

@@ -99,11 +99,6 @@ router.patch('/rank', (req, res, next) => {
         {
             $set: {
                 "rank": req.body.rank + 1,
-                "currentStoryLearned": false,
-                "currentStorySent": null,
-                "currentStoryRecieved": false,
-                "currentStoryFinished": null,
-                "currentLessonFinished": null
             }
         },
         () => {
@@ -166,9 +161,9 @@ function initProgress(language, rank) {
     console.log("language: " + language);
     Scroll.findOne({
         language: language,
-        storyNumber: rank
+        number: rank
     }, '_id')
-        .then(id => Sentence.find({ "lesson_id": id._id })
+        .then(id => Sentence.find({ "scroll_id": id._id })
             .then(documents => {
                 for (let document of documents) {
                     const prog = new Progress({

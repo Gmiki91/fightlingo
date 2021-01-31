@@ -1,4 +1,11 @@
 <p>library works!</p>
 <button (click)="onChooseScroll()">Choose a scroll</button>
 <button (click)="onLeave()">Leave</button>
-<!--<app-quiz [clickedButton]="clickedButton"></app-quiz>-->
+<div *ngFor="let scroll of scrolls">
+    <button (click)="onScrollClicked(scroll)">{{scroll._id}}</button>
+</div>
+<div *ngIf="selectedScroll">
+    <label>{{selectedScroll.title}}</label>
+    <button (click)="onScrollBtnClicked()" *ngIf="buttonText != '' ">{{buttonText}}</button>
+</div>
+<app-quiz *ngIf="quizType" [quizType]="quizType" (readyForPromotion)="quizFinished($event)"></app-quiz>
