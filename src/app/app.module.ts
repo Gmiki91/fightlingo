@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { ScrollService } from './services/scroll.service';
 import { CityComponent } from './city/city.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CityComponent } from './city/city.component';
     LoginComponent,
     SignUpComponent,
     CityComponent,
+    HeaderComponent,
   ],
   imports: [
     FormsModule,

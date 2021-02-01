@@ -21,7 +21,7 @@ export class QuizComponent implements OnInit {
   displayedSentence: string;
   sentence: Sentence;
   sentences: Sentence[];
-  overdueSubscription: Subscription = Subscription.EMPTY;
+
   practiceSubscription: Subscription = Subscription.EMPTY;
   learningSubscription: Subscription = Subscription.EMPTY;
   quizInProgress: boolean;
@@ -40,8 +40,8 @@ export class QuizComponent implements OnInit {
     console.log(this.quizType);
     if (this.quizType === 'learn')
       this.subscribeToLearn();
-    if (this.quizType === 'overdue')
-      this.subscribeToOverdue();
+    //if (this.quizType === 'overdue')
+     // this.subscribeToOverdue();
 
   }
 
@@ -143,15 +143,6 @@ export class QuizComponent implements OnInit {
        });
    }*/
 
-  private subscribeToOverdue(): void {
-    if (this.overdueSubscription) {
-      this.overdueSubscription.unsubscribe();
-    }
-    this.overdueSubscription = this.quizService.getOverdueList()
-      .subscribe((sentences: Sentence[]) => {
-        this.sentences = sentences;
-        this.overduePractice = sentences.length == 0 ? false : true;
-      });
-  }
+  
 
 }

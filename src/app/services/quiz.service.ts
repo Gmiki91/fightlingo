@@ -5,10 +5,11 @@ import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { Sentence } from '../models/sentence.model';
 import { Progress } from '../models/progress.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class QuizService {
-    private overdueListChanged=new Subject<Sentence[]>();
+    private overdueList=new BehaviorSubject<Sentence[]>(null);
     private learnableListChanged=new Subject<Sentence[]>();
     //private practiceReady=new Subject<Sentence[]>();
     private currentLessonLearned:boolean;
@@ -61,11 +62,13 @@ export class QuizService {
         this.user=this.authService.user;
         this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
         .subscribe((responseData:Sentence[])=>{
-            this.overdueListChanged.next(responseData);
+            console.log("responsedtat ", responseData);
+            this.overdueList.next(responseData);
         });
     }
+
     getOverdueList(){
-        return this.overdueListChanged.asObservable();
+        return this.overdueList.asObservable();
 
     }
 

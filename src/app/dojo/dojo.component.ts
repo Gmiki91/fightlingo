@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import swal from 'sweetalert';
+import { Subscription } from 'rxjs';
+import { QuizService } from '../services/quiz.service';
+import { Sentence } from '../models/sentence.model';
 
 @Component({
   selector: 'app-dojo',
@@ -8,11 +11,12 @@ import swal from 'sweetalert';
   styleUrls: ['./dojo.component.css']
 })
 export class DojoComponent implements OnInit {
+  
+  constructor(private authService: AuthService, private quizService:QuizService) { }
 
-  constructor(private authService: AuthService) { }
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
+  
+/*
   onMailBox(): void {
     if (this.authService.user.currentStoryLearned && !this.authService.user.currentStorySent) {
       this.authService.currentStorySent();
@@ -34,6 +38,5 @@ export class DojoComponent implements OnInit {
         swal("The guild has approved your latest translation. You recieved a new book.")
       }
     }
-  }
-
+  }*/
 }
