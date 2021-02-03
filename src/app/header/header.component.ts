@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeToOverdue();
-
   }
 
   private subscribeToOverdue(): void {

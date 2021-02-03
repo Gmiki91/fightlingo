@@ -14,6 +14,7 @@ export class QuizComponent implements OnInit {
 
   @ViewChild("input") userAnswer;
   @Input() quizType: string;
+  @Input() overdueSentences:Sentence[];
   @Output() readyForPromotion: EventEmitter<boolean> = new EventEmitter();
 
   levelSelected: number;
@@ -37,9 +38,11 @@ export class QuizComponent implements OnInit {
     }
   */
   ngOnInit(): void {
-    console.log(this.quizType);
+    console.log(this.overdueSentences);
     if (this.quizType === 'learn')
       this.subscribeToLearn();
+      if(this.overdueSentences)
+      this.startQuiz(this.overdueSentences);
     //if (this.quizType === 'overdue')
      // this.subscribeToOverdue();
 
