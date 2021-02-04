@@ -27,7 +27,7 @@ router.post("/overdue", (req, res, next) => {
 
 //practicable sentences
 router.post("/:lessonId", (req, res, next) => {
-    Lesson.findOne({ _id: req.params.lessonId })
+    Scroll.findOne({ _id: req.params.lessonId })
         .then(lesson => findProgress(lesson, true, req.body._id)
             .then(result => {
                 res.status(200).send(result);

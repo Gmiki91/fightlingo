@@ -11,5 +11,18 @@
             <button [disabled]="!sentence" (click)="check()">Check</button>
         </div>
     </div>
+    <div *ngIf="flashCardsInProgress">
+        <div style="text-align: center;" *ngIf="sentence">
+            <label>{{displayedSentence}}</label>
+        </div>
+        <div style="text-align: center;">
+            <button  (click)="previousCard()"><<</button>
+            <button  (click)="flipCard()">Flip card</button>
+            <button  (click)="nextCard()">>></button>
+        </div>
+        <div style="text-align: center;">
+            <button (click)="stopFlashCards()">Quit flashcards</button>
+        </div>
+    </div>
 </div>
 

@@ -8,4 +8,5 @@
     <label>{{selectedScroll.title}}</label>
     <button (click)="onScrollBtnClicked()" *ngIf="buttonText != '' ">{{buttonText}}</button>
 </div>
-<app-quiz *ngIf="quizType" [quizType]="quizType" (readyForPromotion)="quizFinished($event)"></app-quiz>
+<app-quiz *ngIf="quizType" [quizType]="quizType" [scroll]="selectedScroll" (readyForPromotion)="quizFinished($event)">
+</app-quiz>

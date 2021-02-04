@@ -42,21 +42,20 @@ export class LibraryComponent implements OnInit {
     else
       this.buttonText = "Practice";
 
+      console.log("selected", scroll);
     this.selectedScroll = scroll;
   }
 
   onScrollBtnClicked(): void {
     if (this.buttonText === "Translate") {
       //translate(learn)
-      console.log("start quiz!");
       this.quizType = "learn";
     } else {
-      //flashcards
+      this.quizType="practice";
     }
   }
 
   quizFinished(event): void {
-    console.log(event);
     if (event) {
       this.authService.updateRank();
       swal(`You've finished this scroll! Well done!`);

@@ -4,6 +4,7 @@ import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
 import { EventEmitter } from '@angular/core';
+import { Scroll } from '../models/scroll.model';
 
 @Component({
   selector: 'app-quiz',
@@ -14,10 +15,10 @@ export class QuizComponent implements OnInit {
 
   @ViewChild("input") userAnswer;
   @Input() quizType: string;
-  @Input() overdueSentences:Sentence[];
+  @Input() scroll: Scroll;
+  @Input() overdueSentences: Sentence[];
   @Output() readyForPromotion: EventEmitter<boolean> = new EventEmitter();
 
-  levelSelected: number;
   numberOfSentences: number;
   displayedSentence: string;
   sentence: Sentence;
@@ -26,37 +27,22 @@ export class QuizComponent implements OnInit {
   practiceSubscription: Subscription = Subscription.EMPTY;
   learningSubscription: Subscription = Subscription.EMPTY;
   quizInProgress: boolean;
-  overduePractice: boolean;
+  flashCardsInProgress: boolean;
 
   constructor(private quizService: QuizService) { }
-  /*
-    ngOnChanges(changes: SimpleChanges) {
-      console.log(changes["clickedButton"]["currentValue"]);
-      if (changes["clickedButton"]["currentValue"]=="translate"){
-        this.quizService.getLearnableSentences();
-      }
-    }
-  */
+
   ngOnInit(): void {
-    console.log(this.overdueSentences);
+    console.log(this.quizType);
+    if (this.overdueSentences)
+      this.startQuiz(this.overdueSentences);
     if (this.quizType === 'learn')
       this.subscribeToLearn();
-      if(this.overdueSentences)
-      this.startQuiz(this.overdueSentences);
-    //if (this.quizType === 'overdue')
-     // this.subscribeToOverdue();
+    else if (this.quizType === 'practice')
+      this.subscribeToPractice();
 
   }
 
-  /*getOverdues(): void {
-    this.quizService.getOverdueSentences();
-  }*/
 
- /* practiceOverdue(): void {
-    this.quizInProgress = true;
-    this.displaySentence(this.sentences);
-  }
-*/
   check(): void {
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
@@ -78,30 +64,69 @@ export class QuizComponent implements OnInit {
           this.sentence = null;
           this.quizInProgress = false;
           this.quizService.checkIfLessonLearned()
-          .subscribe((sentences:Sentence[])=>{
-            if(sentences.length === 0){
-              this.readyForPromotion.emit(true);
-            }else{
-              this.readyForPromotion.emit(false);
-            }
-        })
-          
-         /* if (this.learning) {
-            this.checkAvailablePromotion();
-            this.learning = false;
-          } else if (this.overduePractice) {
-            this.getOverdues();
-          }*/
+            .subscribe((sentences: Sentence[]) => {
+              if (sentences.length === 0) {
+                this.readyForPromotion.emit(true);
+              } else {
+                this.readyForPromotion.emit(false);
+              }
+            })
         })
     }
   }
+  flipCard(): void {
+    if (this.displayedSentence.includes(this.sentence.english[0]))
+      this.concatTranslations(this.sentence.translation);
+    else
+      this.concatTranslations(this.sentence.english);
+  }
 
+  previousCard(): void {
+    let index = this.sentences.indexOf(this.sentence);
+    if (index - 1 < 0)
+      this.sentence = this.sentences[this.sentences.length];
+    else
+      this.sentence = this.sentences[index - 1];
+
+      this.concatTranslations(this.sentence.english);
+  }
+
+  nextCard(): void {
+    let index = this.sentences.indexOf(this.sentence);
+    console.log(this.sentences);
+    console.log(this.sentences[1]);
+    console.log(index);
+
+    if (index + 1 > this.sentences.length-1)
+      this.sentence = this.sentences[0];
+    else
+      this.sentence = this.sentences[index + 1];
+
+      this.concatTranslations(this.sentence.english);
+  }
+
+  stopFlashCards():void{
+    this.sentence = null;
+    this.flashCardsInProgress=false;
+    this.readyForPromotion.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
+  }
 
   private displaySentence(sentences: Sentence[]): void {
     this.numberOfSentences = sentences.length;
     this.sentences = sentences;
     this.sentence = sentences[this.numberOfSentences - 1];
-    this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
+    if (this.quizInProgress)
+      this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
+    if (this.flashCardsInProgress) {
+      this.concatTranslations(this.sentence.english);
+    }
+  }
+
+  private concatTranslations(translations: string[]): void {
+    this.displayedSentence = "";
+    translations.forEach((translation) => this.displayedSentence += translation + ", ");
+    this.displayedSentence = this.displayedSentence.slice(0, -2);
+
   }
 
   private startQuiz(sentences: Sentence[]): void {
@@ -109,14 +134,12 @@ export class QuizComponent implements OnInit {
     this.displaySentence(sentences);
   }
 
-/*  private async checkAvailablePromotion() {
-    if (this.quizService.isCurrentLessonLearned()) {
-      this.authService.currentLessonFinished();
-      let lessonName = await this.quizService.getLessonByPlayerRank().pipe(first()).toPromise();
-      swal(`You've mastered the ways of the ${lessonName}, well done!`);
-    }
+  private startFlashCards(sentences: Sentence[]): void {
+    this.flashCardsInProgress = true;
+    this.displaySentence(sentences);
   }
-*/
+
+
   private subscribeToLearn() {
     if (this.learningSubscription) {
       this.learningSubscription.unsubscribe();
@@ -129,23 +152,21 @@ export class QuizComponent implements OnInit {
           swal("Hold your horses!", "There is nothing to learn :(");
         }
       });
-      this.quizService.getLearnableSentences();
+    this.quizService.getLearnableSentences();
   }
 
-  /* private subscribeToPractice(): void {
-     if (this.practiceSubscription) {
-       this.practiceSubscription.unsubscribe();
-     }
-     this.practiceSubscription = this.quizService.getPracticeSentences()
-       .subscribe((sentences: Sentence[]) => {
-         if (sentences.length != 0) {
-           this.startQuiz(sentences);
-         } else {
-           swal("Oops", "You haven't learned anything from this lesson yet.");
-         }
-       });
-   }*/
-
-  
-
+  private subscribeToPractice(): void {
+    if (this.practiceSubscription) {
+      this.practiceSubscription.unsubscribe();
+    }
+    this.practiceSubscription = this.quizService.getPracticableList()
+      .subscribe((sentences: Sentence[]) => {
+        if (sentences.length != 0) {
+          this.startFlashCards(sentences);
+        } else {
+          swal("Oops", "You haven't learned anything from this lesson yet.");
+        }
+      });
+    this.quizService.getPracticableSentences(this.scroll._id);
+  }
 }
