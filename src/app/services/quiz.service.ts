@@ -50,7 +50,6 @@ export class QuizService {
         this.user = this.authService.user;
         this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
             .subscribe((responseData: Sentence[]) => {
-                console.log("responsedtat ", responseData);
                 this.overdueList.next(responseData);
             });
     }

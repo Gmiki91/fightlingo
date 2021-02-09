@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
@@ -23,23 +23,21 @@ export class QuizComponent implements OnInit {
   displayedSentence: string;
   sentence: Sentence;
   sentences: Sentence[];
+  quizInProgress: boolean;
+  flashCardsInProgress: boolean;
 
   practiceSubscription: Subscription = Subscription.EMPTY;
   learningSubscription: Subscription = Subscription.EMPTY;
-  quizInProgress: boolean;
-  flashCardsInProgress: boolean;
 
   constructor(private quizService: QuizService) { }
 
   ngOnInit(): void {
-    console.log(this.quizType);
     if (this.overdueSentences)
       this.startQuiz(this.overdueSentences);
     if (this.quizType === 'learn')
       this.subscribeToLearn();
     else if (this.quizType === 'practice')
       this.subscribeToPractice();
-
   }
 
 
@@ -58,7 +56,6 @@ export class QuizComponent implements OnInit {
       this.sentence = this.sentences[this.numberOfSentences - 1];
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
-      ;
       swal("Well done!", "...You finished the quiz!")
         .then(() => {
           this.sentence = null;
@@ -74,6 +71,7 @@ export class QuizComponent implements OnInit {
         })
     }
   }
+
   flipCard(): void {
     if (this.displayedSentence.includes(this.sentence.english[0]))
       this.concatTranslations(this.sentence.translation);
@@ -93,9 +91,6 @@ export class QuizComponent implements OnInit {
 
   nextCard(): void {
     let index = this.sentences.indexOf(this.sentence);
-    console.log(this.sentences);
-    console.log(this.sentences[1]);
-    console.log(index);
 
     if (index + 1 > this.sentences.length-1)
       this.sentence = this.sentences[0];

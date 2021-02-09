@@ -19,7 +19,7 @@ export class ScrollService {
       this.lessons.next(response);
        });
    }*/
-  /* getScrollByNumber(number: number) {
+   getScrollByNumber(number: number) {
      return this.http.get<Scroll>('http://localhost:3300/api/scrolls/' + this.authService.user.language + '/' + number);
-   }*/
+   }
 }

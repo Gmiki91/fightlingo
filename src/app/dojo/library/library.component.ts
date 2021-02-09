@@ -20,7 +20,9 @@ export class LibraryComponent implements OnInit {
   selectedScroll: Scroll;
   quizType: string;
 
-  constructor(private authService: AuthService, private ScrollService: ScrollService, private router: Router) { }
+  constructor(private authService: AuthService, private ScrollService: ScrollService, private router: Router) {
+   
+   }
 
   ngOnInit(): void {
     this.authService.getUserLoggedIn().subscribe(user => {
@@ -42,7 +44,6 @@ export class LibraryComponent implements OnInit {
     else
       this.buttonText = "Practice";
 
-      console.log("selected", scroll);
     this.selectedScroll = scroll;
   }
 

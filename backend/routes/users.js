@@ -115,50 +115,7 @@ router.patch('/level', (req, res, next) => {
         });
 });
 
-
-router.patch('/currentLessonFinished', (req, res, next) => {
-    User.updateOne({ _id: req.body._id },
-        { $set: { "currentLessonFinished": req.body.currentLessonFinished } },
-        () => {
-            res.status(200).send({ message: "Lesson learned" });
-        });
-});
-
-
-router.patch('/currentStoryLearned', (req, res, next) => {
-    User.updateOne({ _id: req.body._id },
-        { $set: { "currentStoryLearned": req.body.currentStoryLearned } },
-        () => {
-            res.status(200).send({ message: "Story learned" });
-        });
-});
-
-router.patch('/currentStorySent', (req, res, next) => {
-    User.updateOne({ _id: req.body._id },
-        { $set: { "currentStorySent": req.body.currentStorySent } },
-        () => {
-            res.status(200).send({ message: "Story sent" });
-        });
-});
-
-router.patch('/currentStoryRecieved', (req, res, next) => {
-    User.updateOne({ _id: req.body._id },
-        { $set: { "currentStoryRecieved": req.body.currentStoryRecieved } },
-        () => {
-            res.status(200).send({ message: "Story recieved back" });
-        });
-});
-
-router.patch('/currentStoryFinished', (req, res, next) => {
-    User.updateOne({ _id: req.body._id },
-        { $set: { "currentStoryFinished": req.body.currentStoryFinished } },
-        () => {
-            res.status(200).send({ message: "Story sent back" });
-        });
-});
-
 function initProgress(language, rank) {
-    console.log("language: " + language);
     Scroll.findOne({
         language: language,
         number: rank

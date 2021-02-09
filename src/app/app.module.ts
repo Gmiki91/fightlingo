@@ -23,6 +23,9 @@ import { AuthService } from './services/auth.service';
 import { ScrollService } from './services/scroll.service';
 import { CityComponent } from './city/city.component';
 import { HeaderComponent } from './header/header.component';
+import { CapitalComponent } from './capital/capital.component';
+import { GuildComponent } from './capital/guild/guild.component';
+import { GymComponent } from './capital/guild/gym/gym.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { HeaderComponent } from './header/header.component';
     SignUpComponent,
     CityComponent,
     HeaderComponent,
+    CapitalComponent,
+    GuildComponent,
+    GymComponent,
   ],
   imports: [
     FormsModule,
