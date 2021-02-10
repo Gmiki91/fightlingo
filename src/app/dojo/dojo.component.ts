@@ -12,10 +12,10 @@ import { Sentence } from '../models/sentence.model';
 })
 export class DojoComponent implements OnInit {
   
-  constructor(private authService: AuthService, private quizService:QuizService) { }
+  constructor(private quizService:QuizService) { }
 
   ngOnInit(): void {
-    this.quizService.getOverdueSentences();
+    
   }
   
 /*

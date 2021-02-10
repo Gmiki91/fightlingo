@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Sentence } from '../models/sentence.model';
 import { QuizService } from '../services/quiz.service';
@@ -8,12 +8,13 @@ import { QuizService } from '../services/quiz.service';
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
-export class CityComponent implements OnInit {
+export class CityComponent implements OnInit, OnDestroy {
 
   overdueAvailable: boolean;
   overdueSentences:Sentence[];
   overdueSubscription: Subscription = Subscription.EMPTY;
   constructor(private quizService: QuizService) { }
+
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -31,6 +32,9 @@ export class CityComponent implements OnInit {
         }else
           this.overdueAvailable = false;
       });
+  }
+  ngOnDestroy(): void {
+    this.overdueSubscription.unsubscribe();
   }
 
 }

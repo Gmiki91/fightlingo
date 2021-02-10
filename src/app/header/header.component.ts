@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,13 +11,14 @@ import { QuizService } from '../services/quiz.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   warning: boolean;
   overdueSubscription: Subscription = Subscription.EMPTY;
   constructor(private quizService: QuizService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
+    this.quizService.getOverdueSentences().toPromise();
   }
 
   logout():void{
@@ -36,5 +38,7 @@ export class HeaderComponent implements OnInit {
           this.warning = false;
       });
   }
-
+  ngOnDestroy(): void {
+    this.overdueSubscription.unsubscribe();
+  }
 }

@@ -54,18 +54,21 @@ export class QuizComponent implements OnInit {
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
       swal("Well done!", "...You finished the quiz!")
-        .then(async() =>  {
+        .then(async () => {
           this.sentence = null;
           this.quizInProgress = false;
-          const sentencesLeft = await this.quizService.getLearnableSentences().toPromise();
-            console.log(sentencesLeft.length === 0);
-              if (sentencesLeft.length === 0) {
-                this.readyForPromotion.emit(true);
-              } else {
-                this.readyForPromotion.emit(false);
-              }
-            })
-   
+          if (this.quizType === 'learn') {
+            const sentencesLeft = await this.quizService.getLearnableSentences().toPromise();
+            if (sentencesLeft.length === 0) {
+              this.readyForPromotion.emit(true);
+            } else {
+              this.readyForPromotion.emit(false);
+            }
+          }else{ //overdue
+            await this.quizService.getOverdueSentences().toPromise();
+          }
+        })
+
     }
   }
 
@@ -83,23 +86,23 @@ export class QuizComponent implements OnInit {
     else
       this.sentence = this.sentences[index - 1];
 
-      this.concatTranslations(this.sentence.english);
+    this.concatTranslations(this.sentence.english);
   }
 
   nextCard(): void {
     let index = this.sentences.indexOf(this.sentence);
 
-    if (index + 1 > this.sentences.length-1)
+    if (index + 1 > this.sentences.length - 1)
       this.sentence = this.sentences[0];
     else
       this.sentence = this.sentences[index + 1];
 
-      this.concatTranslations(this.sentence.english);
+    this.concatTranslations(this.sentence.english);
   }
 
-  stopFlashCards():void{
+  stopFlashCards(): void {
     this.sentence = null;
-    this.flashCardsInProgress=false;
+    this.flashCardsInProgress = false;
     this.readyForPromotion.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
   }
 
@@ -134,20 +137,19 @@ export class QuizComponent implements OnInit {
 
   private async subscribeToLearn() {
     const sentences = await this.quizService.getLearnableSentences().toPromise();
-    console.log("learnable", sentences);
-        if (sentences.length != 0) {
-          this.startQuiz(sentences);
-        } else {
-          swal("Hold your horses!", "There is nothing to learn :(");
-        }
+    if (sentences.length != 0) {
+      this.startQuiz(sentences);
+    } else {
+      swal("Hold your horses!", "There is nothing to learn :(");
+    }
   }
 
   private async subscribeToPractice() {
     const sentences = await this.quizService.getPracticableSentences(this.scroll._id).toPromise();
-        if (sentences.length != 0) {
-          this.startFlashCards(sentences);
-        } else {
-          swal("Oops", "You haven't learned anything from this lesson yet.");
-        }
+    if (sentences.length != 0) {
+      this.startFlashCards(sentences);
+    } else {
+      swal("Oops", "You haven't learned anything from this lesson yet.");
+    }
   }
 }
