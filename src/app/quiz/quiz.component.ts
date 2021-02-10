@@ -26,9 +26,6 @@ export class QuizComponent implements OnInit {
   quizInProgress: boolean;
   flashCardsInProgress: boolean;
 
-  practiceSubscription: Subscription = Subscription.EMPTY;
-  learningSubscription: Subscription = Subscription.EMPTY;
-
   constructor(private quizService: QuizService) { }
 
   ngOnInit(): void {
@@ -57,18 +54,18 @@ export class QuizComponent implements OnInit {
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
       swal("Well done!", "...You finished the quiz!")
-        .then(() => {
+        .then(async() =>  {
           this.sentence = null;
           this.quizInProgress = false;
-          this.quizService.checkIfLessonLearned()
-            .subscribe((sentences: Sentence[]) => {
-              if (sentences.length === 0) {
+          const sentencesLeft = await this.quizService.getLearnableSentences().toPromise();
+            console.log(sentencesLeft.length === 0);
+              if (sentencesLeft.length === 0) {
                 this.readyForPromotion.emit(true);
               } else {
                 this.readyForPromotion.emit(false);
               }
             })
-        })
+   
     }
   }
 
@@ -135,33 +132,22 @@ export class QuizComponent implements OnInit {
   }
 
 
-  private subscribeToLearn() {
-    if (this.learningSubscription) {
-      this.learningSubscription.unsubscribe();
-    }
-    this.learningSubscription = this.quizService.getLearnableList()
-      .subscribe((sentences: Sentence[]) => {
+  private async subscribeToLearn() {
+    const sentences = await this.quizService.getLearnableSentences().toPromise();
+    console.log("learnable", sentences);
         if (sentences.length != 0) {
           this.startQuiz(sentences);
         } else {
           swal("Hold your horses!", "There is nothing to learn :(");
         }
-      });
-    this.quizService.getLearnableSentences();
   }
 
-  private subscribeToPractice(): void {
-    if (this.practiceSubscription) {
-      this.practiceSubscription.unsubscribe();
-    }
-    this.practiceSubscription = this.quizService.getPracticableList()
-      .subscribe((sentences: Sentence[]) => {
+  private async subscribeToPractice() {
+    const sentences = await this.quizService.getPracticableSentences(this.scroll._id).toPromise();
         if (sentences.length != 0) {
           this.startFlashCards(sentences);
         } else {
           swal("Oops", "You haven't learned anything from this lesson yet.");
         }
-      });
-    this.quizService.getPracticableSentences(this.scroll._id);
   }
 }

@@ -13,7 +13,7 @@ const scrollsRoute=require('./routes/scrolls');
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
-//mongoose.set('useFindAndModify', false);
+mongoose.set('useFindAndModify', false);
 
 mongoose.connect(
     "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",

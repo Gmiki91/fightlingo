@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { Scroll } from 'src/app/models/scroll.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -25,14 +24,11 @@ export class LibraryComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.authService.getUserLoggedIn().subscribe(user => {
-      this.user = user;
-    });
-    this.authService.pushUser();
+    this.refreshUser();
   }
 
   async onChooseScroll() {
-    this.scrolls = await this.ScrollService.getScrolls().pipe(first()).toPromise();
+    this.scrolls = await this.ScrollService.getScrolls().toPromise();
 
   }
 
@@ -49,22 +45,21 @@ export class LibraryComponent implements OnInit {
 
   onScrollBtnClicked(): void {
     if (this.buttonText === "Translate") {
-      //translate(learn)
       this.quizType = "learn";
     } else {
       this.quizType="practice";
     }
   }
 
-  quizFinished(event): void {
+ async quizFinished(event) {
     if (event) {
-      this.authService.updateRank();
+      await this.authService.updateRank().toPromise();
       swal(`You've finished this scroll! Well done!`);
     }
     this.scrolls = null;
     this.selectedScroll = null;
     this.quizType = null;
-
+    this.refreshUser();
   }
 
   onWrite(): void {
@@ -89,7 +84,9 @@ export class LibraryComponent implements OnInit {
     })
   }
 
-
+  private refreshUser():void{
+    this.user=this.authService.getUser();
+  }
 
 
 }

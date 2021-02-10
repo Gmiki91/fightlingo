@@ -9,7 +9,7 @@ export class ScrollService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   getScrolls() {
-    return this.http.get<Scroll[]>('http://localhost:3300/api/scrolls/' + this.authService.user.language);
+    return this.http.get<Scroll[]>('http://localhost:3300/api/scrolls/' + this.authService.getUser().language);
   }
 
   /* getScrolls(levelSelected: number) {
@@ -20,6 +20,6 @@ export class ScrollService {
        });
    }*/
    getScrollByNumber(number: number) {
-     return this.http.get<Scroll>('http://localhost:3300/api/scrolls/' + this.authService.user.language + '/' + number);
+     return this.http.get<Scroll>('http://localhost:3300/api/scrolls/' + this.authService.getUser().language + '/' + number);
    }
 }

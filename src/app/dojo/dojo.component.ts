@@ -14,7 +14,9 @@ export class DojoComponent implements OnInit {
   
   constructor(private authService: AuthService, private quizService:QuizService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.quizService.getOverdueSentences();
+  }
   
 /*
   onMailBox(): void {

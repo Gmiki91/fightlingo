@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 import { QuizService } from 'src/app/services/quiz.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -21,12 +22,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   
   onLogin(form:NgForm){
-    this.authService.login(form.value.username, form.value.password);
-    this.subscription= this.authService.getUserLoggedIn()
-    .subscribe((user)=>{
+    this.subscription= this.authService.login(form.value.username, form.value.password)
+    .subscribe((user:User)=>{
       if(user){
         this.router.navigate(['dojo']);
-        this.quizService.getOverdueSentences();
       }
     })
   }

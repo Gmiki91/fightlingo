@@ -95,14 +95,11 @@ router.post('/byId', (req, res, next) => {
 
 router.patch('/rank', (req, res, next) => {
     initProgress(req.body.language, req.body.rank + 1);
-    User.updateOne({ _id: req.body._id },
-        {
-            $set: {
-                "rank": req.body.rank + 1,
-            }
-        },
-        () => {
-            res.status(200).send({ message: "User rank updated" });
+    User.findOneAndUpdate({ _id: req.body._id },
+        { $set: {"rank": req.body.rank + 1}},
+        {new:true},
+        (err, user) => {
+           return res.status(200).send(user);
         });
 });
 
@@ -110,8 +107,9 @@ router.patch('/level', (req, res, next) => {
 
     User.updateOne({ _id: req.body._id },
         { $set: { "level": req.body.level + 1 } },
-        () => {
-            res.status(200).send({ message: "User leveled up" });
+        {new:true},
+        (err, user) => {
+            return res.status(200).send(user);
         });
 });
 

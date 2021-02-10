@@ -1,53 +1,31 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { Sentence } from '../models/sentence.model';
 import { Progress } from '../models/progress.model';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class QuizService {
     private overdueList = new BehaviorSubject<Sentence[]>(null);
-    private learnableListChanged = new Subject<Sentence[]>();
-    private practicableListChanged = new Subject<Sentence[]>();
     private user: User;
 
     constructor(private http: HttpClient, private authService: AuthService) { }
 
-
     getPracticableSentences(id: string) {
-        this.user = this.authService.user;
-        this.http.post('http://localhost:3300/api/sentences/' + id, this.user)
-            .subscribe((sentences: Sentence[]) => {
-                this.practicableListChanged.next(sentences);
-            });
+        this.user = this.authService.getUser();
+       return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/' + id, this.user);
     }
-
-    getPracticableList() {
-        return this.practicableListChanged.asObservable();
-    }
-
 
     getLearnableSentences() {
-        this.user = this.authService.user;
-        this.http.post('http://localhost:3300/api/sentences/', this.user)
-            .subscribe((sentences: Sentence[]) => {
-                this.learnableListChanged.next(sentences);
-            });
-    }
-
-    getLearnableList() {
-        return this.learnableListChanged.asObservable();
-    }
-
-    checkIfLessonLearned() {
-        return this.http.post('http://localhost:3300/api/sentences/', this.user);
+        this.user = this.authService.getUser();
+        return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/', this.user);  
     }
 
     getOverdueSentences() {
-        this.user = this.authService.user;
+        this.user = this.authService.getUser();
         this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
             .subscribe((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
@@ -56,15 +34,12 @@ export class QuizService {
 
     getOverdueList() {
         return this.overdueList.asObservable();
-
     }
 
-
     updateSentence(sentenceId: string, answerEfficieny: number) {
-        this.user = this.authService.user;
+        this.user = this.authService.getUser();
         this.http.post<Progress>('http://localhost:3300/api/progress/' + sentenceId, this.user)
-            .subscribe((progress) => {
-
+            .subscribe((progress:Progress)=>{
                 if (!progress.learned) {
                     if (answerEfficieny >= 3) {
                         progress.learningProgress++;
@@ -99,8 +74,7 @@ export class QuizService {
                         progress.nextReviewDate = new Date(now + millisecondsInDay * progress.interval);
                     }
                 }
-                this.http.patch('http://localhost:3300/api/sentences', progress)
-                    .subscribe((response) => console.log(response));
+                this.http.patch('http://localhost:3300/api/sentences', progress).toPromise();
             });
     }
 
