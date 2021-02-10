@@ -1,6 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 
 
@@ -19,6 +20,10 @@ export class AppComponent implements OnInit, OnDestroy{
   }
   ngOnInit():void{
 
+    this.authService.getUserLoggedIn()
+    .pipe(map(() => console.log("helló"))
+
+    )
     this.subscription=this.authService.getUserLoggedIn()
     .subscribe((user)=>this.loggedIn = user ? true:false);
   }

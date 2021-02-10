@@ -54,6 +54,7 @@ export class AuthService {
        return this.http.patch<User>("http://localhost:3300/api/users/rank", this.user)
            .pipe(map(user => {
                 this.user = user;
+                this.userLogged.next(user);
             }));
     }
 
@@ -61,6 +62,7 @@ export class AuthService {
         return this.http.patch<User>("http://localhost:3300/api/users/level", this.user)
         .pipe(map(user => {
             this.user = user;
+            this.userLogged.next(user);
         }));
     }
 }
