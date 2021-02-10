@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Sentence } from '../models/sentence.model';
+import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
 
 @Component({
@@ -11,10 +13,15 @@ import { QuizService } from '../services/quiz.service';
 export class HeaderComponent implements OnInit {
   warning: boolean;
   overdueSubscription: Subscription = Subscription.EMPTY;
-  constructor(private quizService: QuizService) { }
+  constructor(private quizService: QuizService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
+  }
+
+  logout():void{
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 
   private subscribeToOverdue(): void {

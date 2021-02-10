@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { QuizService } from 'src/app/services/quiz.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -11,26 +8,17 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
-  private subscription:Subscription=Subscription.EMPTY;
+  constructor(private authService: AuthService, private router:Router) { }
 
-  constructor(private authService: AuthService, private router:Router, private quizService:QuizService) { }
-
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
   
-  onLogin(form:NgForm){
-    this.subscription= this.authService.login(form.value.username, form.value.password)
-    .subscribe((user:User)=>{
-      if(user){
-        this.router.navigate(['dojo']);
-      }
-    })
+ async onLogin(form:NgForm){
+   await this.authService.login(form.value.username, form.value.password).toPromise();
+   if(localStorage.getItem('user'))
+        this.router.navigate(['/']);
   }
 
-  ngOnDestroy():void{
-    this.subscription.unsubscribe();
-  }
+ 
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Language } from '../language.enum';
 import { AuthData } from '../models/auth-data.model';
 import { User } from '../models/user.model';
@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthService {
 
-    private userLogged = new Subject<User>();
     private user: User;
+    private updatedUser = new BehaviorSubject<User>(null);
 
     constructor(private http: HttpClient) { }
 
@@ -37,32 +37,37 @@ export class AuthService {
         return this.http.post<{ token: any, user: User }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
                 this.user = response.user;
-                this.userLogged.next(response.user);
-                return this.user;
+                localStorage.setItem("user",JSON.stringify(response.user));
+                this.updatedUser.next(response.user);
             }));
     }
 
-    getUserLoggedIn() {
-        return this.userLogged.asObservable();
-    }
-
-    getUser() {
-        return this.user;
+    getUpdatedUser(){
+        return this.updatedUser.asObservable();
     }
 
     updateRank() {
        return this.http.patch<User>("http://localhost:3300/api/users/rank", this.user)
            .pipe(map(user => {
-                this.user = user;
-                this.userLogged.next(user);
+                this.updateStorage(user);               
             }));
     }
 
     levelUp() {
         return this.http.patch<User>("http://localhost:3300/api/users/level", this.user)
         .pipe(map(user => {
-            this.user = user;
-            this.userLogged.next(user);
+            this.updateStorage(user);
         }));
+    }
+
+    logout(){
+        localStorage.removeItem("user");
+    }
+
+    private updateStorage(user:User){
+        localStorage.removeItem("user");
+        localStorage.setItem("user",JSON.stringify(user));
+        this.user=user;
+        this.updatedUser.next(user);
     }
 }

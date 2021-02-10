@@ -16,11 +16,9 @@ export class GuildComponent implements OnInit {
   scroll$:Observable<Scroll>;
   isIntro:boolean;
 
-  constructor(private authService: AuthService, private scrollService: ScrollService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.isIntro = this.authService.getUser()==null ? true: false;
-    console.log(this.isIntro);
   }
 
   onNotes():void{

@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { Sentence } from '../models/sentence.model';
@@ -12,20 +11,21 @@ export class QuizService {
     private overdueList = new BehaviorSubject<Sentence[]>(null);
     private user: User;
 
-    constructor(private http: HttpClient, private authService: AuthService) { }
+    constructor(private http: HttpClient, private auth: AuthService) {
+        this.auth.getUpdatedUser().subscribe((user:User)=>this.user= user);
+        if(!this.user)
+            this.user=JSON.parse(localStorage.getItem('user'));
+     }
 
     getPracticableSentences(id: string) {
-        this.user = this.authService.getUser();
        return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/' + id, this.user);
     }
 
     getLearnableSentences() {
-        this.user = this.authService.getUser();
         return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/', this.user);  
     }
 
     getOverdueSentences() {
-        this.user = this.authService.getUser();
         this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
             .subscribe((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
@@ -37,7 +37,6 @@ export class QuizService {
     }
 
     updateSentence(sentenceId: string, answerEfficieny: number) {
-        this.user = this.authService.getUser();
         this.http.post<Progress>('http://localhost:3300/api/progress/' + sentenceId, this.user)
             .subscribe((progress:Progress)=>{
                 if (!progress.learned) {

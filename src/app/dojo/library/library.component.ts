@@ -19,7 +19,7 @@ export class LibraryComponent implements OnInit {
   selectedScroll: Scroll;
   quizType: string;
 
-  constructor(private authService: AuthService, private ScrollService: ScrollService, private router: Router) {
+  constructor(private authService: AuthService, private scrollService: ScrollService, private router: Router) {
    
    }
 
@@ -28,7 +28,7 @@ export class LibraryComponent implements OnInit {
   }
 
   async onChooseScroll() {
-    this.scrolls = await this.ScrollService.getScrolls().toPromise();
+    this.scrolls = await this.scrollService.getScrolls().toPromise();
 
   }
 
@@ -85,8 +85,6 @@ export class LibraryComponent implements OnInit {
   }
 
   private refreshUser():void{
-    this.user=this.authService.getUser();
+    this.user=JSON.parse(localStorage.getItem('user'));
   }
-
-
 }

@@ -1,8 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthService } from './services/auth.service';
 
 
 @Component({
@@ -10,24 +9,27 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy{
+export class AppComponent implements OnInit, OnDestroy {
   
   title = 'fightlingo';
   loggedIn = false;
-  private subscription:Subscription;
+  routerSubscription = new Subscription();
 
-  constructor(private authService:AuthService){  
+  constructor(private router:Router){  
   }
   ngOnInit():void{
+    this.loggedIn = localStorage.getItem('user') ? true:false;
+    this.routerSubscription=this.router.events.subscribe(
+      event => {
+        if (event instanceof NavigationStart && event['url'] ==='/'){
+         this.loggedIn = localStorage.getItem('user') ? true:false;
+          if(this.loggedIn){
+          this.router.navigate(['dojo']);
+          }
+      }});
+    }
 
-    this.authService.getUserLoggedIn()
-    .pipe(map(() => console.log("helló"))
-
-    )
-    this.subscription=this.authService.getUserLoggedIn()
-    .subscribe((user)=>this.loggedIn = user ? true:false);
-  }
-  ngOnDestroy():void{
-    this.subscription.unsubscribe();
-  }
+    ngOnDestroy():void{
+      this.routerSubscription.unsubscribe();
+    }
 }
