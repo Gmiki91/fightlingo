@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
   ngOnDestroy(): void {
+    if(this.overdueSubscription)
     this.overdueSubscription.unsubscribe();
   }
 }

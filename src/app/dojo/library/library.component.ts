@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Scroll } from 'src/app/models/scroll.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,20 +13,21 @@ import swal from 'sweetalert';
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.css']
 })
-export class LibraryComponent implements OnInit {
+export class LibraryComponent implements OnInit, OnDestroy {
 
   buttonText: string;
   user: User;
   scrolls: Scroll[];
   selectedScroll: Scroll;
   quizType: string;
+  sub:Subscription;
 
-  constructor(private authService: AuthService, private scrollService: ScrollService, private router: Router) {
+  constructor(private auth: AuthService, private scrollService: ScrollService, private router: Router) {
    
    }
-
+  
   ngOnInit(): void {
-    this.refreshUser();
+   this.sub = this.auth.getUpdatedUser().subscribe((user:User)=>this.user = user);
   }
 
   async onChooseScroll() {
@@ -53,13 +56,12 @@ export class LibraryComponent implements OnInit {
 
  async quizFinished(event) {
     if (event) {
-      await this.authService.updateRank().toPromise();
+      await this.auth.updateRank().toPromise();
       swal(`You've finished this scroll! Well done!`);
     }
     this.scrolls = null;
     this.selectedScroll = null;
     this.quizType = null;
-    this.refreshUser();
   }
 
   onWrite(): void {
@@ -84,7 +86,10 @@ export class LibraryComponent implements OnInit {
     })
   }
 
-  private refreshUser():void{
-    this.user=JSON.parse(localStorage.getItem('user'));
+  ngOnDestroy(): void {
+    if(this.sub)
+    this.sub.unsubscribe();
   }
+
+
 }

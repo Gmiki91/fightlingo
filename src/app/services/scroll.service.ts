@@ -10,8 +10,6 @@ export class ScrollService {
   private user:User;
   constructor(private http: HttpClient, private auth: AuthService) {
     this.auth.getUpdatedUser().subscribe((user:User)=>this.user = user);
-    if(!this.user)
-      this.user=JSON.parse(localStorage.getItem('user'));
    }
 
   getScrolls() {
