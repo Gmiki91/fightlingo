@@ -36,7 +36,8 @@ export class AuthService {
         const authData: AuthData = { name, password };
         return this.http.post<{ token: any, user: User }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
-                localStorage.setItem("user", JSON.stringify(this.user));
+                localStorage.setItem("user", JSON.stringify(response.user));
+                this.user=response.user;
                 this.updatedUser.next(response.user);
             }));
     }
@@ -44,29 +45,32 @@ export class AuthService {
     getUpdatedUser(){
         if(!this.updatedUser.value)
             this.updatedUser.next(JSON.parse(localStorage.getItem("user")));
-        else
-            localStorage.setItem("user", JSON.stringify(this.updatedUser.value))
-        this.user=JSON.parse(localStorage.getItem("user")); // ha ezt kikommentezem, update rank után kijelentkezik, az app module null usert kap O_o
         return this.updatedUser.asObservable();
     }
 
     updateRank() {
        return this.http.patch<User>("http://localhost:3300/api/users/rank", this.user)
            .pipe(map(user => {
-            this.updatedUser.next(user);               
+               this.updateUser(user);
             }));
     }
 
     levelUp() {
         return this.http.patch<User>("http://localhost:3300/api/users/level", this.user)
         .pipe(map(user => {
-            this.updatedUser.next(user);
+            this.updateUser(user);
         }));
     }
 
     logout(){
         localStorage.setItem("user", null);
         this.updatedUser.next(null);
+    }
+
+    private updateUser(user:User){
+        localStorage.setItem("user", JSON.stringify(user));
+        this.user=user;
+        this.updatedUser.next(user);         
     }
 
 }
