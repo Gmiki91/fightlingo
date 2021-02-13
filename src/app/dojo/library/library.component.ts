@@ -22,9 +22,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   quizType: string;
   sub:Subscription;
 
-  constructor(private auth: AuthService, private scrollService: ScrollService, private router: Router) {
-   
-   }
+  constructor(private auth: AuthService, private scrollService: ScrollService, private router: Router) {}
   
   ngOnInit(): void {
    this.sub = this.auth.getUpdatedUser().subscribe((user:User)=>this.user = user);
@@ -32,7 +30,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async onChooseScroll() {
     this.scrolls = await this.scrollService.getScrolls().toPromise();
-
   }
 
   onScrollClicked(scroll: Scroll): void {

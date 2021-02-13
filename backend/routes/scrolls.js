@@ -1,17 +1,18 @@
 const express = require('express');
+const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 const Scroll = require("../models/scroll");
 
-
-router.get('/:language', (req, res, next) => {
+//get all scrolls
+router.get('/', authCheck, (req, res, next) => {
     Scroll.find({
-        language: req.params.language,
+        language: req.userData.language,
     })
         .then((result) => {
             return res.json(result);
         })
 })
-
+/*
 //get Scroll by number
 router.get('/:language/:storyRank', (req, res, next) => {
     Scroll.findOne({
@@ -23,7 +24,7 @@ router.get('/:language/:storyRank', (req, res, next) => {
                 .then((result) => { return res.json(result) })
         })
 })
-/*
+
 router.get('/oflevel/:language/:level', (req, res, next) => {
     Scroll.find({
         language: req.params.language,

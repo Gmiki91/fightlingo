@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input'
 import { MatRadioModule } from '@angular/material/radio';
@@ -26,6 +26,7 @@ import { HeaderComponent } from './header/header.component';
 import { CapitalComponent } from './capital/capital.component';
 import { GuildComponent } from './capital/guild/guild.component';
 import { GymComponent } from './capital/guild/gym/gym.component';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,10 @@ import { GymComponent } from './capital/guild/gym/gym.component';
     MatRadioModule,
     MatSelectModule,
   ],
-  providers: [QuizService, AuthService, ScrollService],
+  providers: [QuizService,
+    AuthService,
+    ScrollService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,9 +1,11 @@
+const ObjectId = require('mongoose').Types.ObjectId;
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Progress = require("../models/progress");
 const Scroll = require("../models/scroll");
+const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 let Sentence;
 let user;
@@ -54,7 +56,6 @@ router.post('/login', (req, res, next) => {
     let userData;
     User.findOne({ name: req.body.name })
         .then(user => {
-
             if (!user) {
                 return res.status(404).json({
                     message: "User not found"
@@ -70,12 +71,21 @@ router.post('/login', (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                { name: userData.name, userId: userData._id },
+                {
+                    userName: userData.name,
+                    userId: userData._id,
+                    userLevel:userData.level,
+                    userRank:userData.rank,
+                    userMoney:userData.money,
+                    userLanguage:userData.language,
+                },
                 'lol_not_very_cryptic',
                 { expiresIn: '1h' }
             );
+            res.setHeader('Authorization', 'Bearer ' + token);
             res.status(200).json({
                 token: token,
+                userId: userData._id,
                 user: userData
             });
         })
@@ -86,28 +96,27 @@ router.post('/login', (req, res, next) => {
         })
 })
 
-router.post('/byId', (req, res, next) => {
-    User.findOne({ _id: req.body._id })
+router.get('/:id', (req, res, next) => {
+    User.findOne({ _id: new ObjectId(req.params.id) })
         .then((user) => {
             return res.status(200).send(user)
         })
 })
 
-router.patch('/rank', (req, res, next) => {
-    initProgress(req.body.language, req.body.rank + 1);
-    User.findOneAndUpdate({ _id: req.body._id },
-        { $set: {"rank": req.body.rank + 1}},
-        {new:true},
+router.patch('/rank', authCheck, (req, res, next) => {
+    initProgress(req.userData.language, req.userData.rank + 1);
+    User.findOneAndUpdate({ _id: req.userData.id },
+        { $set: { "rank": req.userData.rank + 1 } },
+        { new: true },
         (err, user) => {
-           return res.status(200).send(user);
+            return res.status(200).send(user);
         });
 });
 
-router.patch('/level', (req, res, next) => {
-
-    User.updateOne({ _id: req.body._id },
-        { $set: { "level": req.body.level + 1 } },
-        {new:true},
+router.patch('/level', authCheck, (req, res, next) => {
+    User.updateOne({ _id: req.userData.id },
+        { $set: { "level": req.userData.level + 1 } },
+        { new: true },
         (err, user) => {
             return res.status(200).send(user);
         });

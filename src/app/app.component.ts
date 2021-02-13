@@ -1,6 +1,6 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
 
@@ -16,11 +16,17 @@ export class AppComponent implements OnInit, OnDestroy {
   loggedIn = false;
   sub = new Subscription();
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private router: Router) {
   }
   ngOnInit(): void {
+    const userId = localStorage.getItem('userId');
+    if(userId){
+      this.auth.getLoggedInUser(userId).toPromise();
+    }
     this.sub = this.auth.getUpdatedUser().subscribe(user => {
-      this.loggedIn = user == null ? false : true;
+      this.loggedIn = user ? true : false;
+      if(this.loggedIn)
+        this.router.navigate(['/dojo']);
     });
   }
 

@@ -9,7 +9,6 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthService {
 
-    private user: User;
     private updatedUser = new BehaviorSubject<User>(null);
 
     constructor(private http: HttpClient) { }
@@ -28,49 +27,47 @@ export class AuthService {
             currentLessonFinished: null,
             lastLoggedIn: new Date()
         };
-       return this.http.post("http://localhost:3300/api/users/signup", user);
-           
+       return this.http.post("http://localhost:3300/api/users/signup", user);  
     }
     
     login(name: string, password: string) {
         const authData: AuthData = { name, password };
-        return this.http.post<{ token: any, user: User }>("http://localhost:3300/api/users/login", authData)
+        return this.http.post<{ token: any, user: User, userId:any }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
-                localStorage.setItem("user", JSON.stringify(response.user));
-                this.user=response.user;
+                localStorage.setItem("token", response.token);
+                localStorage.setItem("userId", response.userId);
                 this.updatedUser.next(response.user);
             }));
     }
 
+    getLoggedInUser(userId:string){
+        return this.http.get<User>("http://localhost:3300/api/users/"+userId)
+            .pipe(map((user:User) => {
+                this.updatedUser.next(user);
+            }))
+    }
+
     getUpdatedUser(){
-        if(!this.updatedUser.value)
-            this.updatedUser.next(JSON.parse(localStorage.getItem("user")));
         return this.updatedUser.asObservable();
     }
 
     updateRank() {
-       return this.http.patch<User>("http://localhost:3300/api/users/rank", this.user)
+       return this.http.patch<User>("http://localhost:3300/api/users/rank", null)
            .pipe(map(user => {
-               this.updateUser(user);
+              this.updatedUser.next(user);         
             }));
     }
 
     levelUp() {
-        return this.http.patch<User>("http://localhost:3300/api/users/level", this.user)
+        return this.http.patch<User>("http://localhost:3300/api/users/level", null)
         .pipe(map(user => {
-            this.updateUser(user);
+            this.updatedUser.next(user);         
         }));
     }
 
     logout(){
-        localStorage.setItem("user", null);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         this.updatedUser.next(null);
     }
-
-    private updateUser(user:User){
-        localStorage.setItem("user", JSON.stringify(user));
-        this.user=user;
-        this.updatedUser.next(user);         
-    }
-
 }

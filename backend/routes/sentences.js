@@ -3,20 +3,21 @@ const router = express.Router();
 const Progress = require("../models/progress");
 const Scroll = require("../models/scroll");
 const ObjectId = require('mongoose').Types.ObjectId;
+const authCheck = require('../middleware/auth-check');
 var Sentence;
 
-
+/*
 router.post("/all", (req, res, next)=>{
     instantiateSentence(req.body.language);
     Sentence.find({level: req.body.level})
     .then((sentences) => {
         res.status(200).send(sentences)})
 })
-
+*/
 //overdue sentences
-router.post("/overdue", (req, res, next) => {
-    instantiateSentence(req.body.language);
-    Progress.find({ userId: req.body._id, nextReviewDate: { $lte: new Date() } })
+router.get("/overdue", authCheck, (req, res, next) => {
+    instantiateSentence(req.userData.language);
+    Progress.find({ userId: req.userData.id, nextReviewDate: { $lte: new Date() } })
         .then(documents => {
             findSentences(documents)
                 .then(results => {
@@ -26,18 +27,18 @@ router.post("/overdue", (req, res, next) => {
 });
 
 //practicable sentences
-router.post("/:lessonId", (req, res, next) => {
+router.get("/:lessonId", authCheck, (req, res, next) => {
     Scroll.findOne({ _id: req.params.lessonId })
-        .then(lesson => findProgress(lesson, true, req.body._id)
+        .then(lesson => findProgress(lesson, true, req.userData.id)
             .then(result => {
                 res.status(200).send(result);
             }))
 });
 
 //learnable sentences
-router.post("/", (req, res, next) => {
-    Scroll.findOne({ number: req.body.rank, language: req.body.language })
-        .then(scroll => findProgress(scroll, false, req.body._id)
+router.get("/",authCheck, authCheck, (req, res, next) => {
+    Scroll.findOne({ number: req.userData.rank, language: req.userData.language })
+        .then(scroll => findProgress(scroll, false, req.userData.id)
             .then(result => {
                 res.status(200).send(result);
             }))

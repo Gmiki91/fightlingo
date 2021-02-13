@@ -2,30 +2,26 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { User } from '../models/user.model';
 import { Sentence } from '../models/sentence.model';
 import { Progress } from '../models/progress.model';
 
 @Injectable()
 export class QuizService {
     private overdueList = new BehaviorSubject<Sentence[]>(null);
-    private user: User;
 
-    constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.getUpdatedUser().subscribe((user:User)=>this.user= user);
+    constructor(private http: HttpClient) {
      }
 
     getPracticableSentences(id: string) {
-       return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/' + id, this.user);
+       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/' + id);
     }
 
     getLearnableSentences() {
-        return this.http.post<Sentence[]>('http://localhost:3300/api/sentences/', this.user);  
+        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/');  
     }
 
     getOverdueSentences() {
-       return this.http.post('http://localhost:3300/api/sentences/overdue/', this.user)
+       return this.http.get('http://localhost:3300/api/sentences/overdue/')
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));
@@ -36,7 +32,7 @@ export class QuizService {
     }
 
     updateSentence(sentenceId: string, answerEfficieny: number) {
-        this.http.post<Progress>('http://localhost:3300/api/progress/' + sentenceId, this.user)
+        this.http.get<Progress>('http://localhost:3300/api/progress/' + sentenceId)
             .subscribe((progress:Progress)=>{
                 if (!progress.learned) {
                     if (answerEfficieny >= 3) {
