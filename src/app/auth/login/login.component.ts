@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     await this.authService.login(form.value.username, form.value.password).toPromise();
     this.sub = this.authService.getUpdatedUser().subscribe(user => {
       if (user)
-      this.router.navigate(['/dojo']);
+      this.router.navigate(['/']);
     })
   }
 

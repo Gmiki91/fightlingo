@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import swal from 'sweetalert';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dojo',
@@ -12,10 +14,13 @@ import { Sentence } from '../models/sentence.model';
 })
 export class DojoComponent implements OnInit {
   
-  constructor(private quizService:QuizService) { }
+  loggedIn$: Observable<boolean>;
 
+  constructor(private auth: AuthService) {  }
+  
   ngOnInit(): void {
-    
+    this.loggedIn$= this.auth.getUpdatedUser().pipe(map(user=>{return user ? true:false;}))
+
   }
   
 /*

@@ -13,24 +13,34 @@ import { QuizService } from '../services/quiz.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   warning: boolean;
-  overdueSubscription: Subscription = Subscription.EMPTY;
-  constructor(private quizService: QuizService, private authService: AuthService, private router: Router) { }
+  loggedIn: boolean;
+  overdueSub: Subscription = Subscription.EMPTY;
+  userSub: Subscription = Subscription.EMPTY;
+  constructor(private quizService: QuizService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.subscribeToOverdue();
-    this.quizService.getOverdueSentences().toPromise();
+    this.userSub = this.auth.getUpdatedUser().subscribe(user => {
+      if (user) {
+        this.loggedIn = true;
+        this.subscribeToOverdue();
+        this.quizService.getOverdueSentences().toPromise();
+      } else {
+        this.loggedIn = false;
+      }
+    });
+    
   }
 
   logout():void{
-    this.authService.logout();
+    this.auth.logout();
     this.router.navigate(['/']);
   }
 
   private subscribeToOverdue(): void {
-    if (this.overdueSubscription) {
-      this.overdueSubscription.unsubscribe();
+    if (this.overdueSub) {
+      this.overdueSub.unsubscribe();
     }
-    this.overdueSubscription = this.quizService.getOverdueList()
+    this.overdueSub = this.quizService.getOverdueList()
       .subscribe((sentences: Sentence[]) => {
         if (sentences && sentences.length != 0)
           this.warning = true;
@@ -39,7 +49,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
   ngOnDestroy(): void {
-    if(this.overdueSubscription)
-    this.overdueSubscription.unsubscribe();
+    if(this.overdueSub)
+    this.overdueSub.unsubscribe();
+    if(this.userSub)
+    this.userSub.unsubscribe();
   }
 }

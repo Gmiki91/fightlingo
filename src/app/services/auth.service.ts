@@ -27,12 +27,12 @@ export class AuthService {
             currentLessonFinished: null,
             lastLoggedIn: new Date()
         };
-       return this.http.post("http://localhost:3300/api/users/signup", user);  
+        return this.http.post("http://localhost:3300/api/users/signup", user);
     }
-    
+
     login(name: string, password: string) {
         const authData: AuthData = { name, password };
-        return this.http.post<{ token: any, user: User, userId:any }>("http://localhost:3300/api/users/login", authData)
+        return this.http.post<{ token: string, user: User, userId: string }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);
@@ -40,34 +40,41 @@ export class AuthService {
             }));
     }
 
-    getLoggedInUser(userId:string){
-        return this.http.get<User>("http://localhost:3300/api/users/"+userId)
-            .pipe(map((user:User) => {
-                this.updatedUser.next(user);
+    refreshLoggedInUser(userId: string) {
+        return this.http.get<{user:User, token:string}>("http://localhost:3300/api/users/" + userId)
+            .pipe(map(response => {
+                localStorage.setItem("token", response.token);
+                this.updatedUser.next(response.user);
             }))
     }
 
-    getUpdatedUser(){
+    getUpdatedUser() {
         return this.updatedUser.asObservable();
     }
 
     updateRank() {
-       return this.http.patch<User>("http://localhost:3300/api/users/rank", null)
-           .pipe(map(user => {
-              this.updatedUser.next(user);         
+        return this.http.patch("http://localhost:3300/api/users/rank", null)
+            .pipe(map(() => {
+                this.autoAuthUser(); //to refresh token with new rank
             }));
     }
 
     levelUp() {
-        return this.http.patch<User>("http://localhost:3300/api/users/level", null)
-        .pipe(map(user => {
-            this.updatedUser.next(user);         
-        }));
+        return this.http.patch("http://localhost:3300/api/users/level", null)
+            .pipe(map(() => {
+                this.autoAuthUser();
+            }));
     }
 
-    logout(){
+    logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         this.updatedUser.next(null);
+    }
+
+    autoAuthUser() {
+        const userId = localStorage.getItem('userId');
+        if (userId)
+            this.refreshLoggedInUser(userId).toPromise();
     }
 }

@@ -96,12 +96,27 @@ router.post('/login', (req, res, next) => {
         })
 })
 
+
 router.get('/:id', (req, res, next) => {
     User.findOne({ _id: new ObjectId(req.params.id) })
         .then((user) => {
-            return res.status(200).send(user)
+            const token = jwt.sign(
+                {
+                    userName: user.name,
+                    userId: user._id,
+                    userLevel:user.level,
+                    userRank:user.rank,
+                    userMoney:user.money,
+                    userLanguage:user.language,
+                },
+                'lol_not_very_cryptic',
+                { expiresIn: '1h' }
+            );
+            res.setHeader('Authorization', 'Bearer ' + token);
+            return res.status(200).send({user:user, token:token})
         })
 })
+
 
 router.patch('/rank', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
@@ -109,7 +124,7 @@ router.patch('/rank', authCheck, (req, res, next) => {
         { $set: { "rank": req.userData.rank + 1 } },
         { new: true },
         (err, user) => {
-            return res.status(200).send(user);
+            return res.status(200).send({message:"rank updated"});
         });
 });
 
@@ -118,7 +133,7 @@ router.patch('/level', authCheck, (req, res, next) => {
         { $set: { "level": req.userData.level + 1 } },
         { new: true },
         (err, user) => {
-            return res.status(200).send(user);
+            return res.status(200).send({message:"level updated"});
         });
 });
 
@@ -127,7 +142,8 @@ function initProgress(language, rank) {
         language: language,
         number: rank
     }, '_id')
-        .then(id => Sentence.find({ "scroll_id": id._id })
+        .then(id => 
+            Sentence.find({ "scroll_id": id._id })
             .then(documents => {
                 for (let document of documents) {
                     const prog = new Progress({
@@ -144,5 +160,6 @@ function initProgress(language, rank) {
                 }
             })
         )
+            
 }
 module.exports = router;

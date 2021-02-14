@@ -36,7 +36,7 @@ router.get("/:lessonId", authCheck, (req, res, next) => {
 });
 
 //learnable sentences
-router.get("/",authCheck, authCheck, (req, res, next) => {
+router.get("/",authCheck, (req, res, next) => {
     Scroll.findOne({ number: req.userData.rank, language: req.userData.language })
         .then(scroll => findProgress(scroll, false, req.userData.id)
             .then(result => {

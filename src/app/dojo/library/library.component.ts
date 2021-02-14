@@ -78,7 +78,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       },
     }).then((answer) => {
       if (answer == "yes") {
-        this.router.navigate(['/dojo']);
+        this.router.navigate(['/']);
       }
     })
   }

@@ -1,3 +1,11 @@
-<p *ngIf="warning">van overdue</p>
-<p *ngIf="!warning">nincs overdue</p>
-<button (click)="logout()">Logout</button>
+<div *ngIf="!loggedIn">
+    <mat-toolbar color="primary">
+        <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/login">Log in</a>
+        <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/sign-up">Sign up</a>
+    </mat-toolbar>
+</div>
+<div *ngIf="loggedIn">
+    <p *ngIf="warning">van overdue</p>
+    <p *ngIf="!warning">nincs overdue</p>
+    <button (click)="logout()">Logout</button>
+</div>
