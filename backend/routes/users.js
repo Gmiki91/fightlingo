@@ -79,7 +79,7 @@ router.post('/login', (req, res, next) => {
                     userMoney:userData.money,
                     userLanguage:userData.language,
                 },
-                'lol_not_very_cryptic',
+                process.env.JWT_KEY,
                 { expiresIn: '1h' }
             );
             res.setHeader('Authorization', 'Bearer ' + token);
@@ -109,7 +109,7 @@ router.get('/:id', (req, res, next) => {
                     userMoney:user.money,
                     userLanguage:user.language,
                 },
-                'lol_not_very_cryptic',
+                process.env.JWT_KEY,
                 { expiresIn: '1h' }
             );
             res.setHeader('Authorization', 'Bearer ' + token);

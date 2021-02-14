@@ -16,7 +16,7 @@ const scrollsRoute=require('./routes/scrolls');
 mongoose.set('useFindAndModify', false);
 
 mongoose.connect(
-    "mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
+    "mongodb+srv://miki:"+process.env.MONGO_ATLAS_PW+"@cluster0.hakyf.mongodb.net/fightlingo?retryWrites=true&w=majority",
     {useNewUrlParser: true,useUnifiedTopology: true})
 .then(()=>{
     console.log("connected to database!");
