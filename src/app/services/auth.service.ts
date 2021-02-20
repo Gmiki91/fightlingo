@@ -32,7 +32,7 @@ export class AuthService {
 
     login(name: string, password: string) {
         const authData: AuthData = { name, password };
-        return this.http.post<{ token: string, user: User, userId: string }>("http://localhost:3300/api/users/login", authData)
+        return this.http.post<{ token: string, user: User, userId: string, introDone:string }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);

@@ -1,7 +1,11 @@
 <p>guild works!</p>
+<app-sign-up *ngIf="showSignUpForm"
+    (signUpEvent)="startIntro($event)"
+
+></app-sign-up>
+<div class="tw"></div>
+<!--
 <div>
     <div  *ngIf="scroll$ | async as scroll" >
 <p >{{scroll.grammar}}</p>
-</div>
-    <app-sign-up></app-sign-up>
-</div>
+-->

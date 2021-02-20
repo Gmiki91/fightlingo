@@ -6,14 +6,16 @@ import { CityComponent } from './city/city.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
 import { AuthGuard} from './auth/auth.guard';
+import { GuildComponent } from './capital/guild/guild.component';
+import { GuildGuard } from './auth/guild.guard';
 
 
 const routes: Routes = [
   {path:'', component: DojoComponent},
-  {path:'city', component: CityComponent, canActivate: [AuthGuard]},
-  {path:'library', component: LibraryComponent, canActivate: [AuthGuard]},
   {path:'login', component:LoginComponent},
-  {path:'sign-up', component:SignUpComponent}
+  {path:'guild', component:GuildComponent},
+  {path:'city', component: CityComponent, canActivate: [AuthGuard]},
+  {path:'library', component: LibraryComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
