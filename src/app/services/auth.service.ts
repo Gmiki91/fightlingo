@@ -5,6 +5,7 @@ import { Language } from '../language.enum';
 import { AuthData } from '../models/auth-data.model';
 import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
+import { SignupForm } from '../models/signupform.model';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +13,13 @@ export class AuthService {
     private updatedUser = new BehaviorSubject<User>(null);
 
     constructor(private http: HttpClient) { }
-
-    createUser(email: string, password: string, name: string, pic: string, language: Language) {
+    createUser(form:SignupForm) {
         const user: User = {
-            email, password, name, pic, language,
+            email:form.email,
+            password:form.password,
+            name:form.name,
+            pic:form.avatar,
+            language:form.language,
             level: 1,
             rank: 1,
             money: 3,

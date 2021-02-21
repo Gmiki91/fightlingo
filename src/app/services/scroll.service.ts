@@ -18,8 +18,8 @@ export class ScrollService {
       console.log(response);
       this.lessons.next(response);
        });
-   }
-   getScrollByNumber(number: number) {
-     return this.http.get<Scroll>('http://localhost:3300/api/scrolls/' + this.user.language + '/' + number);
    }*/
+   getFirstScroll(number: number,language:string,) {
+     return this.http.get<Scroll>('http://localhost:3300/api/scrolls/' + language + '/' + number);
+   }
 }

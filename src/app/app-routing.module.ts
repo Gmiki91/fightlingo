@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { CityComponent } from './city/city.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
 import { AuthGuard} from './auth/auth.guard';
 import { GuildComponent } from './capital/guild/guild.component';
-import { GuildGuard } from './auth/guild.guard';
 
 
 const routes: Routes = [

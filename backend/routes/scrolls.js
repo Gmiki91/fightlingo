@@ -12,19 +12,17 @@ router.get('/', authCheck, (req, res, next) => {
             return res.json(result);
         })
 })
-/*
-//get Scroll by number
-router.get('/:language/:storyRank', (req, res, next) => {
+
+//get FirstScroll 
+router.get('/:language/:number', (req, res, next) => {
     Scroll.findOne({
         language: req.params.language,
-        number: req.params.storyRank
-    }, '_id')
-        .then((id) => {
-            Scroll.findOne({ _id: id })
-                .then((result) => { return res.json(result) })
-        })
-})
+        number: req.params.number
+    })
+        .then((result) => { return res.json(result) })
 
+})
+/*
 router.get('/oflevel/:language/:level', (req, res, next) => {
     Scroll.find({
         language: req.params.language,

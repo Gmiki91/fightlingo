@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Language } from 'src/app/language.enum';
+import { SignupForm } from 'src/app/models/signupform.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-  @Output() signUpEvent:EventEmitter<{form:NgForm, beginner:boolean}> = new EventEmitter();
+  @Output() signUpEvent:EventEmitter<SignupForm> = new EventEmitter();
   languages = [Language.FRENCH, Language.RUSSIAN, Language.SERBIAN];
   language: Language;
   imagePaths = ['szorny1',
@@ -19,9 +19,9 @@ export class SignUpComponent implements OnInit {
     'szorny4'];
   imagePathIndex: number = 0;
   imagePath: string;
-  beginner:boolean = false;
+  beginner:boolean;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.imagePathIndex = 0;
@@ -30,8 +30,16 @@ export class SignUpComponent implements OnInit {
 
   async onSignUp(form: NgForm) {
     // check for mail/userename in database for duplicates
-    this.signUpEvent.emit({form:form, beginner:this.beginner});
-   // await this.authService.createUser(form.value.email, form.value.password, form.value.fightername, this.imagePath, this.language).toPromise();
+    const signupform: SignupForm = {
+      email:form.value.email, 
+      password:form.value.password,
+      name: form.value.fightername, 
+      beginner: this.beginner,
+      avatar: this.imagePath,
+      language: this.language
+    }
+    this.signUpEvent.emit(signupform);
+   //
   }
 
   previousPic() {
@@ -49,6 +57,6 @@ export class SignUpComponent implements OnInit {
   }
 
   isBeginner(event){
-    this.beginner=event.checked;
+    this.beginner=event.value==="true"? true : false;
   }
 }
