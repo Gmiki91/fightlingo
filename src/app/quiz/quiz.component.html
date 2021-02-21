@@ -1,6 +1,6 @@
 <div class="container">
     <img src="assets/menu.png">
-    <div  class="questions" *ngIf="quizInProgress">
+    <div  class="questions" *ngIf="quizInProgress || fightInProgress">
         <div style="text-align: center;" *ngIf="sentence">
             <label>{{displayedSentence}}</label>
         </div>
@@ -8,7 +8,8 @@
             <input #input>
         </div>
         <div style="text-align: center;">
-            <button [disabled]="!sentence" (click)="check()">Check</button>
+            <button *ngIf="quizInProgress" [disabled]="!sentence" (click)="checkQuiz()">Check</button>
+            <button *ngIf="fightInProgress" [disabled]="!sentence" (click)="checkFight()">Check</button>
         </div>
     </div>
     <div *ngIf="flashCardsInProgress">

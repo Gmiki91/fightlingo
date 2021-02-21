@@ -27,7 +27,7 @@ router.get("/overdue", authCheck, (req, res, next) => {
 });
 
 //practicable sentences
-router.get("/:lessonId", authCheck, (req, res, next) => {
+router.get("/array/:lessonId", authCheck, (req, res, next) => {
     Scroll.findOne({ _id: req.params.lessonId })
         .then(lesson => findProgress(lesson, true, req.userData.id)
             .then(result => {
@@ -35,8 +35,20 @@ router.get("/:lessonId", authCheck, (req, res, next) => {
             }))
 });
 
+//get one sentence for fight
+router.get("/one",authCheck, (req, res, next) => {
+    instantiateSentence(req.userData.language);
+    Progress.findOne({ userId:  req.userData.id, learned: true }, 'sentenceId')
+        .then(result =>
+            Sentence.findOne({ _id: result.sentenceId })
+                .then(sentence => {
+                    res.status(200).send(sentence);
+                })
+        )
+});
+
 //learnable sentences
-router.get("/",authCheck, (req, res, next) => {
+router.get("/", authCheck, (req, res, next) => {
     Scroll.findOne({ number: req.userData.rank, language: req.userData.language })
         .then(scroll => findProgress(scroll, false, req.userData.id)
             .then(result => {
@@ -71,9 +83,9 @@ function findProgress(lesson, learned, userId) {
                 Progress.find({ userId: new ObjectId(userId), learned: learned, sentenceId: { $in: sentenceIds } })
                     .then(progressData => {
                         findSentences(progressData)
-                        .then(sentences => {
-                            resolve(sentences);
-                        })
+                            .then(sentences => {
+                                resolve(sentences);
+                            })
                     })
             })
     })

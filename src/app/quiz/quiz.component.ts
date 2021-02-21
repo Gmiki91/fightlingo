@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
@@ -18,12 +17,13 @@ export class QuizComponent implements OnInit {
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
   @Output() readyForPromotion: EventEmitter<boolean> = new EventEmitter();
-
+  @Output() fightQuizResult: EventEmitter<boolean> = new EventEmitter();
   numberOfSentences: number;
   displayedSentence: string;
   sentence: Sentence;
   sentences: Sentence[];
   quizInProgress: boolean;
+  fightInProgress:boolean;
   flashCardsInProgress: boolean;
 
   constructor(private quizService: QuizService) { }
@@ -35,10 +35,25 @@ export class QuizComponent implements OnInit {
       this.subscribeToLearn();
     else if (this.quizType === 'practice')
       this.subscribeToPractice();
+    else if(this.quizType ==='fight')
+      this.fight();
+  }   
+
+  checkFight():void{
+    const answer = this.userAnswer.nativeElement.value;
+
+    if (this.sentence.translation.find((translation) => translation === answer)) {
+      console.log("talált");
+      this.fightQuizResult.emit(true);
+    } else {
+      console.log("elbasztad");
+      this.fightQuizResult.emit(false);
+    }
+    this.fightInProgress = false;
+    this.sentence=null;
   }
 
-
-  check(): void {
+  checkQuiz(): void {
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
@@ -134,6 +149,11 @@ export class QuizComponent implements OnInit {
     this.displaySentence(sentences);
   }
 
+  private async fight(){
+    this.fightInProgress = true;
+    this.sentence = await this.quizService.getOnePracticableSentence().toPromise();
+    this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
+  }
 
   private async subscribeToLearn() {
     const sentences = await this.quizService.getLearnableSentences().toPromise();

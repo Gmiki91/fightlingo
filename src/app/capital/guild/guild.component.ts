@@ -15,6 +15,7 @@ export class GuildComponent implements OnInit {
 
   scroll$: Observable<Scroll>;
   showSignUpForm: boolean;
+  showGym:boolean;
   isBeginner:boolean;
   notesChecked:boolean;
 
@@ -34,9 +35,10 @@ export class GuildComponent implements OnInit {
   }
 
   async onTakeExam(){
-    console.log("exam taken!");
-    await this.authService.createUser(this.signupForm).toPromise();
-    this.router.navigate(['/']);
+    this.showGym=true;
+    //console.log("exam taken!");
+    //await this.authService.createUser(this.signupForm).toPromise();
+    //this.router.navigate(['/']);
   }
 
   startIntro(event:SignupForm) {

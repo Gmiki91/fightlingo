@@ -12,8 +12,12 @@ export class QuizService {
     constructor(private http: HttpClient) {
      }
 
+    getOnePracticableSentence(){
+        return this.http.get<Sentence>('http://localhost:3300/api/sentences/one');
+    }
+
     getPracticableSentences(id: string) {
-       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/' + id);
+       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/array' + id);
     }
 
     getLearnableSentences() {

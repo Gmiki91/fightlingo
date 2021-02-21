@@ -1,5 +1,6 @@
 <app-sign-up *ngIf="showSignUpForm" (signUpEvent)="startIntro($event)"></app-sign-up>
-<div *ngIf="!showSignUpForm">
+<app-gym *ngIf="showGym"></app-gym>
+<div *ngIf="!showSignUpForm && !showGym">
     <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
     <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>
     <p *ngIf="scroll$ | async as scroll">{{scroll.grammar}}</p>
