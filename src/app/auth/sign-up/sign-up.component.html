@@ -25,12 +25,7 @@
             <mat-radio-button *ngFor="let language of languages" [value]="language">{{language}}</mat-radio-button>
           </mat-radio-group>
         </mat-card-content>
-        <label>Are you a beginner at this language?</label>
-        <br>
-        <mat-radio-group (change)="isBeginner($event)">
-          <mat-radio-button value="true" >Yes</mat-radio-button>
-          <mat-radio-button value="false" >No</mat-radio-button>
-        </mat-radio-group>
+        
         <button mat-stroked-button color="accent" class= "btn-block">Sign in</button>
       </form>
     </mat-card>

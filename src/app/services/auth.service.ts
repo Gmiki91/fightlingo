@@ -20,8 +20,9 @@ export class AuthService {
             name:form.name,
             pic:form.avatar,
             language:form.language,
-            level: 1,
-            rank: 1,
+            confirmed:false,
+            level: 0,
+            rank: 0,
             money: 3,
             hasShipTicket: false,
             currentStoryLearned: false,
@@ -36,10 +37,11 @@ export class AuthService {
 
     login(name: string, password: string) {
         const authData: AuthData = { name, password };
-        return this.http.post<{ token: string, user: User, userId: string, introDone:string }>("http://localhost:3300/api/users/login", authData)
+        return this.http.post<{ token: string, user: User, userId: string, confirmed:boolean }>("http://localhost:3300/api/users/login", authData)
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);
+                localStorage.setItem("confirmed", ''+response.confirmed)
                 this.updatedUser.next(response.user);
             }));
     }
@@ -54,6 +56,15 @@ export class AuthService {
 
     getUpdatedUser() {
         return this.updatedUser.asObservable();
+    }
+
+    
+    confirmUser(){
+        localStorage.setItem("confirmed", 'true');
+        return this.http.patch("http://localhost:3300/api/users/confirm", null)
+        .pipe(map(() => {
+            this.autoAuthUser();
+        }));
     }
 
     updateRank() {
@@ -73,6 +84,7 @@ export class AuthService {
     logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
+        localStorage.removeItem("confirmed");
         this.updatedUser.next(null);
     }
 

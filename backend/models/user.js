@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
     level:Number,
     rank:Number,
     money:Number,
+    confirmed:Boolean,
     hasShipTicket:Boolean,
     currentStoryLearned:Boolean,
     currentStorySent:Date,

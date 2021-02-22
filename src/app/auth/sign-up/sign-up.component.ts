@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Language } from 'src/app/language.enum';
 import { SignupForm } from 'src/app/models/signupform.model';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-  @Output() signUpEvent:EventEmitter<SignupForm> = new EventEmitter();
+
   languages = [Language.FRENCH, Language.RUSSIAN, Language.SERBIAN];
   language: Language;
   imagePaths = ['szorny1',
@@ -19,9 +20,8 @@ export class SignUpComponent implements OnInit {
     'szorny4'];
   imagePathIndex: number = 0;
   imagePath: string;
-  beginner:boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.imagePathIndex = 0;
@@ -34,12 +34,11 @@ export class SignUpComponent implements OnInit {
       email:form.value.email, 
       password:form.value.password,
       name: form.value.fightername, 
-      beginner: this.beginner,
       avatar: this.imagePath,
       language: this.language
     }
-    this.signUpEvent.emit(signupform);
-   //
+    await this.authService.createUser(signupform).toPromise();
+    this.router.navigate(['/']);
   }
 
   previousPic() {
@@ -54,9 +53,5 @@ export class SignUpComponent implements OnInit {
     if (this.imagePathIndex > this.imagePaths.length - 1)
       this.imagePathIndex = 0
     this.imagePath = this.imagePaths[this.imagePathIndex];
-  }
-
-  isBeginner(event){
-    this.beginner=event.value==="true"? true : false;
   }
 }

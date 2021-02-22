@@ -12,16 +12,16 @@ export class QuizService {
     constructor(private http: HttpClient) {
      }
 
-    getOnePracticableSentence(){
-        return this.http.get<Sentence>('http://localhost:3300/api/sentences/one');
+    getFightSentences(){
+        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/fight');
     }
 
     getPracticableSentences(id: string) {
-       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/array' + id);
+       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice' + id);
     }
 
     getLearnableSentences() {
-        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/');  
+        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/learn');  
     }
 
     getOverdueSentences() {

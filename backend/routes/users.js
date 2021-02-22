@@ -37,9 +37,10 @@ router.post('/signup', (req, res, next) => {
                 money: req.body.money,
                 hasShipTicket: req.body.hasShipTicket,
                 lastLoggedIn: req.body.lastLoggedIn,
+                confirmed:false,
             });
             user.save()
-                .then(initProgress(req.body.language, req.body.rank))
+                .then(initProgressFirst(req.body.language, req.body.rank))
                 .then(result => {
                     res.status(201).json({
                         message: "user created",
@@ -86,6 +87,7 @@ router.post('/login', (req, res, next) => {
             res.status(200).json({
                 token: token,
                 userId: userData._id,
+                confirmed:userData.confirmed,
                 user: userData
             });
         })
@@ -137,6 +139,15 @@ router.patch('/level', authCheck, (req, res, next) => {
         });
 });
 
+router.patch('/confirm', authCheck, (req, res, next) => {
+    User.updateOne({ _id: req.userData.id },
+        { $set: { "confirmed": true} },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({message:"user confirmed"});
+        });
+})
+
 function initProgress(language, rank) {
     Scroll.findOne({
         language: language,
@@ -150,7 +161,33 @@ function initProgress(language, rank) {
                         sentenceId: document._id,
                         userId: user._id,
                         learned: false,
-                        learningProgress: 4,
+                        learningProgress: 0,
+                        consecutiveCorrectAnswers: 0,
+                        interval: 1,
+                        difficulty: 2.5,
+                        nextReviewDate: null
+                    });
+                    prog.save();
+                }
+            })
+        )
+            
+}
+
+function initProgressFirst(language, rank) {
+    Scroll.findOne({
+        language: language,
+        number: rank
+    }, '_id')
+        .then(id => 
+            Sentence.find({ "scroll_id": id._id })
+            .then(documents => {
+                for (let document of documents) {
+                    const prog = new Progress({
+                        sentenceId: document._id,
+                        userId: user._id,
+                        learned: true,
+                        learningProgress: 5,
                         consecutiveCorrectAnswers: 0,
                         interval: 1,
                         difficulty: 2.5,

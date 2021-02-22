@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
@@ -10,7 +10,7 @@ import { Scroll } from '../models/scroll.model';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnChanges {
 
   @ViewChild("input") userAnswer;
   @Input() quizType: string;
@@ -35,9 +35,12 @@ export class QuizComponent implements OnInit {
       this.subscribeToLearn();
     else if (this.quizType === 'practice')
       this.subscribeToPractice();
-    else if(this.quizType ==='fight')
-      this.fight();
   }   
+
+  ngOnChanges() {
+    if(this.quizType ==='fight')
+      this.fight();
+  }
 
   checkFight():void{
     const answer = this.userAnswer.nativeElement.value;
@@ -151,7 +154,9 @@ export class QuizComponent implements OnInit {
 
   private async fight(){
     this.fightInProgress = true;
-    this.sentence = await this.quizService.getOnePracticableSentence().toPromise();
+    if(typeof this.sentences==='undefined')
+    this.sentences = await this.quizService.getFightSentences().toPromise();
+    this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length)];
     this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
   }
 

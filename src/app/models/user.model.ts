@@ -9,6 +9,7 @@ export interface User{
     level:number;
     rank:number;
     money:number;
+    confirmed:boolean;
     hasShipTicket:boolean;
     currentStoryLearned:boolean,
     currentStorySent:Date,

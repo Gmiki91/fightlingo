@@ -4,14 +4,17 @@ import { LoginComponent } from './auth/login/login.component';
 import { CityComponent } from './city/city.component';
 import { DojoComponent } from './dojo/dojo.component';
 import { LibraryComponent } from './dojo/library/library.component';
-import { AuthGuard} from './auth/auth.guard';
+import { AuthGuard} from './guards/auth.guard';
 import { GuildComponent } from './capital/guild/guild.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { GuildGuard } from './guards/guild.guard';
 
 
 const routes: Routes = [
   {path:'', component: DojoComponent},
   {path:'login', component:LoginComponent},
-  {path:'guild', component:GuildComponent},
+  {path:'signup', component:SignUpComponent},
+  {path:'guild', component:GuildComponent, canActivate: [GuildGuard]},
   {path:'city', component: CityComponent, canActivate: [AuthGuard]},
   {path:'library', component: LibraryComponent, canActivate: [AuthGuard]}
 ];

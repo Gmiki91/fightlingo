@@ -4,7 +4,7 @@ const router = express.Router();
 const Scroll = require("../models/scroll");
 
 //get all scrolls
-router.get('/', authCheck, (req, res, next) => {
+router.get('/all', authCheck, (req, res, next) => {
     Scroll.find({
         language: req.userData.language,
     })
@@ -13,10 +13,10 @@ router.get('/', authCheck, (req, res, next) => {
         })
 })
 
-//get FirstScroll 
-router.get('/:language/:number', (req, res, next) => {
+//get one scroll 
+router.get('/one/:number',authCheck, (req, res, next) => {
     Scroll.findOne({
-        language: req.params.language,
+        language: req.userData.language,
         number: req.params.number
     })
         .then((result) => { return res.json(result) })
