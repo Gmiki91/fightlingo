@@ -42,7 +42,7 @@ export class AuthService {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);
                 localStorage.setItem("confirmed", ''+response.confirmed)
-                this.updatedUser.next(response.user);
+                this.autoAuthUser();
             }));
     }
 

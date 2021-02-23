@@ -99,4 +99,8 @@ export class EventHandler{
         return this.allEvents.filter(event => event.overdue>0);
     }
 
+    reset():void{
+        this.allEvents.forEach(event => event.overdue=0);
+    }
+
 }

@@ -26,28 +26,42 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private quizService: QuizService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.userSub = this.auth.getUpdatedUser().subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.loggedIn = true;
-        this.subscribeToOverdue();
-        this.quizService.getOverdueSentences().toPromise();
-      } else {
-        this.loggedIn = false;
-      }
-    });
+    this.subscribeToOverdue();
+    this.subscribeToUser();
+  }
 
+  ngOnDestroy(): void {
+    if (this.overdueSub)
+      this.overdueSub.unsubscribe();
+    if (this.userSub)
+      this.userSub.unsubscribe();
   }
 
   logout(): void {
+    this.eventHandler.reset();
     this.auth.logout();
     this.router.navigate(['/']);
   }
 
+  private subscribeToUser():void{
+    if(this.userSub)
+      this.userSub.unsubscribe();
+
+    this.userSub = this.auth.getUpdatedUser().subscribe(user => {
+      if (user) {
+        this.quizService.getOverdueSentences().toPromise();
+        this.user = user;
+        this.loggedIn = true;
+      } else {
+        this.loggedIn = false;
+      }
+    });
+  }
+
   private subscribeToOverdue(): void {
-    if (this.overdueSub) {
+    if (this.overdueSub) 
       this.overdueSub.unsubscribe();
-    }
+    
     this.overdueSub = this.quizService.getOverdueList()
       .subscribe((sentences: Sentence[]) => {
         if (sentences && sentences.length != 0) {
@@ -57,30 +71,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.warning = false;
       });
   }
-  ngOnDestroy(): void {
-    if (this.overdueSub)
-      this.overdueSub.unsubscribe();
-    if (this.userSub)
-      this.userSub.unsubscribe();
-  }
 
   private sortEvents(overdues: number) {
-
     let count = overdues;
     const events: Event[] = this.eventHandler.getEventsByLevel(this.user.level);
     while (count > 0) {
-     let amount = count>5 ? 5 : count;
-     count -= this.addToRandomEvent(amount, events);
+      let amount = count > 5 ? 5 : count;
+      count -= this.addToRandomEvent(amount, events);
     }
     console.log(this.eventHandler.getActiveEvents());
   }
 
   private addToRandomEvent(amount: number, events: Event[]): number {
-    console.log("fut");
     let randomIndex = Math.floor(Math.random() * (events.length));
     if (events[randomIndex].maxOverdue >= events[randomIndex].overdue + amount) {
       events[randomIndex].overdue += amount;
-      return  amount;
+      return amount;
     } else {
       this.addToRandomEvent(amount, events);
     }
