@@ -29,6 +29,7 @@ import { GuildComponent } from './capital/guild/guild.component';
 import { GymComponent } from './capital/guild/gym/gym.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { EventHandler } from './services/event-handler.service';
+import { DialogService } from './services/dialog.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { EventHandler } from './services/event-handler.service';
   providers: [QuizService,
     AuthService,
     ScrollService,
+    DialogService,
     EventHandler,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],
   bootstrap: [AppComponent],

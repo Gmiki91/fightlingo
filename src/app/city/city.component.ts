@@ -7,6 +7,7 @@ import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { District } from './district.enum';
 import Typewriter from 't-writer.js'
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-city',
@@ -18,11 +19,11 @@ export class CityComponent implements OnInit {
   district: District;
   overdueSentences$: Observable<Sentence[]>;
   startQuiz: boolean;
-  returnAvailable:boolean;
+  returnAvailable: boolean;
   events: Event[] = [];
   background: string = "townmap";
 
-  constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
+  constructor(private eventHandler: EventHandler, private quizService: QuizService, private dialogService: DialogService) { }
 
   ngOnInit(): void {
 
@@ -56,20 +57,22 @@ export class CityComponent implements OnInit {
         break;
       default:
         this.district = null;
-        this.background = "townmap"; 
+        this.background = "townmap";
     }
 
     this.init();
   }
 
   private init() {
-    this.returnAvailable = this.district? true:false;
+    this.returnAvailable = this.district ? true : false;
     document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
     this.events = this.eventHandler.getActiveEvents().filter(event => { return event.district === this.district });
     if (this.events.length > 0) {
       //van event
       this.startEvent(this.events[0]);
+    } else {
+      this.writeRandomText(this.district);
     }
   }
 
@@ -77,19 +80,31 @@ export class CityComponent implements OnInit {
 
     const amount = event.overdue;
     const text = this.eventHandler.getDialogForEvent(event.id);
-    const target = document.querySelector('.tw')
-    const writer = new Typewriter(target, {
+    const writer = new Typewriter(document.querySelector('.tw'), {
       loop: false,
       typeColor: 'blue'
-    })
+    });
     writer
       .type(text)
       .rest(250)
-      .start()
+      .start();
 
     this.startQuiz = true;
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(
         map(sentences => { return sentences.slice(0, amount) }))
+  }
+
+  private writeRandomText(district: District) {
+    const text = this.dialogService.getRandomText(district);
+    
+    const writer = new Typewriter(document.querySelector('.tw'), {
+      loop: false,
+      typeColor: 'blue'
+    });
+    writer
+      .type(text)
+      .rest(250)
+      .start();
   }
 }

@@ -1,10 +1,4 @@
  <img src='../../assets/town/{{background}}.JPG'>
- <!--
- <a routerLink="/city/suburbs">Suburbs</a>
- <a routerLink="/city/downtown">Downtown</a>
- <a routerLink="/city/wall">Wall</a>
- <a routerLink="/city/outside">Outside</a>
- <a routerLink="/city/palace">Palace</a> -->
  <br>
  <button (click)="setDistrict('suburb')">Suburbs</button>
  <button (click)="setDistrict('downtown')">Downtown</button>
@@ -14,6 +8,7 @@
  <button (click)="setDistrict('docks')">Docks</button>
  <br>
  <button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
+ <a *ngIf="!returnAvailable" routerLink="/">Return</a>
  <div class="tw"></div>
  <app-quiz *ngIf="startQuiz" [overdueSentences]="overdueSentences$ | async"></app-quiz>
 
