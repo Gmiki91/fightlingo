@@ -8,5 +8,6 @@ export interface Event{
     overdue:number;
     maxOverdue:number;
     district:District;
+    pollyComments:string[];
 
 }

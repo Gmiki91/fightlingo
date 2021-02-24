@@ -8,6 +8,8 @@ import { Sentence } from '../models/sentence.model';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
+import { DialogService } from '../services/dialog.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription = Subscription.EMPTY;
   user: User;
 
-  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler) { }
+  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler, private dialogService:DialogService) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -40,6 +42,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.eventHandler.reset();
     this.auth.logout();
     this.router.navigate(['/']);
+  }
+
+  onPollyClicked():void{
+    let text;
+    if(!this.eventHandler.getActiveEvents()[0])
+     text= "mizu?"//this.dialogService.getRandomDistrictText(this.eventHandler.getActiveEvents()[0].district);
+    else
+    text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
+    swal(text);
   }
 
   private subscribeToUser():void{
@@ -66,9 +77,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (sentences && sentences.length != 0) {
           this.warning = true;
           this.sortEvents(sentences.length);
-        } else
+        } else{
           this.warning = false;
-      });
+          this.eventHandler.reset();
+      }});
   }
 
   private sortEvents(overdues: number) {

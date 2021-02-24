@@ -4,8 +4,7 @@
         <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/signup">Sign up</a>
     </mat-toolbar>
 </div>
-<div *ngIf="loggedIn">
-    <p *ngIf="warning">van overdue</p>
-    <p *ngIf="!warning">nincs overdue</p>
-    <button (click)="logout()">Logout</button>
+<div class="navbar" *ngIf="loggedIn">
+    <a (click)="onPollyClicked()"><img class="icon" src='../../assets/header/pollyicon.jpg'></a>
+    <a (click)="logout()"><img class="icon" src='../../assets/header/logout.png'></a>
 </div>

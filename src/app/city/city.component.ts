@@ -71,7 +71,7 @@ export class CityComponent implements OnInit {
     if (this.events.length > 0) {
       //van event
       this.startEvent(this.events[0]);
-    } else {
+    } else if(this.district){
       this.writeRandomText(this.district);
     }
   }
@@ -96,7 +96,7 @@ export class CityComponent implements OnInit {
   }
 
   private writeRandomText(district: District) {
-    const text = this.dialogService.getRandomText(district);
+    const text = this.dialogService.getRandomDistrictText(district);
     
     const writer = new Typewriter(document.querySelector('.tw'), {
       loop: false,

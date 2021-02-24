@@ -10,7 +10,7 @@ private downtownText = ["Very few people today. Maybe because of the weather.", 
 private palaceText = ["Nobody's seems to be home today.", "What a nice curtain", "Nothing's happening here."];
 private docksText = ["Smells like fish", "We should buy a boat", "Nothing's happening here."];
 
-getRandomText(district:District):string{
+getRandomDistrictText(district:District):string{
     switch (district) {
         case "outside":
             return this.outsideText[Math.floor(Math.random() * (this.wallText.length))];
@@ -26,5 +26,6 @@ getRandomText(district:District):string{
             return this.docksText[Math.floor(Math.random() * (this.wallText.length))];
     }
 }
+
 
 }

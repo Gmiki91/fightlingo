@@ -11,7 +11,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 50,
-        district: District.OUTSIDE
+        district: District.OUTSIDE,
+        pollyComments: ["Baby Grog is on the loose!"]
     };
     e0102: Event = {
         id: "e0102",
@@ -20,7 +21,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 10,
-        district: District.DOWNTOWN
+        district: District.DOWNTOWN,
+        pollyComments: ['I heard the town has some rat problems.']
     };
     e0103: Event = {
         id: "e0103",
@@ -29,7 +31,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 10,
-        district: District.SUBURB
+        district: District.SUBURB,
+        pollyComments: ['Leslie would like you to help her get rid of some leafs. What a noble task.']
     };
     e0104: Event = {
         id: "e0104",
@@ -38,7 +41,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 10,
-        district: District.OUTSIDE
+        district: District.OUTSIDE,
+        pollyComments: ['Leslie wants you to weed out some weed!']
     };
     e0105: Event = {
         id: "e0105",
@@ -47,7 +51,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 10,
-        district: District.PALACE
+        district: District.PALACE,
+        pollyComments: ['The governor asked you to babysit his son.']
     };
     e0202: Event = {
         id: "e0202",
@@ -56,7 +61,8 @@ export class EventHandler {
         level: 2,
         overdue: 0,
         maxOverdue: 10,
-        district: District.SUBURB
+        district: District.SUBURB,
+        pollyComments: ['There are wild dogs running amok in the suburbs']
     };
     e0203: Event = {
         id: "e0203",
@@ -65,7 +71,8 @@ export class EventHandler {
         level: 2,
         overdue: 0,
         maxOverdue: 10,
-        district: District.OUTSIDE
+        district: District.OUTSIDE,
+        pollyComments: ['An old lady lost his cat. You should be able to locate that feline with some spell, no?']
     };
     e0204: Event = {
         id: "e0204",
@@ -74,7 +81,8 @@ export class EventHandler {
         level: 2,
         overdue: 0,
         maxOverdue: 10,
-        district: District.DOCKS
+        district: District.DOCKS,
+        pollyComments: ['Shit has filled the docks, the sewers could do with some cleaning.']
     };
     e0205: Event = {
         id: "e0205",
@@ -83,7 +91,8 @@ export class EventHandler {
         level: 2,
         overdue: 0,
         maxOverdue: 10,
-        district: District.PALACE
+        district: District.PALACE,
+        pollyComments: ['The chef in the kitchen of the palace has run out of ideas. Help her maybe?']
     };
 
     readonly allEvents = [this.e0101, this.e0102, this.e0103, this.e0104, this.e0105, this.e0202, this.e0203, this.e0204, this.e0205];
