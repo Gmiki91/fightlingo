@@ -1,7 +1,16 @@
- <img src='../../assets/townmap.jpg'>
+ <img src='../../assets/town/{{background}}.JPG'>
+ <!--
  <a routerLink="/city/suburbs">Suburbs</a>
  <a routerLink="/city/downtown">Downtown</a>
  <a routerLink="/city/wall">Wall</a>
  <a routerLink="/city/outside">Outside</a>
- <a routerLink="/city/palace">Palace</a>
+ <a routerLink="/city/palace">Palace</a> -->
+ <button (click)="setDistrict('suburb')">Suburbs</button>
+ <button (click)="setDistrict('downtown')">Downtown</button>
+ <button (click)="setDistrict('wall')">Wall</button>
+ <button (click)="setDistrict('outside')">Outside</button>
+ <button (click)="setDistrict('palace')">Palace</button>
+ <button (click)="setDistrict('docks')">Docks</button>
+ <div class="tw"></div>
+ <app-quiz *ngIf="startQuiz" [overdueSentences]="overdueSentences$ | async"></app-quiz>
 
