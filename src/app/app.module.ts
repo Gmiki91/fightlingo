@@ -29,7 +29,6 @@ import { GuildComponent } from './capital/guild/guild.component';
 import { GymComponent } from './capital/guild/gym/gym.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { EventHandler } from './services/event-handler.service';
-import { DowntownComponent } from './city/downtown/downtown.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,6 @@ import { DowntownComponent } from './city/downtown/downtown.component';
     CapitalComponent,
     GuildComponent,
     GymComponent,
-    DowntownComponent,
   ],
   imports: [
     FormsModule,
