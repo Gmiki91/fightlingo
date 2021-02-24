@@ -143,6 +143,7 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   private startQuiz(sentences: Sentence[]): void {
+    console.log(sentences.length);
     this.quizInProgress = true;
     this.displaySentence(sentences);
   }

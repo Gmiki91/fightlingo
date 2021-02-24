@@ -1,41 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Sentence } from '../models/sentence.model';
-import { QuizService } from '../services/quiz.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-city',
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
-export class CityComponent implements OnInit, OnDestroy {
-
-  overdueAvailable: boolean;
-  overdueSentences:Sentence[];
-  overdueSubscription: Subscription = Subscription.EMPTY;
-  constructor(private quizService: QuizService) { }
-
+export class CityComponent implements OnInit {
+  constructor() { }
 
   ngOnInit(): void {
-    this.subscribeToOverdue();
+    
   }
-
-  private subscribeToOverdue(): void {
-    if (this.overdueSubscription) {
-      this.overdueSubscription.unsubscribe();
-    }
-    this.overdueSubscription = this.quizService.getOverdueList()
-      .subscribe((sentences: Sentence[]) => {
-        if (sentences && sentences.length != 0){
-          this.overdueSentences=sentences;
-          this.overdueAvailable = true;
-        }else
-          this.overdueAvailable = false;
-      });
-  }
-  ngOnDestroy(): void {
-    if(this.overdueSubscription)
-    this.overdueSubscription.unsubscribe();
-  }
+ 
 
 }

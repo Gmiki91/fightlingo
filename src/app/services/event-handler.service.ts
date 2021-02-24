@@ -1,6 +1,8 @@
+import { Injectable } from "@angular/core";
 import { District } from "src/app/city/district.enum";
-import { Event } from "./event.model";
+import { Event } from "../models/event.model";
 
+@Injectable()
 export class EventHandler{
     e0101:Event = {
         id: "e0101",
@@ -97,6 +99,10 @@ export class EventHandler{
 
     getActiveEvents():Event[]{
         return this.allEvents.filter(event => event.overdue>0);
+    }
+
+    getDialogForEvent(id:string):string{
+        return this.allEvents.find(event=> event.id ==id).name
     }
 
     reset():void{

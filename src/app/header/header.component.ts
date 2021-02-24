@@ -2,8 +2,8 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EventHandler } from '../models/events/eventHandler.model';
-import { Event } from '../models/events/event.model';
+import { EventHandler } from '../services/event-handler.service';
+import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
@@ -20,10 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
-  eventHandler: EventHandler = new EventHandler();
   user: User;
 
-  constructor(private quizService: QuizService, private auth: AuthService, private router: Router) { }
+  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -73,6 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private sortEvents(overdues: number) {
+    this.eventHandler.reset();
     let count = overdues;
     const events: Event[] = this.eventHandler.getEventsByLevel(this.user.level);
     while (count > 0) {
