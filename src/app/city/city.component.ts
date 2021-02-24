@@ -18,8 +18,9 @@ export class CityComponent implements OnInit {
   district: District;
   overdueSentences$: Observable<Sentence[]>;
   startQuiz: boolean;
+  returnAvailable:boolean;
   events: Event[] = [];
-  background:string = "townmap";
+  background: string = "townmap";
 
   constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
 
@@ -31,35 +32,39 @@ export class CityComponent implements OnInit {
     switch (district) {
       case "outside":
         this.district = District.OUTSIDE;
-        this.background="outside";
+        this.background = "outside";
         break;
       case "wall":
         this.district = District.WALL;
-        this.background="wall";
+        this.background = "wall";
         break;
       case "suburb":
         this.district = District.SUBURB;
-        this.background="suburb";
+        this.background = "suburb";
         break;
       case "downtown":
         this.district = District.DOWNTOWN;
-        this.background="downtown";
+        this.background = "downtown";
         break;
       case "palace":
         this.district = District.PALACE;
-        this.background="palace";
+        this.background = "palace";
         break;
       case "docks":
         this.district = District.DOCKS;
-        this.background="docks";
+        this.background = "docks";
         break;
+      default:
+        this.district = null;
+        this.background = "townmap"; 
     }
 
     this.init();
   }
 
   private init() {
-    document.querySelector('.tw').innerHTML="";
+    this.returnAvailable = this.district? true:false;
+    document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
     this.events = this.eventHandler.getActiveEvents().filter(event => { return event.district === this.district });
     if (this.events.length > 0) {
@@ -69,7 +74,8 @@ export class CityComponent implements OnInit {
   }
 
   private startEvent(event: Event): void {
-    
+
+    const amount = event.overdue;
     const text = this.eventHandler.getDialogForEvent(event.id);
     const target = document.querySelector('.tw')
     const writer = new Typewriter(target, {
@@ -82,7 +88,6 @@ export class CityComponent implements OnInit {
       .start()
 
     this.startQuiz = true;
-    const amount = event.overdue;
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(
         map(sentences => { return sentences.slice(0, amount) }))
