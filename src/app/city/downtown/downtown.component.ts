@@ -3,7 +3,7 @@ import { EventHandler } from 'src/app/services/event-handler.service';
 import { Event } from 'src/app/models/event.model';
 import { District } from '../district.enum';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Sentence } from 'src/app/models/sentence.model';
 import { QuizService } from 'src/app/services/quiz.service';
 import Typewriter from 't-writer.js'
@@ -44,13 +44,10 @@ export class DowntownComponent implements OnInit {
       .rest(250)
       .start()
 
-
     this.startQuiz=true;
     const amount = event.overdue;
     this.overdueSentences$ = this.quizService.getOverdueList()
     .pipe(
       map(sentences=>{return sentences.slice(0,amount) }))
   }
-
-
 }

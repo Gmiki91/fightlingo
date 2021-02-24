@@ -86,7 +86,6 @@ export class QuizComponent implements OnInit, OnChanges {
             await this.quizService.getOverdueSentences().toPromise();
           }
         })
-
     }
   }
 

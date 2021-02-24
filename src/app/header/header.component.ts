@@ -86,6 +86,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let randomIndex = Math.floor(Math.random() * (events.length));
     if (events[randomIndex].maxOverdue >= events[randomIndex].overdue + amount) {
       events[randomIndex].overdue += amount;
+      if(events[randomIndex].eventGroup===1)
+        this.eventHandler.checkGrogsLocation(events[randomIndex].id);
       return amount;
     } else {
       this.addToRandomEvent(amount, events);
