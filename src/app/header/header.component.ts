@@ -8,7 +8,6 @@ import { Sentence } from '../models/sentence.model';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
-import { DialogService } from '../services/dialog.service';
 import swal from 'sweetalert';
 
 @Component({
@@ -24,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription = Subscription.EMPTY;
   user: User;
 
-  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler, private dialogService:DialogService) { }
+  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -44,17 +43,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  onPollyClicked():void{
+  onPollyClicked(): void {
     let text;
-    if(!this.eventHandler.getActiveEvents()[0])
-     text= "mizu?"//this.dialogService.getRandomDistrictText(this.eventHandler.getActiveEvents()[0].district);
-    else
-    text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
-    swal(text);
+    if (this.eventHandler.getActiveEvents()[0]) {
+      text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
+      swal(text);
+    }
   }
 
-  private subscribeToUser():void{
-    if(this.userSub)
+  private subscribeToUser(): void {
+    if (this.userSub)
       this.userSub.unsubscribe();
 
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
@@ -69,18 +67,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToOverdue(): void {
-    if (this.overdueSub) 
+    if (this.overdueSub)
       this.overdueSub.unsubscribe();
-    
+
     this.overdueSub = this.quizService.getOverdueList()
       .subscribe((sentences: Sentence[]) => {
         if (sentences && sentences.length != 0) {
           this.warning = true;
           this.sortEvents(sentences.length);
-        } else{
+        } else {
           this.warning = false;
           this.eventHandler.reset();
-      }});
+        }
+      });
   }
 
   private sortEvents(overdues: number) {
@@ -98,7 +97,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let randomIndex = Math.floor(Math.random() * (events.length));
     if (events[randomIndex].maxOverdue >= events[randomIndex].overdue + amount) {
       events[randomIndex].overdue += amount;
-      if(events[randomIndex].eventGroup===1)
+      if (events[randomIndex].eventGroup === 1)
         this.eventHandler.checkGrogsLocation(events[randomIndex].id);
       return amount;
     } else {

@@ -5,7 +5,6 @@ import { Scroll } from '../models/scroll.model';
 
 @Injectable()
 export class ScrollService {
-  public numberOfLevels = 7;
   constructor(private http: HttpClient) {}
 
   getScrolls() {

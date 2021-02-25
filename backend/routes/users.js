@@ -34,9 +34,12 @@ router.post('/signup', (req, res, next) => {
                 level: req.body.level,
                 language: req.body.language,
                 rank: req.body.rank,
+                strength: req.body.strength,
+                hitpoint: req.body.hitpoint,
                 money: req.body.money,
                 hasShipTicket: req.body.hasShipTicket,
                 lastLoggedIn: req.body.lastLoggedIn,
+                scrollFinished: req.body.scrollFinished,
                 confirmed:false,
             });
             user.save()
@@ -99,7 +102,7 @@ router.post('/login', (req, res, next) => {
 })
 
 
-router.get('/:id', (req, res, next) => {
+router.get('/findById/:id', (req, res, next) => {
     User.findOne({ _id: new ObjectId(req.params.id) })
         .then((user) => {
             const token = jwt.sign(
@@ -119,11 +122,17 @@ router.get('/:id', (req, res, next) => {
         })
 })
 
+router.get('/finishedAt',authCheck, (req, res, next) => {
+    User.findOne({_id:req.userData.id},'scrollFinished').then((result) => {return res.status(200).send(result.scrollFinished)});
+})
 
 router.patch('/rank', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
     User.findOneAndUpdate({ _id: req.userData.id },
-        { $set: { "rank": req.userData.rank + 1 } },
+        { $set: {
+             "rank": req.userData.rank + 1,
+             "scrollFinished": new Date()
+             }},
         { new: true },
         (err, user) => {
             return res.status(200).send({message:"rank updated"});
@@ -131,8 +140,12 @@ router.patch('/rank', authCheck, (req, res, next) => {
 });
 
 router.patch('/level', authCheck, (req, res, next) => {
+    initProgress(req.userData.language, req.userData.rank + 1);
     User.updateOne({ _id: req.userData.id },
-        { $set: { "level": req.userData.level + 1 } },
+        { $set: {
+             "level": req.userData.level + 1,
+             "rank": req.userData.rank + 1 
+            }},
         { new: true },
         (err, user) => {
             return res.status(200).send({message:"level updated"});
@@ -161,7 +174,7 @@ function initProgress(language, rank) {
                         sentenceId: document._id,
                         userId: user._id,
                         learned: false,
-                        learningProgress: 0,
+                        learningProgress: 4,
                         consecutiveCorrectAnswers: 0,
                         interval: 1,
                         difficulty: 2.5,

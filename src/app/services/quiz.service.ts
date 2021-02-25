@@ -17,7 +17,7 @@ export class QuizService {
     }
 
     getPracticableSentences(id: string) {
-       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice' + id);
+       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice/' + id);
     }
 
     getLearnableSentences() {

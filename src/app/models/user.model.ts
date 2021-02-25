@@ -8,13 +8,11 @@ export interface User{
     language:Language;
     level:number;
     rank:number;
+    strength:number;
+    hitpoint:number;
     money:number;
     confirmed:boolean;
     hasShipTicket:boolean;
-    currentStoryLearned:boolean,
-    currentStorySent:Date,
-    currentStoryRecieved:boolean,
-    currentStoryFinished:Date,
-    currentLessonFinished:Date,
     lastLoggedIn:Date;
+    scrollFinished:Date;
 }

@@ -79,7 +79,6 @@ export class GuildComponent implements OnInit, OnDestroy {
     this.showGym=false;
     swal("congrats");
     this.authService.levelUp().toPromise();
-    this.authService.updateRank().toPromise();
     await this.authService.confirmUser().toPromise();
     this.router.navigate(['/']);
   }

@@ -10,14 +10,12 @@ const userSchema = mongoose.Schema({
     level:Number,
     rank:Number,
     money:Number,
+    strength:Number,
+    hitpoint:Number,
     confirmed:Boolean,
     hasShipTicket:Boolean,
-    currentStoryLearned:Boolean,
-    currentStorySent:Date,
-    currentStoryRecieved:Boolean,
-    currentStoryFinished:Date,
-    currentLessonFinished:Date,
-    lastLoggedIn:Date
+    lastLoggedIn:Date,
+    scrollFinished:Date
 });
 
 userSchema.plugin(uniqueValidator);
