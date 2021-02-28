@@ -63,6 +63,10 @@ export class CityComponent implements OnInit {
     this.init();
   }
 
+  onCapital(){
+    
+  }
+
   private init() {
     this.returnAvailable = this.district ? true : false;
     document.querySelector('.tw').innerHTML = "";

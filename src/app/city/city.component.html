@@ -1,14 +1,17 @@
- <img src='../../assets/town/{{background}}.JPG'>
- <br>
- <button (click)="setDistrict('suburb')">Suburbs</button>
- <button (click)="setDistrict('downtown')">Downtown</button>
- <button (click)="setDistrict('wall')">Wall</button>
- <button (click)="setDistrict('outside')">Outside</button>
- <button (click)="setDistrict('palace')">Palace</button>
- <button (click)="setDistrict('docks')">Docks</button>
- <br>
- <button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
- <a *ngIf="!returnAvailable" routerLink="/">Return</a>
- <div class="tw"></div>
- <app-quiz *ngIf="startQuiz" [overdueSentences]="overdueSentences$ | async"></app-quiz>
+<img src='../../assets/town/{{background}}.JPG'>
+<br>
+<div  *ngIf="!returnAvailable">
+    <button (click)="setDistrict('suburb')">Suburbs</button>
+    <button (click)="setDistrict('downtown')">Downtown</button>
+    <button (click)="setDistrict('wall')">Wall</button>
+    <button (click)="setDistrict('outside')">Outside</button>
+    <button (click)="setDistrict('palace')">Palace</button>
+    <button (click)="setDistrict('docks')">Docks</button>
+    <a routerLink="/">Return</a>
+</div>
+<br>
+<button *ngIf="district === 'docks'" (click)="onCapital()">Board a ship going to the capital!</button>
+<button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
 
+<div class="tw"></div>
+<app-quiz *ngIf="startQuiz" [overdueSentences]="overdueSentences$ | async"></app-quiz>
