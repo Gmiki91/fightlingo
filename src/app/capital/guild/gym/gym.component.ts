@@ -1,12 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
+import {io} from 'socket.io-client';
 
 @Component({
   selector: 'app-gym',
   templateUrl: './gym.component.html',
   styleUrls: ['./gym.component.css']
 })
-export class GymComponent implements OnInit {
+export class GymComponent implements OnInit, AfterViewInit {
 
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
   selectedButton;
@@ -17,17 +18,29 @@ export class GymComponent implements OnInit {
   quizType: string;
   cooldown: number = 5;
   subscription: Subscription;
+  socket:any;
 
   //temporary
   count: number = 0;
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.socket=io("http://localhost:3300/");
+   
+   }
+
+   ngAfterViewInit(): void {
+     this.socket.on("attack", adat =>{
+      console.log("ajjajj", adat);
+    })
+   }
 
   spellTypeChange(event): void {
+
     this.selectedButton = event;
     this.spellType = event.value;
+    
     this.sentenceComes();
   }
 
@@ -53,6 +66,7 @@ export class GymComponent implements OnInit {
   }
 
   attack(): void {
+    this.socket.emit("attack", this.spellType);
     this.count++;
     if (this.count === 3)
       this.fightFinishedEmitter.emit(true);
