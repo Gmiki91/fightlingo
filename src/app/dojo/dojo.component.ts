@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dojo',
@@ -12,13 +13,16 @@ export class DojoComponent implements OnInit {
   
   loggedIn$: Observable<boolean>;
 
-  constructor(private auth: AuthService) {  }
+  constructor(private auth: AuthService, private router: Router) {  }
   
   ngOnInit(): void {
     this.loggedIn$= this.auth.getUpdatedUser().pipe(map(user=>{return user ? true:false;}))
 
   }
-  
+  toTheCapital():void{
+    localStorage.setItem("hasTicket", 'true');
+    this.router.navigate(['/guild']);
+  }
 /*
   onMailBox(): void {
     if (this.authService.user.currentStoryLearned && !this.authService.user.currentStorySent) {

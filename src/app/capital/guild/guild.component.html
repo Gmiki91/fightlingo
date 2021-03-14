@@ -1,7 +1,18 @@
 <app-gym *ngIf="showGym" (fightFinishedEmitter)="fightFinished()"></app-gym>
-<div *ngIf=!showGym>
-    <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
-    <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>
-    <p *ngIf="scroll$ | async as scroll">{{scroll.grammar}}</p>
+<div *ngIf="!showGym">
+    <div *ngIf="!hasTicket">
+        <!-- means it is a fresh registration -->
+        <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
+        <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>
+        <p *ngIf="scroll$ | async as scroll">{{scroll.grammar}}</p>
+    </div>
+    <div *ngIf="hasTicket">
+        <div *ngIf="onlineUsers">
+            <label>Online users</label>
+            <p *ngFor="let player of onlineUsers">{{player}}</p>
+        </div>
+        <button (click)="leave()">Leave</button>
+    </div>
 </div>
+
 <div class="tw"></div>

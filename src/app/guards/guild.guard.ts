@@ -8,7 +8,7 @@ export class GuildGuard implements CanActivate {
 
     constructor(private router: Router) { };
     canActivate(): boolean {
-        if (localStorage.getItem('userId') && localStorage.getItem('confirmed') === 'false' /* || hasTicket */)
+        if (localStorage.getItem('userId') && localStorage.getItem('confirmed') === 'false' || localStorage.getItem('hasTicket') === 'true')
             return true;
         else {
             this.router.navigate(['/']);

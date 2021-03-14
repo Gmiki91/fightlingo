@@ -82,6 +82,7 @@ export class AuthService {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("confirmed");
+        localStorage.removeItem("hasTicket");
         this.updatedUser.next(null);
     }
 

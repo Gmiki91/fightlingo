@@ -14,7 +14,7 @@ const normalizePort = val => {
     return port;
   }
 
-  return false; 
+  return false;
 };
 
 const onError = error => {
@@ -46,18 +46,27 @@ const port = normalizePort(process.env.PORT || "3300");
 app.set("port", port);
 
 const server = http.createServer(app);
-const io = require('socket.io')(server,{
+const io = require('socket.io')(server, {
   cors: {
     origin: '*',
   }
 });
-
-io.on("connection", socket =>{
-  socket.on("attack", adat =>{
+let onlineUserss = [];
+io.on("connection", socket => {
+  socket.on("attack", adat => {
     io.emit("attack", adat);
-  })
-});
-
+  });
+  socket.on("enter", user => {
+    onlineUserss.push(user);
+    io.emit("online", onlineUserss);
+  });
+  socket.on("leave", user => {
+    onlineUserss = onlineUserss.filter(function (item) {
+      return item !== user
+    })
+    io.emit("online", onlineUserss);
+  });
+})
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);

@@ -1,40 +1,60 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Language } from 'src/app/language.enum';
 import { Scroll } from 'src/app/models/scroll.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ScrollService } from 'src/app/services/scroll.service';
+import {io} from 'socket.io-client';
 import swal from 'sweetalert';
 import Typewriter from 't-writer.js'
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-guild',
   templateUrl: './guild.component.html',
   styleUrls: ['./guild.component.css']
 })
-export class GuildComponent implements OnInit, OnDestroy {
+export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
   scroll$: Observable<Scroll>;
   showGym:boolean;
   isBeginner:boolean;
   notesChecked:boolean;
-
+  socket:any;
+  hasTicket:boolean;
+  username:string;
+  onlineUsers:[string];
   private sub:Subscription;
   constructor(private router:Router,private scrollService: ScrollService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.sub = this.authService.getUpdatedUser().subscribe(user => {
+    this.hasTicket=localStorage.getItem('hasTicket')==='true'? true:false;
+    this.socket=io("http://localhost:3300/");
+    this.sub = this.authService.getUpdatedUser().subscribe((user:User) => {
       if(user && !user.confirmed)
           this.checkProficiency(user.language);
+      if(localStorage.getItem('hasTicket')){
+        this.username=user.name;
+        this.socket.emit("enter",user.name);
+      }
     })
   }
-
+  ngAfterViewInit(): void {
+    this.socket.on("online", (adat:[string])=>{
+      this.onlineUsers=adat;
+    })
+  }
   ngOnDestroy(): void {
     if(this.sub)
     this.sub.unsubscribe();
   }
   
+  leave():void{
+    this.socket.emit("leave", this.username);
+    this.router.navigate(['/']);
+  }
+
   //Intro
   private checkProficiency(language:Language){
     swal(`Are you a beginner at ${language}?`, {
