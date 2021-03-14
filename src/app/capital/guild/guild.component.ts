@@ -24,7 +24,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   socket:any;
   hasTicket:boolean;
   username:string;
-  onlineUsers:[string];
+  onlineUsers:Set<string>;
   private sub:Subscription;
   constructor(private router:Router,private scrollService: ScrollService, private authService: AuthService) {}
 
@@ -42,18 +42,22 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.socket.on("online", (adat:[string])=>{
-      this.onlineUsers=adat;
+      this.onlineUsers=new Set(adat);
     })
   }
   ngOnDestroy(): void {
     if(this.sub)
     this.sub.unsubscribe();
   }
-  
+  enterGym():void{
+    this.showGym=true;
+  }
+
   leave():void{
     this.socket.emit("leave", this.username);
     this.router.navigate(['/']);
   }
+
 
   //Intro
   private checkProficiency(language:Language){

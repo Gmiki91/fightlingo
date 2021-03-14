@@ -1,4 +1,4 @@
-<app-gym *ngIf="showGym" (fightFinishedEmitter)="fightFinished()"></app-gym>
+<app-gym *ngIf="showGym" [username]="username" (fightFinishedEmitter)="fightFinished()"></app-gym>
 <div *ngIf="!showGym">
     <div *ngIf="!hasTicket">
         <!-- means it is a fresh registration -->
@@ -11,6 +11,7 @@
             <label>Online users</label>
             <p *ngFor="let player of onlineUsers">{{player}}</p>
         </div>
+        <button (click)="enterGym()">Enter Gym</button>
         <button (click)="leave()">Leave</button>
     </div>
 </div>

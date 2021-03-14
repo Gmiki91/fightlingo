@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import {io} from 'socket.io-client';
 
@@ -10,6 +10,7 @@ import {io} from 'socket.io-client';
 export class GymComponent implements OnInit, AfterViewInit {
 
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
+  @Input() username:string;
   selectedButton;
   readyToAttack: boolean;
   miss: boolean;
@@ -27,12 +28,14 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.socket=io("http://localhost:3300/");
-   
+    console.log("jelen: ", this.username);
    }
 
    ngAfterViewInit(): void {
      this.socket.on("attack", adat =>{
       console.log("ajjajj", adat);
+      if(adat.user!=this.username)
+      this.takeAHit();
     })
    }
 
@@ -66,12 +69,16 @@ export class GymComponent implements OnInit, AfterViewInit {
   }
 
   attack(): void {
-    this.socket.emit("attack", this.spellType);
+    this.socket.emit("attack", {spell:this.spellType, user:this.username});
     this.count++;
     if (this.count === 3)
       this.fightFinishedEmitter.emit(true);
     this.nextTurn();
   }
+
+  private takeAHit():void{
+    console.log("you've been hit");
+  };
 
   private nextTurn(): void {
     this.quizType = null;
