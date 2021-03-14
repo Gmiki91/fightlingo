@@ -2,12 +2,14 @@
     <div  class="questions" *ngIf="quizInProgress || fightInProgress">
         <div style="text-align: center;" *ngIf="sentence">
             <label>{{displayedSentence}}</label>
+            <label *ngIf="translation">{{translation}}</label>
         </div>
         <div style="text-align: center;">
             <input #input>
         </div>
         <div style="text-align: center;">
             <button *ngIf="quizInProgress" [disabled]="!sentence" (click)="checkQuiz()">Check</button>
+            <button *ngIf="quizInProgress" [disabled]="!sentence" (click)="showTranslation()">Show translation</button>
             <button *ngIf="fightInProgress" [disabled]="!sentence" (click)="checkFight()">Check</button>
         </div>
     </div>

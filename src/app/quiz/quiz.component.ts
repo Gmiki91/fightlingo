@@ -20,6 +20,7 @@ export class QuizComponent implements OnInit, OnChanges {
   @Output() fightQuizResult: EventEmitter<boolean> = new EventEmitter();
   numberOfSentences: number;
   displayedSentence: string;
+  translation:string;
   sentence: Sentence;
   sentences: Sentence[];
   quizInProgress: boolean;
@@ -57,6 +58,7 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   checkQuiz(): void {
+    this.translation=null;
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
@@ -121,6 +123,9 @@ export class QuizComponent implements OnInit, OnChanges {
     this.sentence = null;
     this.flashCardsInProgress = false;
     this.readyForPromotion.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
+  }
+  showTranslation():void{
+    this.translation=this.sentence.english[0];
   }
 
   private displaySentence(sentences: Sentence[]): void {

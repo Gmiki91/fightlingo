@@ -4,6 +4,7 @@ import { BehaviorSubject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Progress } from '../models/progress.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class QuizService {
@@ -13,7 +14,8 @@ export class QuizService {
      }
 
     getFightSentences(){
-        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/fight');
+
+        return this.http.get<Sentence[]>(`${environment.apiUrl}/sentences/fight`);
     }
 
     getPracticableSentences(id: string) {
