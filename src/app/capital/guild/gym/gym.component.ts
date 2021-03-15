@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-gym',
@@ -10,7 +10,7 @@ import {io} from 'socket.io-client';
 export class GymComponent implements OnInit, AfterViewInit {
 
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
-  @Input() username:string;
+  @Input() username: string;
   selectedButton;
   readyToAttack: boolean;
   miss: boolean;
@@ -19,31 +19,32 @@ export class GymComponent implements OnInit, AfterViewInit {
   quizType: string;
   cooldown: number = 5;
   subscription: Subscription;
-  socket:any;
-
+  socket: any;
+  path:string;
   //temporary
   count: number = 0;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.socket=io("http://localhost:3300/");
+    this.path="../../assets/duel.png";
+    this.socket = io("http://localhost:3300/");
     console.log("jelen: ", this.username);
-   }
+  }
 
-   ngAfterViewInit(): void {
-     this.socket.on("attack", adat =>{
+  ngAfterViewInit(): void {
+    this.socket.on("attack", adat => {
       console.log("ajjajj", adat);
-      if(adat.user!=this.username)
-      this.takeAHit();
+      if (adat.user != this.username)
+        this.takeAHit();
     })
-   }
+  }
 
   spellTypeChange(event): void {
 
     this.selectedButton = event;
     this.spellType = event.value;
-    
+
     this.sentenceComes();
   }
 
@@ -69,15 +70,38 @@ export class GymComponent implements OnInit, AfterViewInit {
   }
 
   attack(): void {
-    this.socket.emit("attack", {spell:this.spellType, user:this.username});
-    this.count++;
-    if (this.count === 3)
-      this.fightFinishedEmitter.emit(true);
-    this.nextTurn();
+    const audio = new Audio();
+    audio.src = '../../assets/attack.mp3'
+    audio.load();
+    audio.play();
+    if(this.username==='c'){
+      this.path = "../../assets/fromright.gif";
+    }else{
+      this.path = "../../assets/fromleft.gif";
+    }
+    this.socket.emit("attack", { spell: this.spellType, user: this.username });
+    setTimeout(() => { 
+      this.path="../../assets/duel.png";
+      this.count++;
+      if (this.count === 10)
+        this.fightFinishedEmitter.emit(true);
+      this.nextTurn();}, 1000);
   }
 
-  private takeAHit():void{
-    console.log("you've been hit");
+  private takeAHit(): void {
+    const audio = new Audio();
+    audio.src = '../../assets/attack.mp3'
+    audio.load();
+    audio.play();
+    if(this.username==='c'){
+      this.path = "../../assets/fromleft.gif";
+    }else{
+      this.path = "../../assets/fromright.gif";
+    }
+   
+    setTimeout(() => { 
+      this.path="../../assets/duel.png";
+     }, 1000);
   };
 
   private nextTurn(): void {

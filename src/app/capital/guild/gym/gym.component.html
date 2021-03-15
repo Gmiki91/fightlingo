@@ -6,3 +6,6 @@
 <app-quiz [hidden]="hideQuiz" [quizType]="quizType" (fightQuizResult)="quizResult($event)"></app-quiz>
 <div *ngIf="miss">{{cooldown}}</div>
 <button *ngIf="readyToAttack" (click)="attack()">Cast!</button>
+<div class="animation">
+    <img  [src]="path">
+</div>
