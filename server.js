@@ -51,21 +51,29 @@ const io = require('socket.io')(server, {
     origin: '*',
   }
 });
-let onlineUserss = [];
+
+let onlineUsers = [];
 io.on("connection", socket => {
+
   socket.on("attack", adat => {
     io.emit("attack", adat);
   });
+
   socket.on("enter", user => {
-    onlineUserss.push(user);
-    io.emit("online", onlineUserss);
+    onlineUsers.push(user);
+    io.emit("online", onlineUsers);
   });
+
   socket.on("leave", user => {
-    onlineUserss = onlineUserss.filter(function (item) {
+    onlineUsers = onlineUsers.filter(function (item) {
       return item !== user
     })
-    io.emit("online", onlineUserss);
+    io.emit("online", onlineUsers);
   });
+
+  socket.on("challenge", challengeObject=>{
+    io.emit("challenge", challengeObject);
+  })
 })
 server.on("error", onError);
 server.on("listening", onListening);

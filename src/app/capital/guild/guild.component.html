@@ -9,7 +9,10 @@
     <div *ngIf="hasTicket">
         <div *ngIf="onlineUsers">
             <label>Online users</label>
-            <p *ngFor="let player of onlineUsers">{{player}}</p>
+            <div *ngFor="let player of onlineUsers">
+                <button *ngIf="player!=username" (click)="onChallenge(player)">{{player}}</button>
+            </div>
+            <br>
         </div>
         <button (click)="enterGym()">Enter Gym</button>
         <button (click)="leave()">Leave</button>

@@ -44,6 +44,11 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     this.socket.on("online", (adat:[string])=>{
       this.onlineUsers=new Set(adat);
     })
+    this.socket.on("challenge", challengeObject=>{
+      if(challengeObject.challenged === this.username){
+        swal(`You have been challenged by ${challengeObject.challenger}`);
+      }
+    } )
   }
   ngOnDestroy(): void {
     if(this.sub)
@@ -58,6 +63,10 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/']);
   }
 
+  onChallenge(player:string){
+    this.socket.emit("challenge", {challenger:this.username, challenged:player});
+    swal(`You have challenged ${player}`);
+  }
 
   //Intro
   private checkProficiency(language:Language){
