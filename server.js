@@ -54,27 +54,39 @@ const io = require('socket.io')(server, {
 
 let onlineUsers = [];
 io.on("connection", socket => {
-
+/*
   socket.on("attack", adat => {
     io.emit("attack", adat);
   });
-
+  */
   socket.on("enter", user => {
-    onlineUsers.push(user);
+    onlineUsers.push({userName:user, socketId:socket.id});
     io.emit("online", onlineUsers);
   });
 
   socket.on("leave", user => {
-    onlineUsers = onlineUsers.filter(function (item) {
-      return item !== user
-    })
+    onlineUsers.splice(onlineUsers.indexOf(user),1)
     io.emit("online", onlineUsers);
   });
 
+
   socket.on("challenge", challengeObject=>{
-    io.emit("challenge", challengeObject);
+    console.log("challenger", challengeObject.challenger);
+    io.to(challengeObject.challenged).emit("challenge", challengeObject.challenger);
   })
+
+  socket.on("withdrawn", challengedSocketId=>{
+    console.log("withdrawn:", challengedSocketId)
+    io.to(challengedSocketId).emit("withdrawn");
+  })
+
+  socket.on("challengeAccepted", socketId=>{
+    console.log("accepted: ",socketId);
+    io.to(socketId).emit("challengeAccepted");
+  })
+
 })
+
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);

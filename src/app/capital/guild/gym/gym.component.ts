@@ -29,7 +29,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.path="../../assets/duel.png";
     this.socket = io("http://localhost:3300/");
-    console.log("jelen: ", this.username);
+    //console.log("jelen: ", this.username);
   }
 
   ngAfterViewInit(): void {

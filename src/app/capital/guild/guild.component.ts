@@ -5,71 +5,116 @@ import { Language } from 'src/app/language.enum';
 import { Scroll } from 'src/app/models/scroll.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ScrollService } from 'src/app/services/scroll.service';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
 import swal from 'sweetalert';
 import Typewriter from 't-writer.js'
 import { User } from 'src/app/models/user.model';
+import { OnlineUser } from 'src/app/models/online-user.model';
 
 @Component({
   selector: 'app-guild',
   templateUrl: './guild.component.html',
   styleUrls: ['./guild.component.css']
 })
+
+
 export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
   scroll$: Observable<Scroll>;
-  showGym:boolean;
-  isBeginner:boolean;
-  notesChecked:boolean;
-  socket:any;
-  hasTicket:boolean;
-  username:string;
-  onlineUsers:Set<string>;
-  private sub:Subscription;
-  constructor(private router:Router,private scrollService: ScrollService, private authService: AuthService) {}
+  showGym: boolean;
+  isBeginner: boolean;
+  notesChecked: boolean;
+  socket: any;
+  hasTicket: boolean;
+  user: OnlineUser;
+  onlineUsers: Set<OnlineUser>;
+  private sub: Subscription;
+  constructor(private router: Router, private scrollService: ScrollService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.hasTicket=localStorage.getItem('hasTicket')==='true'? true:false;
-    this.socket=io("http://localhost:3300/");
-    this.sub = this.authService.getUpdatedUser().subscribe((user:User) => {
-      if(user && !user.confirmed)
-          this.checkProficiency(user.language);
-      if(localStorage.getItem('hasTicket')){
-        this.username=user.name;
-        this.socket.emit("enter",user.name);
+    this.hasTicket = localStorage.getItem('hasTicket') === 'true' ? true : false;
+    this.socket = io("http://localhost:3300/");
+    this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
+      if (user && !user.confirmed)
+        this.checkProficiency(user.language);
+      if (localStorage.getItem('hasTicket')) {
+        this.user = { userName: user.name, socketId: null };
+        this.socket.emit("enter", user.name);
       }
     })
   }
   ngAfterViewInit(): void {
-    this.socket.on("online", (adat:[string])=>{
-      this.onlineUsers=new Set(adat);
+    this.socket.on("withdrawn", ()=>{
+      swal("Challenge withdrawn");
+    });
+  
+    this.socket.on("online", (adat: [OnlineUser]) => {
+      if (this.user)
+        this.user = { userName: this.user.userName, socketId: this.socket.id };
+      this.onlineUsers = new Set(adat);
     })
-    this.socket.on("challenge", challengeObject=>{
-      if(challengeObject.challenged === this.username){
-        swal(`You have been challenged by ${challengeObject.challenger}`);
-      }
-    } )
-  }
-  ngOnDestroy(): void {
-    if(this.sub)
-    this.sub.unsubscribe();
-  }
-  enterGym():void{
-    this.showGym=true;
+
+    this.socket.on("challenge", (challenger: OnlineUser) => {
+      swal(`You have been challenged by ${challenger.userName}`, {
+        buttons: {
+          yes: {
+            text: "Accept",
+            value: "yes"
+          },
+          no: {
+            text: "Decline",
+            value: "no",
+          },
+        },
+      }).then((answer) => {
+        if (answer === "yes") {
+          this.socket.emit("challengeAccepted", challenger.socketId);
+          this.enterGym();
+        }
+      });
+    })
   }
 
-  leave():void{
-    this.socket.emit("leave", this.username);
+  ngOnDestroy(): void {
+    if (this.sub)
+      this.sub.unsubscribe();
+  }
+  enterGym(): void {
+    swal.close();
+    this.showGym = true;
+  }
+
+  leave(): void {
+    this.socket.emit("leave", this.user);
     this.router.navigate(['/']);
   }
 
-  onChallenge(player:string){
-    this.socket.emit("challenge", {challenger:this.username, challenged:player});
-    swal(`You have challenged ${player}`);
+  onChallenge(challenged: OnlineUser) {
+    this.socket.emit("challenge", { challenger: this.user, challenged: challenged.socketId });
+    this.listenToAnswer();
+    swal(`You have challenged ${challenged.userName}`, {
+      closeOnClickOutside: false,
+      buttons: {
+        withdraw: {
+          text: "Withdaw challenge",
+          value: "withdraw"
+        }
+      }
+    }).then((answer) => {
+      if (answer === "withdraw") {
+        this.socket.emit("withdrawn", challenged.socketId);
+      };
+    });
   }
 
+  private listenToAnswer(){
+    this.socket.on("challengeAccepted",()=>{
+      console.log("hahó");
+      this.enterGym()
+    });
+  }
   //Intro
-  private checkProficiency(language:Language){
+  private checkProficiency(language: Language) {
     swal(`Are you a beginner at ${language}?`, {
       buttons: {
         yes: {
@@ -84,7 +129,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then(answer => this.startIntro(answer))
   }
 
-  startIntro(beginner:boolean) {
+  startIntro(beginner: boolean) {
     this.isBeginner = beginner
     const text = beginner ? "You are a beginner! Check your notes!" : "So you think you know shit? Lets do the exam then!";
     const target = document.querySelector('.tw')
@@ -98,18 +143,18 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
       .start()
 
   }
-  
+
   onNotes(): void {
     this.scroll$ = this.scrollService.getOneScroll(1);
-    this.notesChecked=true;
+    this.notesChecked = true;
   }
 
-  onTakeExam(){
-    this.showGym=true;
+  onTakeExam() {
+    this.showGym = true;
   }
 
- async fightFinished(){
-    this.showGym=false;
+  async fightFinished() {
+    this.showGym = false;
     swal("congrats");
     this.authService.levelUp().toPromise();
     await this.authService.confirmUser().toPromise();
