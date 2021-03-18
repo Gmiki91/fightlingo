@@ -54,11 +54,12 @@ const io = require('socket.io')(server, {
 
 let onlineUsers = [];
 io.on("connection", socket => {
-/*
+
   socket.on("attack", adat => {
-    io.emit("attack", adat);
+    console.log(adat.enemy);
+    io.to(adat.enemy).emit("attack", adat.spell);
   });
-  */
+  
   socket.on("enter", user => {
     onlineUsers.push({userName:user, socketId:socket.id});
     io.emit("online", onlineUsers);
@@ -71,7 +72,7 @@ io.on("connection", socket => {
 
 
   socket.on("challenge", challengeObject=>{
-    console.log("challenger", challengeObject.challenger);
+    console.log("challenger", challengeObject.challenged);
     io.to(challengeObject.challenged).emit("challenge", challengeObject.challenger);
   })
 

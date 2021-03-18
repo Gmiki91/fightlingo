@@ -20,6 +20,7 @@ import { OnlineUser } from 'src/app/models/online-user.model';
 
 export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  enemy:OnlineUser;
   scroll$: Observable<Scroll>;
   showGym: boolean;
   isBeginner: boolean;
@@ -69,7 +70,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
       }).then((answer) => {
         if (answer === "yes") {
           this.socket.emit("challengeAccepted", challenger.socketId);
-          this.enterGym();
+          this.enterGym(challenger);
         }
       });
     })
@@ -79,7 +80,8 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.sub)
       this.sub.unsubscribe();
   }
-  enterGym(): void {
+  enterGym(enemy:OnlineUser): void {
+    this.enemy=enemy;
     swal.close();
     this.showGym = true;
   }
@@ -91,7 +93,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onChallenge(challenged: OnlineUser) {
     this.socket.emit("challenge", { challenger: this.user, challenged: challenged.socketId });
-    this.listenToAnswer();
+    this.listenToAnswer(challenged );
     swal(`You have challenged ${challenged.userName}`, {
       closeOnClickOutside: false,
       buttons: {
@@ -107,10 +109,9 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private listenToAnswer(){
+  private listenToAnswer(enemy:OnlineUser) {
     this.socket.on("challengeAccepted",()=>{
-      console.log("hahó");
-      this.enterGym()
+      this.enterGym(enemy);
     });
   }
   //Intro

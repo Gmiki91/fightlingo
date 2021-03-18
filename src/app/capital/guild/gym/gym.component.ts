@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { io } from 'socket.io-client';
+import { OnlineUser } from 'src/app/models/online-user.model';
 
 @Component({
   selector: 'app-gym',
@@ -10,7 +11,8 @@ import { io } from 'socket.io-client';
 export class GymComponent implements OnInit, AfterViewInit {
 
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
-  @Input() username: string;
+  @Input() socket: any;
+  @Input() enemy:OnlineUser;
   selectedButton;
   readyToAttack: boolean;
   miss: boolean;
@@ -19,7 +21,6 @@ export class GymComponent implements OnInit, AfterViewInit {
   quizType: string;
   cooldown: number = 5;
   subscription: Subscription;
-  socket: any;
   path:string;
   //temporary
   count: number = 0;
@@ -28,14 +29,12 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.path="../../assets/duel.png";
-    this.socket = io("http://localhost:3300/");
-    //console.log("jelen: ", this.username);
+   // this.socket = io("http://localhost:3300/");
   }
 
   ngAfterViewInit(): void {
-    this.socket.on("attack", adat => {
-      console.log("ajjajj", adat);
-      if (adat.user != this.username)
+    this.socket.on("attack", spell => {
+      console.log(spell);
         this.takeAHit();
     })
   }
@@ -74,12 +73,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     audio.src = '../../assets/attack.mp3'
     audio.load();
     audio.play();
-    if(this.username==='c'){
-      this.path = "../../assets/fromright.gif";
-    }else{
-      this.path = "../../assets/fromleft.gif";
-    }
-    this.socket.emit("attack", { spell: this.spellType, user: this.username });
+    this.path = "../../assets/fromleft.gif";
+    this.socket.emit("attack", { spell: this.spellType, enemy:this.enemy.socketId });
     setTimeout(() => { 
       this.path="../../assets/duel.png";
       this.count++;
@@ -93,12 +88,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     audio.src = '../../assets/attack.mp3'
     audio.load();
     audio.play();
-    if(this.username==='c'){
-      this.path = "../../assets/fromleft.gif";
-    }else{
-      this.path = "../../assets/fromright.gif";
-    }
-   
+    this.path = "../../assets/fromright.gif";
+
     setTimeout(() => { 
       this.path="../../assets/duel.png";
      }, 1000);

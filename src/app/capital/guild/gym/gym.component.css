@@ -2,6 +2,10 @@
     width: 100px;
     height: 100px;
 }
+.enemy_name{
+    margin-right: 41rem;
+    text-align: end;
+}
 img{
     
     height: 100%;
