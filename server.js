@@ -56,7 +56,6 @@ let onlineUsers = [];
 io.on("connection", socket => {
 
   socket.on("attack", adat => {
-    console.log(adat.enemy);
     io.to(adat.enemy).emit("attack", adat.spell);
   });
   
@@ -66,23 +65,21 @@ io.on("connection", socket => {
   });
 
   socket.on("leave", user => {
+    console.log("leaving", user);
     onlineUsers.splice(onlineUsers.indexOf(user),1)
     io.emit("online", onlineUsers);
   });
 
 
   socket.on("challenge", challengeObject=>{
-    console.log("challenger", challengeObject.challenged);
     io.to(challengeObject.challenged).emit("challenge", challengeObject.challenger);
   })
 
   socket.on("withdrawn", challengedSocketId=>{
-    console.log("withdrawn:", challengedSocketId)
     io.to(challengedSocketId).emit("withdrawn");
   })
 
   socket.on("challengeAccepted", socketId=>{
-    console.log("accepted: ",socketId);
     io.to(socketId).emit("challengeAccepted");
   })
 

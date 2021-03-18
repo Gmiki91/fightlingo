@@ -34,7 +34,6 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.socket.on("attack", spell => {
-      console.log(spell);
         this.takeAHit();
     })
   }

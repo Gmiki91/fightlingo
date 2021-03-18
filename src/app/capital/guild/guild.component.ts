@@ -77,12 +77,15 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.socket.emit("leave", this.user);
     if (this.sub)
       this.sub.unsubscribe();
   }
+  
   enterGym(enemy:OnlineUser): void {
     this.enemy=enemy;
     swal.close();
+    this.socket.emit("leave", this.user);
     this.showGym = true;
   }
 
