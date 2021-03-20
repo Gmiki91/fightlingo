@@ -52,27 +52,26 @@ const io = require('socket.io')(server, {
   }
 });
 
-let onlineUsers = [];
+const onlineUsers = {};
 io.on("connection", socket => {
 
   socket.on("attack", adat => {
     io.to(adat.enemy).emit("attack", adat.spell);
   });
   
-  socket.on("enter", user => {
-    onlineUsers.push({userName:user, socketId:socket.id});
+  socket.on("enter", username => {
+    onlineUsers[username]=socket.id;
     io.emit("online", onlineUsers);
   });
 
-  socket.on("leave", user => {
-    console.log("leaving", user);
-    onlineUsers.splice(onlineUsers.indexOf(user),1)
+  socket.on("leave", username => {
+    delete onlineUsers[username];
     io.emit("online", onlineUsers);
   });
 
 
   socket.on("challenge", challengeObject=>{
-    io.to(challengeObject.challenged).emit("challenge", challengeObject.challenger);
+    io.to(challengeObject.challengedSocketId).emit("challenge", challengeObject.challenger);
   })
 
   socket.on("withdrawn", challengedSocketId=>{
