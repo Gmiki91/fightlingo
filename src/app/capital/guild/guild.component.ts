@@ -20,83 +20,93 @@ import { OnlineUser } from 'src/app/models/online-user.model';
 
 export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  enemy:OnlineUser;
+  enemy: OnlineUser;
   scroll$: Observable<Scroll>;
   showGym: boolean;
   isBeginner: boolean;
   notesChecked: boolean;
   socket: any;
   hasTicket: boolean;
-  user: OnlineUser;
+  user: User;
+  onlineUser: OnlineUser;
   onlineUsers;
   private sub: Subscription;
+
   constructor(private router: Router, private scrollService: ScrollService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.hasTicket = localStorage.getItem('hasTicket') === 'true' ? true : false;
-    this.socket = io("http://localhost:3300/");
+    if (this.hasTicket)
+      this.socket = io("http://localhost:3300/");
+    else
+      this.socket = null;
     this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
+      this.user = user;
       if (user && !user.confirmed)
         this.checkProficiency(user.language);
-      if (localStorage.getItem('hasTicket')) {
-        this.user = { userName: user.name, socketId: null };
+      if (this.hasTicket) {
+        this.onlineUser = { userName: user.name, socketId: null };
         this.socket.emit("enter", user.name);
       }
     })
   }
   ngAfterViewInit(): void {
-    this.socket.on("withdrawn", ()=>{
-      swal("Challenge withdrawn");
-    });
-  
-    this.socket.on("online", (adat) => {
-      if (this.user)
-        this.user = { userName: this.user.userName, socketId: this.socket.id };  
-      this.onlineUsers = Object.entries(adat);
-    })
-
-    this.socket.on("challenge", (challenger) => {
-      swal(`You have been challenged by ${challenger.userName}`, {
-        buttons: {
-          yes: {
-            text: "Accept",
-            value: "yes"
-          },
-          no: {
-            text: "Decline",
-            value: "no",
-          },
-        },
-      }).then((answer) => {
-        if (answer === "yes") {
-          this.socket.emit("challengeAccepted", challenger.socketId);
-          this.enterGym(challenger);
-        }
+    if (this.hasTicket) {
+      this.socket.on("withdrawn", () => {
+        swal("Challenge withdrawn");
       });
-    })
+
+      this.socket.on("online", (adat) => {
+        if (this.onlineUser)
+          this.onlineUser = { userName: this.onlineUser.userName, socketId: this.socket.id };
+        this.onlineUsers = Object.entries(adat);
+      })
+
+      this.socket.on("challenge", (challenger) => {
+        swal(`You have been challenged by ${challenger.userName}`, {
+          buttons: {
+            yes: {
+              text: "Accept",
+              value: "yes"
+            },
+            no: {
+              text: "Decline",
+              value: "no",
+            },
+          },
+        }).then((answer) => {
+          if (answer === "yes") {
+            this.socket.emit("challengeAccepted", challenger.socketId);
+            this.enterGym(challenger);
+          }
+        });
+      })
+    }
   }
 
   ngOnDestroy(): void {
-    this.socket.emit("leave", this.user.userName);
-    if (this.sub)
-      this.sub.unsubscribe();
+    if (this.hasTicket) {
+      this.socket.emit("leave", this.onlineUser.userName);
+      if (this.sub)
+        this.sub.unsubscribe();
+    }
   }
-  
-  enterGym(enemy:OnlineUser): void {
-    this.enemy=enemy;
+
+  enterGym(enemy: OnlineUser): void {
+    this.enemy = enemy;
     swal.close();
-    this.socket.emit("leave", this.user.userName);
+    this.socket.emit("leave", this.onlineUser.userName);
     this.showGym = true;
   }
 
   leave(): void {
-    this.socket.emit("leave", this.user.userName);
+    this.socket.emit("leave", this.onlineUser.userName);
     this.router.navigate(['/']);
   }
 
-  onChallenge(challengedArr) {
-    const challenged = {userName: challengedArr[0], socketId: challengedArr[1]};
-    this.socket.emit("challenge", { challenger: this.user, challengedSocketId: challenged.socketId });
+  onChallenge(challengedArr: [userName: string, socketId: string]) {
+    const challenged = { userName: challengedArr[0], socketId: challengedArr[1] };
+    this.socket.emit("challenge", { challenger: this.onlineUser, challengedSocketId: challenged.socketId });
     this.listenToAnswer(challenged);
     swal(`You have challenged ${challenged.userName}`, {
       closeOnClickOutside: false,
@@ -113,8 +123,8 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private listenToAnswer(enemy:OnlineUser) {
-    this.socket.on("challengeAccepted",()=>{
+  private listenToAnswer(enemy: OnlineUser) {
+    this.socket.on("challengeAccepted", () => {
       this.enterGym(enemy);
     });
   }

@@ -1,4 +1,4 @@
-<app-gym *ngIf="showGym" [enemy]="enemy" [socket]="socket" (fightFinishedEmitter)="fightFinished()"></app-gym>
+<app-gym *ngIf="showGym" [enemy]="enemy" [user]="user" [socket]="socket" (fightFinishedEmitter)="fightFinished()"></app-gym>
 <div *ngIf="!showGym">
     <div *ngIf="!hasTicket">
         <!-- means it is a fresh registration -->

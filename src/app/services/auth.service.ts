@@ -21,7 +21,7 @@ export class AuthService {
             language: form.language,
             confirmed: false,
             strength: 5,
-            hitpoint: 30,
+            hitpoint: 10,
             level: 0,
             rank: 0,
             money: 3,

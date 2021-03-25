@@ -1,5 +1,5 @@
 export enum Style{
-    FIRE,
-    WATER,
-    EARTH
+    Fire="fire",
+    Water="water",
+    Earth="earth"
 }
