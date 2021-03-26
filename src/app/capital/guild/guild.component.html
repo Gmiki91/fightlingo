@@ -10,7 +10,7 @@
         <div *ngIf="onlineUsers">
             <label>Online users</label>
             <div *ngFor="let player of onlineUsers">
-                <button *ngIf="player[0]!=user.userName" (click)="onChallenge(player)">{{player[0]}}</button>
+                <button *ngIf="player[0]!=onlineUser.userName" (click)="onChallenge(player)">{{player[0]}}</button>
             </div>
             <br>
         </div>
