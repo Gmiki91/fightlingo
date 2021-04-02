@@ -7,7 +7,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ScrollService } from 'src/app/services/scroll.service';
 import { io } from 'socket.io-client';
 import swal from 'sweetalert';
-import Typewriter from 't-writer.js'
 import { User } from 'src/app/models/user.model';
 import { OnlineUser } from 'src/app/models/online-user.model';
 
@@ -21,10 +20,7 @@ import { OnlineUser } from 'src/app/models/online-user.model';
 export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
   enemy: OnlineUser;
-  scroll$: Observable<Scroll>;
   showGym: boolean;
-  isBeginner: boolean;
-  notesChecked: boolean;
   socket: any;
   hasTicket: boolean;
   user: User;
@@ -32,26 +28,22 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   onlineUsers;
   private sub: Subscription;
 
-  constructor(private router: Router, private scrollService: ScrollService, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.hasTicket = localStorage.getItem('hasTicket') === 'true' ? true : false;
-    if (this.hasTicket)
-      this.socket = io("http://localhost:3300/");
-    else
-      this.socket = null;
+   
+    this.socket = io("http://localhost:3300/");
+    
     this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
-      this.user = user;
-      if (user && !user.confirmed)
-        this.checkProficiency(user.language);
-      if (this.hasTicket) {
+      if (user){
+        this.user = user;
         this.onlineUser = { userName: user.name, socketId: null };
         this.socket.emit("enter", user.name);
       }
     })
   }
   ngAfterViewInit(): void {
-    if (this.hasTicket) {
+
       this.socket.on("withdrawn", () => {
         swal("Challenge withdrawn");
       });
@@ -81,15 +73,15 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
       })
-    }
+    
   }
 
   ngOnDestroy(): void {
-    if (this.hasTicket) {
+
       this.socket.emit("leave", this.onlineUser.userName);
       if (this.sub)
         this.sub.unsubscribe();
-    }
+    
   }
 
   enterGym(enemy: OnlineUser): void {
@@ -128,51 +120,10 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
       this.enterGym(enemy);
     });
   }
-  //Intro
-  private checkProficiency(language: Language) {
-    swal(`Are you a beginner at ${language}?`, {
-      buttons: {
-        yes: {
-          text: "Yes",
-          value: true
-        },
-        no: {
-          text: "No",
-          value: false
-        },
-      },
-    }).then(answer => this.startIntro(answer))
-  }
-
-  startIntro(beginner: boolean) {
-    this.isBeginner = beginner
-    const text = beginner ? "You are a beginner! Check your notes!" : "So you think you know shit? Lets do the exam then!";
-    const target = document.querySelector('.tw')
-    const writer = new Typewriter(target, {
-      loop: false,
-      typeColor: 'blue'
-    })
-    writer
-      .type(text)
-      .rest(250)
-      .start()
-
-  }
-
-  onNotes(): void {
-    this.scroll$ = this.scrollService.getOneScroll(1);
-    this.notesChecked = true;
-  }
-
-  onTakeExam() {
-    this.showGym = true;
-  }
 
   async fightFinished() {
     this.showGym = false;
     swal("congrats");
-    this.authService.levelUp().toPromise();
-    await this.authService.confirmUser().toPromise();
     this.router.navigate(['/']);
   }
 }

@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (user && user.confirmed)
       this.router.navigate(['/']);
       else if(user && !user.confirmed)
-      this.router.navigate(['/guild']);
+      this.router.navigate(['/intro']);
     })
   }
 

@@ -1,12 +1,6 @@
 <app-gym *ngIf="showGym" [enemy]="enemy" [user]="user" [socket]="socket" (fightFinishedEmitter)="fightFinished()"></app-gym>
 <div *ngIf="!showGym">
-    <div *ngIf="!hasTicket">
-        <!-- means it is a fresh registration -->
-        <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
-        <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>
-        <p *ngIf="scroll$ | async as scroll">{{scroll.grammar}}</p>
-    </div>
-    <div *ngIf="hasTicket">
+    <div>
         <div *ngIf="onlineUsers">
             <label>Online users</label>
             <div *ngFor="let player of onlineUsers">

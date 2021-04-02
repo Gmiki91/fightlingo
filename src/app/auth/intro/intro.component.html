@@ -1,0 +1,7 @@
+<app-gym *ngIf="showGym" [user]="user" (fightFinishedEmitter)="fightFinished()"></app-gym>
+<div *ngIf="!showGym">
+    <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
+    <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>
+    <p *ngIf="scroll$ | async as scroll">{{scroll.grammar}}</p>
+</div>
+<div class="tw"></div>

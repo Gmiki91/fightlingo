@@ -4,11 +4,11 @@ import { CanActivate, Router } from "@angular/router";
 @Injectable({
     providedIn: 'root'
 })
-export class HeaderGuard implements CanActivate {
+export class IntroGuard implements CanActivate {
 
     constructor(private router: Router) { };
     canActivate(): boolean {
-        if (!localStorage.getItem('userId')) {
+        if (localStorage.getItem('confirmed') === 'false'){
             return true;
         } else {
             this.router.navigate(['/']);

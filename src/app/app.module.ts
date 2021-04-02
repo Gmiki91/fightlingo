@@ -30,6 +30,7 @@ import { GymComponent } from './capital/guild/gym/gym.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { EventHandler } from './services/event-handler.service';
 import { DialogService } from './services/dialog.service';
+import { IntroComponent } from './auth/intro/intro.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DialogService } from './services/dialog.service';
     CapitalComponent,
     GuildComponent,
     GymComponent,
+    IntroComponent,
   ],
   imports: [
     FormsModule,

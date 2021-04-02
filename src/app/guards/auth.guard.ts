@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
                 return true;
             else if (localStorage.getItem('confirmed') === 'false'){
                 swal("You still have to take your final exam").then(() => {
-                    this.router.navigate(['/guild']);
+                    this.router.navigate(['/intro']);
                     return false;
                 })
                

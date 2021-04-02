@@ -35,10 +35,11 @@ export class GymComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if(this.socket)
-    this.socket.on("attack", spell => {
-      this.takeAHit(spell);
-    })
+    if (this.socket) {
+      this.socket.on("attack", spell => {
+        this.takeAHit(spell);
+      })
+    }
   }
 
   spellTypeChange(event): void {
@@ -72,12 +73,13 @@ export class GymComponent implements OnInit, AfterViewInit {
   attack(): void {
     this.playAttackSound();
     this.path = "../../assets/fromleft.gif";
-    if(this.socket)
-    this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
+    if (this.socket){
+      this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
+    }
     setTimeout(() => {
       this.path = "../../assets/duel.png";
       this.count++;
-      if (!this.socket && this.count === 2)
+      if (!this.socket && this.count === 3)
         this.fightFinishedEmitter.emit(true);
       this.nextTurn();
     }, 1000);
@@ -93,8 +95,7 @@ export class GymComponent implements OnInit, AfterViewInit {
       this.path = "../../assets/duel.png";
     }, 1000);
 
-    if(this.user.hitpoint<1){
-      console.log("vége");
+    if (this.user.hitpoint < 1) {
       this.fightFinishedEmitter.emit(true);
     }
   };
@@ -122,7 +123,6 @@ export class GymComponent implements OnInit, AfterViewInit {
       return 4;
     };
 
-    console.log(typeof this.spellType);
     if (enemySpell === Style.Earth) {
       switch (this.spellType) {
         case Style.Earth:
