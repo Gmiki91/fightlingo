@@ -31,11 +31,11 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-   
+
     this.socket = io("http://localhost:3300/");
-    
+
     this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
-      if (user){
+      if (user) {
         this.user = user;
         this.onlineUser = { userName: user.name, socketId: null };
         this.socket.emit("enter", user.name);
@@ -44,44 +44,44 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngAfterViewInit(): void {
 
-      this.socket.on("withdrawn", () => {
-        swal("Challenge withdrawn");
-      });
+    this.socket.on("withdrawn", () => {
+      swal("Challenge withdrawn");
+    });
 
-      this.socket.on("online", (adat) => {
-        if (this.onlineUser)
-          this.onlineUser = { userName: this.onlineUser.userName, socketId: this.socket.id };
-        this.onlineUsers = Object.entries(adat);
-      })
+    this.socket.on("online", (adat) => {
+      if (this.onlineUser)
+        this.onlineUser = { userName: this.onlineUser.userName, socketId: this.socket.id };
+      this.onlineUsers = Object.entries(adat);
+    })
 
-      this.socket.on("challenge", (challenger) => {
-        swal(`You have been challenged by ${challenger.userName}`, {
-          buttons: {
-            yes: {
-              text: "Accept",
-              value: "yes"
-            },
-            no: {
-              text: "Decline",
-              value: "no",
-            },
+    this.socket.on("challenge", (challenger) => {
+      swal(`You have been challenged by ${challenger.userName}`, {
+        buttons: {
+          yes: {
+            text: "Accept",
+            value: "yes"
           },
-        }).then((answer) => {
-          if (answer === "yes") {
-            this.socket.emit("challengeAccepted", challenger.socketId);
-            this.enterGym(challenger);
-          }
-        });
-      })
-    
+          no: {
+            text: "Decline",
+            value: "no",
+          },
+        },
+      }).then((answer) => {
+        if (answer === "yes") {
+          this.socket.emit("challengeAccepted", challenger.socketId);
+          this.enterGym(challenger);
+        }
+      });
+    })
+
   }
 
   ngOnDestroy(): void {
 
-      this.socket.emit("leave", this.onlineUser.userName);
-      if (this.sub)
-        this.sub.unsubscribe();
-    
+    this.socket.emit("leave", this.onlineUser.userName);
+    if (this.sub)
+      this.sub.unsubscribe();
+
   }
 
   enterGym(enemy: OnlineUser): void {
@@ -121,9 +121,12 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  async fightFinished() {
+  async fightFinished(youWon) {
     this.showGym = false;
-    swal("congrats");
+    if (youWon)
+      swal("congrats");
+    else
+      swal("noob")
     this.router.navigate(['/']);
   }
 }

@@ -38,6 +38,10 @@ export class GymComponent implements OnInit, AfterViewInit {
     if (this.socket) {
       this.socket.on("attack", spell => {
         this.takeAHit(spell);
+      });
+      this.socket.on("win",()=>{
+        console.log("nyertél!");
+        this.youWon();
       })
     }
   }
@@ -96,7 +100,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     }, 1000);
 
     if (this.user.hitpoint < 1) {
-      this.fightFinishedEmitter.emit(true);
+      this.socket.emit("win", {  channel: this.enemy.socketId });
+      this.fightFinishedEmitter.emit(false);
     }
   };
 
@@ -116,6 +121,10 @@ export class GymComponent implements OnInit, AfterViewInit {
     audio.src = '../../assets/attack.mp3'
     audio.load();
     audio.play();
+  }
+
+  private youWon():void{
+    this.fightFinishedEmitter.emit(true);
   }
 
   private amountOfDamage(enemySpell: string): number {

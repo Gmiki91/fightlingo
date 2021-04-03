@@ -58,6 +58,11 @@ io.on("connection", socket => {
   socket.on("attack", adat => {
     io.to(adat.enemy).emit("attack", adat.spell);
   });
+
+  socket.on("win", (adat)=>{
+    console.log(adat.channel)
+    io.to(adat.channel).emit("win");
+  })
   
   socket.on("enter", username => {
     onlineUsers[username]=socket.id;
