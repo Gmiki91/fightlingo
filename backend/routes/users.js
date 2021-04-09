@@ -41,6 +41,7 @@ router.post('/signup', (req, res, next) => {
                 lastLoggedIn: req.body.lastLoggedIn,
                 scrollFinished: req.body.scrollFinished,
                 confirmed:false,
+                isReadyForExam:false
             });
             user.save()
                 .then(initProgressFirst(req.body.language, req.body.rank))
@@ -137,20 +138,21 @@ router.patch('/rank', authCheck, (req, res, next) => {
         (err, user) => {
             return res.status(200).send({message:"rank updated"});
         });
-});
+})
 
 router.patch('/level', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
     User.updateOne({ _id: req.userData.id },
         { $set: {
              "level": req.userData.level + 1,
-             "rank": req.userData.rank + 1 
+             "rank": req.userData.rank + 1,
+             "isReadyForExam" : false
             }},
         { new: true },
         (err, user) => {
             return res.status(200).send({message:"level updated"});
         });
-});
+})
 
 router.patch('/confirm', authCheck, (req, res, next) => {
     User.updateOne({ _id: req.userData.id },
@@ -158,6 +160,15 @@ router.patch('/confirm', authCheck, (req, res, next) => {
         { new: true },
         (err, user) => {
             return res.status(200).send({message:"user confirmed"});
+        });
+})
+
+router.patch('/readyForExam', authCheck, (req, res, next) => {
+    User.updateOne({ _id: req.userData.id },
+        { $set: { "isReadyForExam": true} },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({message:"user stands before exam"});
         });
 })
 

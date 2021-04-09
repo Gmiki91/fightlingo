@@ -40,7 +40,6 @@ export class GymComponent implements OnInit, AfterViewInit {
         this.takeAHit(spell);
       });
       this.socket.on("win",()=>{
-        console.log("nyertél!");
         this.youWon();
       })
     }
@@ -93,7 +92,6 @@ export class GymComponent implements OnInit, AfterViewInit {
     this.playAttackSound();
     this.path = "../../assets/fromright.gif";
     let damage = this.amountOfDamage(spell);
-    console.log(damage);
     this.user.hitpoint = this.user.hitpoint - damage;
     setTimeout(() => {
       this.path = "../../assets/duel.png";

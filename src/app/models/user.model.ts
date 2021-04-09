@@ -13,6 +13,7 @@ export interface User{
     money:number;
     confirmed:boolean;
     hasShipTicket:boolean;
+    isReadyForExam:boolean;
     lastLoggedIn:Date;
     scrollFinished:Date;
 }

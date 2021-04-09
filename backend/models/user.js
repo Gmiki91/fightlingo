@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
     strength:Number,
     hitpoint:Number,
     confirmed:Boolean,
+    isReadyForExam:Boolean,
     hasShipTicket:Boolean,
     lastLoggedIn:Date,
     scrollFinished:Date

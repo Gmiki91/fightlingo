@@ -60,7 +60,6 @@ io.on("connection", socket => {
   });
 
   socket.on("win", (adat)=>{
-    console.log(adat.channel)
     io.to(adat.channel).emit("win");
   })
   

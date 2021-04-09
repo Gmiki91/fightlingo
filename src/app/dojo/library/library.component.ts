@@ -45,7 +45,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   onScrollBtnClicked(): void {
     if (this.buttonText === "Translate") {
-      this.readyToWork();
+      if(this.user.isReadyForExam){
+        swal("You have to take your exam first.");
+      }else{
+        this.readyToWork();
+      }
     } else {
       this.quizType = "practice";
     }
@@ -53,10 +57,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async quizFinished(event) {
     if (event) {
-      await this.auth.updateRank().toPromise();
-      swal(`You've finished this scroll! Well done!`);
-      this.reasonForRest();
+      const nextScroll = await this.scrollService.getOneScroll(this.user.rank+1).toPromise();
+      const isReadyForExam = nextScroll.level>this.user.level; 
+      if(!isReadyForExam) {
+        await this.auth.updateRank().toPromise();
+        swal(`You've finished this scroll! Well done!`);
+        this.reasonForRest();
+    }else{
+      await this.auth.readyForExam();
+      swal(`You're ready for your next exam.`);
     }
+  }
     this.scrolls = null;
     this.selectedScroll = null;
     this.quizType = null;
