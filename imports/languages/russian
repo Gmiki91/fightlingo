@@ -1,30 +1,6 @@
  {
    "scroll_id": "ru_0000",
    "level": 0,
-   "translation": ["Школа"],
-   "english": ["school"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["Англия"],
-   "english": ["england"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["Телевизор"],
-   "english": ["tv"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["Ресторан"],
-   "english": ["restaurant"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
    "translation": ["солдат"],
    "english": ["soldier"]
  }
@@ -35,177 +11,39 @@
    "english": ["banana"]
  }
  {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["Фотография"],
-   "english": ["photo"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["баскетбол"],
-   "english": ["basketball"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["балерина"],
-   "english": ["balerina"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["студент"],
-   "english": ["student"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["студентка"],
-   "english": ["student"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["салат"],
-   "english": ["salad"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["суп"],
-   "english": ["soup"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["история"],
-   "english": ["history"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["витамин"],
-   "english": ["vitamin"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["жираф"],
-   "english": ["giraffe"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["профессор"],
-   "english": ["professor"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["литература"],
-   "english": ["literature"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "translation": ["композитор"],
-   "english": ["composer"]
+   "scroll_id": "ru_0101",
+   "level": 1,
+   "translation": ["банан1"],
+   "english": ["banana1"]
  }
  {
    "scroll_id": "ru_0101",
    "level": 1,
-   "translation": ["как дела"],
-   "english": ["how's it going","how are things"]
+   "translation": ["солдат1"],
+   "english": ["солдат1"]
  }
  {
    "scroll_id": "ru_0102",
    "level": 1,
-   "translation": ["хорошо"],
-   "english": ["good","well"]
+   "translation": ["банан2"],
+   "english": ["banana2"]
  }
  {
    "scroll_id": "ru_0102",
    "level": 1,
-   "translation": ["а у тебя"],
-   "english": ["and you","how about you"]
+   "translation": ["солдат2"],
+   "english": ["солдат2"]
  }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["так себе"],
-   "english": ["so-so"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["извини"],
-   "english": ["excuse me","pardon me", "pardon", "sorry"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["мне некогда"],
-   "english": ["i'm in a hurry","i have to run"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["пока"],
-   "english": ["goodbye","bye","see you later"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["ну"],
-   "english": ["well"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["ладно"],
-   "english": ["ok","alright"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["до свидания"],
-   "english": ["goodbye","bye","see you later"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["нахал"],
-   "english": ["jerk"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["что слышно"],
-   "english": ["what's up","what's new"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["не спрашивай"],
-   "english": ["don't ask","don't even ask"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["ничего"],
-   "english": ["nothing","not bad","ok"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "translation": ["нахалка"],
-   "english": ["jerk"]
+{
+   "scroll_id": "ru_0201",
+   "level": 2,
+   "translation": ["level21"],
+   "english": ["level21"]
  }
 
  {
-   "scroll_id": "ru_0102",
-   "level": 1,
-   "translation": ["чё"],
-   "english": ["what"]
+   "scroll_id": "ru_0201",
+   "level": 2,
+   "translation": ["level22"],
+   "english": ["level22"]
  }

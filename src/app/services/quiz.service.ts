@@ -11,23 +11,22 @@ export class QuizService {
     private overdueList = new BehaviorSubject<Sentence[]>(null);
 
     constructor(private http: HttpClient) {
-     }
+    }
 
-    getFightSentences(){
-
+    getFightSentences() {
         return this.http.get<Sentence[]>(`${environment.apiUrl}/sentences/fight`);
     }
 
     getPracticableSentences(id: string) {
-       return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice/' + id);
+        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice/' + id);
     }
 
     getLearnableSentences() {
-        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/learn');  
+        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/learn');
     }
 
     getOverdueSentences() {
-       return this.http.get('http://localhost:3300/api/sentences/overdue/')
+        return this.http.get('http://localhost:3300/api/sentences/overdue/')
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));
@@ -39,7 +38,7 @@ export class QuizService {
 
     updateSentence(sentenceId: string, answerEfficieny: number) {
         this.http.get<Progress>('http://localhost:3300/api/progress/' + sentenceId)
-            .subscribe((progress:Progress)=>{
+            .subscribe((progress: Progress) => {
                 if (!progress.learned) {
                     if (answerEfficieny >= 3) {
                         progress.learningProgress++;

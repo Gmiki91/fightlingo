@@ -23,6 +23,8 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   showGym: boolean;
   socket: any;
   hasTicket: boolean;
+  isReadyForExam:boolean;
+  isExam:boolean;
   user: User;
   onlineUser: OnlineUser;
   onlineUsers;
@@ -31,19 +33,18 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-
     this.socket = io("http://localhost:3300/");
-
     this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
       if (user) {
         this.user = user;
+        this.isReadyForExam = user.isReadyForExam;
         this.onlineUser = { userName: user.name, socketId: null };
         this.socket.emit("enter", user.name);
       }
     })
   }
-  ngAfterViewInit(): void {
 
+  ngAfterViewInit(): void {
     this.socket.on("withdrawn", () => {
       swal("Challenge withdrawn");
     });
@@ -77,18 +78,13 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-
-    this.socket.emit("leave", this.onlineUser.userName);
-    if (this.sub)
-      this.sub.unsubscribe();
-
+    this.socket?.emit("leave", this.onlineUser.userName);
+    this.sub?.unsubscribe();
   }
-
-  enterGym(enemy: OnlineUser): void {
-    this.enemy = enemy;
-    swal.close();
-    this.socket.emit("leave", this.onlineUser.userName);
-    this.showGym = true;
+  
+  takeExam():void{
+   this.isExam=true;
+    this.showGym=true;
   }
 
   leave(): void {
@@ -121,10 +117,20 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  private enterGym(enemy: OnlineUser): void {
+    this.enemy = enemy;
+    swal.close();
+    this.socket.emit("leave", this.onlineUser.userName);
+    this.showGym = true;
+  }
+
   async fightFinished(youWon) {
     this.showGym = false;
-    if (youWon)
+    if (youWon){
       swal("congrats");
+      if(this.isReadyForExam)
+        this.authService.levelUp().toPromise();
+    }
     else
       swal("noob")
     this.router.navigate(['/']);

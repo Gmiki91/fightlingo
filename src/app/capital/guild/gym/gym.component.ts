@@ -15,6 +15,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   @Input() socket: any;
   @Input() enemy: OnlineUser;
   @Input() user: User;
+  @Input() isExam:boolean;
 
   selectedButton;
   readyToAttack: boolean;
@@ -35,7 +36,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.socket) {
+    if (this.socket && !this.isExam) {
       this.socket.on("attack", spell => {
         this.takeAHit(spell);
       });
@@ -76,13 +77,13 @@ export class GymComponent implements OnInit, AfterViewInit {
   attack(): void {
     this.playAttackSound();
     this.path = "../../assets/fromleft.gif";
-    if (this.socket){
+    if (this.socket && !this.isExam){
       this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
     }
     setTimeout(() => {
       this.path = "../../assets/duel.png";
       this.count++;
-      if (!this.socket && this.count === 3)
+      if ( this.count === 3 && (!this.socket || this.isExam))
         this.fightFinishedEmitter.emit(true);
       this.nextTurn();
     }, 1000);

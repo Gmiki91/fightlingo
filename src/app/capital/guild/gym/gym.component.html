@@ -6,7 +6,7 @@
 <app-quiz [hidden]="hideQuiz" [quizType]="quizType" (fightQuizResult)="quizResult($event)"></app-quiz>
 <div *ngIf="miss">{{cooldown}}</div>
 <button *ngIf="readyToAttack" (click)="attack()">Cast!</button>
-<p  *ngIf="socket" class="enemy_name">{{enemy.userName}}</p>
+<p  *ngIf="socket && !isExam" class="enemy_name">{{enemy.userName}}</p>
 <div class="animation">
     <img  [src]="path">
 </div>

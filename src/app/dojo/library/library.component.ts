@@ -35,7 +35,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   onScrollClicked(scroll: Scroll): void {
     if (this.user.rank < scroll.number)
       this.buttonText = "";
-    else if (this.user.rank == scroll.number)
+    else if (this.user.rank == scroll.number && !this.user.isReadyForExam)
       this.buttonText = "Translate";
     else
       this.buttonText = "Practice";
@@ -64,7 +64,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         swal(`You've finished this scroll! Well done!`);
         this.reasonForRest();
     }else{
-      await this.auth.readyForExam();
+      await this.auth.readyForExam().toPromise();
       swal(`You're ready for your next exam.`);
     }
   }
@@ -133,7 +133,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         swal(`Oh no, you broke your quill! Now I have to get you another one. I think one of my feathers will do just fine. But which one should I choose? … This might take a while to decide, 8 hours at least.`);
         break;
       case 2:
-        swal(`ooks like that was all the scrolls we had. I request more from the guild, but it will take at least 8 hours for them to send new ones.`);
+        swal(`Looks like that was all the scrolls we had. I request more from the guild, but it will take at least 8 hours for them to send new ones.`);
         break;
       case 3:
         swal(`I'm bored! We worked enough for now, let's go do something else, let's play hide and seek with ants! They are terrible at hide and seek, this should keep us occupied for at least 8 hours.`);
