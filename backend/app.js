@@ -10,6 +10,7 @@ const sentencesRoutes = require("./routes/sentences");
 const userRoutes=require('./routes/users');
 const progressRoutes = require('./routes/progress');
 const scrollsRoute=require('./routes/scrolls');
+const publicationsRoute=require('./routes/publications');
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -41,4 +42,5 @@ app.use("/api/users", userRoutes);
 app.use("/api/sentences",sentencesRoutes);
 app.use("/api/progress",progressRoutes);
 app.use("/api/scrolls",scrollsRoute);
+app.use("/api/publications", publicationsRoute);
 module.exports=app;
