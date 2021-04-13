@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Publication } from '../models/publication.model';
+import { Question } from '../models/question.enum';
 
 
 @Injectable()
@@ -32,6 +33,10 @@ export class PublicationService {
 
     addPublication(pub: Publication) {
         return this.http.post('http://localhost:3300/api/publications/', pub);
+    }
+
+    addQuestion(question: Question) {
+        return this.http.post('http://localhost:3300/api/publications/addQuestion', question);
     }
 
 }

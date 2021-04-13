@@ -7,7 +7,6 @@ const Question = require("../models/question");
 
 router.post('/', authCheck, (req,res,next)=>{
     const pub = new Publication({
-        _id:new ObjectId(),
         userId:req.userData.id,
         dateOfPublish:new Date(),
         reviewed:false,
@@ -26,7 +25,8 @@ router.post('/', authCheck, (req,res,next)=>{
 router.post('/addQuestion', (req, res, next)=>{
     const question = new Question({
         publicationId:req.body.publicationId,
-        popularity:0,
+        popularity:req.body.popularity,
+        question:req.body.question,
         answers:req.body.answers
     });
     question.save();

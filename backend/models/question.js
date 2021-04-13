@@ -1,9 +1,9 @@
 const mongoose=require('mongoose');
 
 const questionSchema = mongoose.Schema({
-    _id:String,
     publicationId:String,
     popularity:Number,
+    question:String,
     answers:[String],
 
 })

@@ -1,7 +1,6 @@
 const mongoose=require('mongoose');
 
 const publicationSchema = mongoose.Schema({
-    _id:String,
     userId:String,
     dateOfPublish:Date,
     reviewed:Boolean,

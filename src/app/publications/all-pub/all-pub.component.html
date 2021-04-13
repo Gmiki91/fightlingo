@@ -1,6 +1,13 @@
 <div class="row">
     <app-own-pub class="column"></app-own-pub>
     <div class="column">
-        <button *ngFor="let pub of pubs$ | async">{{pub.title}}</button>
+        <button *ngFor="let pub of pubs$ | async" (click)="onPubClick(pub)">{{pub.title}}</button>
+        <br>
+        <br>
+        <div *ngIf="currentPub">
+            <label>{{currentPub.title}}</label>
+            <label>{{currentPub.text}}</label>
+            <button (click)="onAddQuestion()">Add Question</button>
+        </div>
     </div>
 </div>
