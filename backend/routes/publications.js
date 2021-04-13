@@ -1,22 +1,25 @@
 const express = require('express');
-const authCheck = require('../middleware/auth-check');
+const ObjectId = require('mongoose').Types.ObjectId;
 const router = express.Router();
+const authCheck = require('../middleware/auth-check');
 const Publication =  require("../models/publication");
 const Question = require("../models/question");
 
 router.post('/', authCheck, (req,res,next)=>{
     const pub = new Publication({
-        id:new ObjectId(),
+        _id:new ObjectId(),
         userId:req.userData.id,
         dateOfPublish:new Date(),
         reviewed:false,
         defended:false,
         popularity:0,
-        level:req.level,
-        title:req.title,
-        text:reg.text
+        level:req.body.level,
+        title:req.body.title,
+        text:req.body.text
     });
-    pub.save();
+    pub.save().then((result) => {
+        res.status(200).json(result._id);
+    })
 });
 
 router.post('/addQuestion', (req, res, next)=>{
@@ -93,3 +96,5 @@ router.patch('/questionPopularityDec', (req, res, next)=>{
             res.status(200).json("question disliked");
         })
 })
+
+module.exports=router;

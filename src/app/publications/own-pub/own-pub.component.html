@@ -1,0 +1,27 @@
+<label>{{pubs.length}} / 10</label>
+<div *ngIf="pubs.length<10">
+    
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required ngModel>
+        </div>
+        <div class="form-group">
+            <label for="level">Level</label>
+            <select class="form-control" id="level" required name="level" ngModel>
+                <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+            </select>
+        </div>
+        <textarea rows="4" cols="50" id="text" name="text" ngModel required
+            placeholder="Write your story here!"> </textarea>
+        <button type="submit" class="btn btn-success" [disabled]="!form.form.valid">Submit</button>
+    </form>
+</div>
+<br>
+<br>
+<br>
+<div *ngFor="let pub of pubs">
+    <button >{{pub.title}}</button>
+    <br>
+    <br>
+</div>

@@ -31,6 +31,9 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { EventHandler } from './services/event-handler.service';
 import { DialogService } from './services/dialog.service';
 import { IntroComponent } from './auth/intro/intro.component';
+import { OwnPubComponent } from './publications/own-pub/own-pub.component';
+import { AllPubComponent } from './publications/all-pub/all-pub.component';
+import { PublicationService } from './services/publication.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { IntroComponent } from './auth/intro/intro.component';
     GuildComponent,
     GymComponent,
     IntroComponent,
+    OwnPubComponent,
+    AllPubComponent,
   ],
   imports: [
     FormsModule,
@@ -68,6 +73,7 @@ import { IntroComponent } from './auth/intro/intro.component';
     ScrollService,
     DialogService,
     EventHandler,
+    PublicationService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],
   bootstrap: [AppComponent],
 })

@@ -5,6 +5,7 @@
     </mat-toolbar>
 </div>
 <div class="navbar" *ngIf="loggedIn">
+    <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/publication">Publications</a>
     <a (click)="onPollyClicked()"><img class="icon" src='../../assets/header/pollyicon.jpg'></a>
     <a (click)="logout()"><img class="icon" src='../../assets/header/logout.png'></a>
 </div>

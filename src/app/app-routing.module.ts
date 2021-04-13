@@ -11,6 +11,7 @@ import { GuildGuard } from './guards/guild.guard';
 import { HeaderGuard } from './guards/header.guard';
 import { IntroComponent } from './auth/intro/intro.component';
 import { IntroGuard } from './guards/intro.guard';
+import { AllPubComponent } from './publications/all-pub/all-pub.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'library', component: LibraryComponent, canActivate: [AuthGuard]},
   {path:'guild', component:GuildComponent, canActivate: [GuildGuard]},
   {path:'intro', component:IntroComponent, canActivate: [IntroGuard]},
+  {path:'publication', component:AllPubComponent, canActivate:[AuthGuard]},
 //  {path:'*', component: NotFoundComponent}
 
 ];
