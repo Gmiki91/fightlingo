@@ -7,6 +7,7 @@ const publicationSchema = mongoose.Schema({
     reviewed:Boolean,
     defended:Boolean,
     popularity:Number,
+    language:Object,
     level:Number,
     title:String,
     text:String

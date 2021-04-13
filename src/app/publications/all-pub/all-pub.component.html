@@ -1,6 +1,6 @@
-<div>
-    <app-own-pub></app-own-pub>
-</div>
-<div>
-    
+<div class="row">
+    <app-own-pub class="column"></app-own-pub>
+    <div class="column">
+        <button *ngFor="let pub of pubs$ | async">{{pub.title}}</button>
+    </div>
 </div>

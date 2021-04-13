@@ -13,6 +13,7 @@ router.post('/', authCheck, (req,res,next)=>{
         reviewed:false,
         defended:false,
         popularity:0,
+        language:req.userData.language,
         level:req.body.level,
         title:req.body.title,
         text:req.body.text
@@ -37,8 +38,14 @@ router.post('/addAnswer', (req, res, next)=>{
         .then(() => res.status(200).json("Answer(s) added"))
 });
 
-router.get('/', authCheck, (req, res, next)=>{
+router.get('/own', authCheck, (req, res, next)=>{
     Publication.find({userId : req.userData.id})
+    .then(result => res.send(result));
+});
+
+
+router.get('/all', authCheck, (req, res, next)=>{
+    Publication.find({language : req.userData.language})
     .then(result => res.send(result));
 });
 
