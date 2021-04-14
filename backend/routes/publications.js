@@ -29,7 +29,9 @@ router.post('/addQuestion', (req, res, next)=>{
         question:req.body.question,
         answers:req.body.answers
     });
-    question.save();
+    question.save().then((result) => {
+        res.status(200).json(result._id);
+    });
 });
 
 router.post('/addAnswer', (req, res, next)=>{
@@ -49,7 +51,7 @@ router.get('/all', authCheck, (req, res, next)=>{
     .then(result => res.send(result));
 });
 
-router.get('/getQuestion/:pubId', (req,res,next)=>{
+router.get('/getQuestions/:pubId', (req,res,next)=>{
     Question.find({publicationId: req.params.pubId})
     .then(result=>res.send(result));
 });

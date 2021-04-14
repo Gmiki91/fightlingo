@@ -23,14 +23,12 @@ export class OwnPubComponent implements OnInit {
     this.pubService.pushOwnPublications();
   }
 
-  async onSubmit(form: NgForm) {
-   const pubId = await this.pubService.addPublication({
+   onSubmit(form: NgForm) {
+   this.pubService.addPublication({
       "level":+Proficiency[form.value.level],
       "title":form.value.title,
       "text":form.value.text
-    }).toPromise();
-    this.pubService.pushOwnPublications();
-    this.pubService.pushOwnPublications();
+    });
   }
 
 }

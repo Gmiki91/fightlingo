@@ -9,6 +9,7 @@ import { Question } from '../models/question.enum';
 export class PublicationService {
     ownPublications = new Subject<Publication[]>();
     allPublications = new Subject<Publication[]>();
+    questions = new Subject<Question[]>();
     constructor(private http: HttpClient) { }
 
     pushOwnPublications() {
@@ -31,12 +32,28 @@ export class PublicationService {
         return this.allPublications.asObservable();
     }
 
+
     addPublication(pub: Publication) {
-        return this.http.post('http://localhost:3300/api/publications/', pub);
+        this.http.post('http://localhost:3300/api/publications', pub).subscribe(id=>{
+            this.pushAllPublications();
+            this.pushOwnPublications();
+        })
+    }
+
+    pushQuestions(pubId:string){
+         this.http.get<Question[]>('http://localhost:3300/api/publications/getQuestions/' + pubId).subscribe(questions=>{
+            this.questions.next(questions);
+        })
+    }
+
+    getQuestions(){
+        return this.questions.asObservable();
     }
 
     addQuestion(question: Question) {
-        return this.http.post('http://localhost:3300/api/publications/addQuestion', question);
+        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(id=>{
+            this.pushQuestions(question.publicationId);
+        })
     }
 
 }

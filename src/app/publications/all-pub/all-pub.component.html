@@ -6,8 +6,17 @@
         <br>
         <div *ngIf="currentPub">
             <label>{{currentPub.title}}</label>
+            <br>
             <label>{{currentPub.text}}</label>
-            <button (click)="onAddQuestion()">Add Question</button>
+            <br>
+            <br>
+            <label>Questions:</label>
+            <br>
+            <div *ngFor="let question of questions$ | async">
+            <label>{{question.question}}</label>
+            <br>
+        </div>
+            <button (click)="onAddQuestion()">Add a new question</button>
         </div>
     </div>
 </div>

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Publication } from 'src/app/models/publication.model';
+import { map } from 'rxjs/operators';
 import { PublicationService } from 'src/app/services/publication.service';
+import { Publication } from 'src/app/models/publication.model';
+import { Question } from 'src/app/models/question.enum';
 
 @Component({
   selector: 'app-all-pub',
@@ -12,28 +13,27 @@ import { PublicationService } from 'src/app/services/publication.service';
 export class AllPubComponent implements OnInit {
   currentPub:Publication;
   pubs$: Observable<Publication[]>;
+  questions$:Observable<Question[]>;
   constructor(private pubService: PublicationService) { }
 
   ngOnInit(): void {
     this.pubs$ = this.pubService.getAllPublications().pipe(map(pubs => { return pubs }));
+    this.questions$ = this.pubService.getQuestions().pipe(map(qs =>{return qs}));
     this.pubService.pushAllPublications();
   }
 
   onPubClick(pub:Publication):void {
     this.currentPub=pub;
-    console.log(pub);
+    this.pubService.pushQuestions(pub._id);
   }
 
   onAddQuestion():void{
-  
-    const question = 'dummy q';
-    const answers =['answer1', 'answer2', 'answer3']
     this.pubService.addQuestion({
       "publicationId":this.currentPub._id,
       "popularity":0,
-      "question":question,
-      "answers":answers
-    }).toPromise();
+      "question":'dummy q',
+      "answers":['answer1', 'answer2', 'answer3']
+    });
   }
 
 }
