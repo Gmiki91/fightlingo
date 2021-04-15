@@ -8,7 +8,7 @@ import { Question } from '../models/question.enum';
 @Injectable()
 export class PublicationService {
     ownPublications = new Subject<Publication[]>();
-    allPublications = new Subject<Publication[]>();
+    publications = new Subject<Publication[]>();
     questions = new Subject<Question[]>();
     constructor(private http: HttpClient) { }
 
@@ -18,9 +18,21 @@ export class PublicationService {
         });
     }
 
-    pushAllPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/all').subscribe(pubs => {
-            this.allPublications.next(pubs);
+    pushArchivedPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/archived').subscribe(pubs => {
+            this.publications.next(pubs);
+        });
+    }
+
+    pushReviewedPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/reviewed').subscribe(pubs => {
+            this.publications.next(pubs);
+        });
+    }
+
+    pushNotReviewedPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/notReviewed').subscribe(pubs => {
+            this.publications.next(pubs);
         });
     }
 
@@ -28,14 +40,14 @@ export class PublicationService {
         return this.ownPublications.asObservable();
     }
 
-    getAllPublications() {
-        return this.allPublications.asObservable();
+    getPublications() {
+        return this.publications.asObservable();
     }
 
 
     addPublication(pub: Publication) {
         this.http.post('http://localhost:3300/api/publications', pub).subscribe(id=>{
-            this.pushAllPublications();
+            this.pushNotReviewedPublications();
             this.pushOwnPublications();
         })
     }

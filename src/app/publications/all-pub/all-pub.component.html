@@ -1,22 +1,13 @@
 <div class="row">
     <app-own-pub class="column"></app-own-pub>
     <div class="column">
-        <button *ngFor="let pub of pubs$ | async" (click)="onPubClick(pub)">{{pub.title}}</button>
-        <br>
-        <br>
-        <div *ngIf="currentPub">
-            <label>{{currentPub.title}}</label>
-            <br>
-            <label>{{currentPub.text}}</label>
-            <br>
-            <br>
-            <label>Questions:</label>
-            <br>
-            <div *ngFor="let question of questions$ | async">
-            <label>{{question.question}}</label>
-            <br>
-        </div>
-            <button (click)="onAddQuestion()">Add a new question</button>
+        <mat-radio-group >
+            <mat-radio-button (change)="onRadioChange($event)" value="not reviewed">Not yet reviewed</mat-radio-button>
+            <mat-radio-button (change)="onRadioChange($event)" value="reviewed">Reviewed</mat-radio-button>
+            <mat-radio-button (change)="onRadioChange($event)" value="archived">Archived</mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf = "pubType">
+            <button *ngFor="let pub of pubs$ | async" (click)="onPubClick(pub)">{{pub.title}}</button>
+            </div>
         </div>
     </div>
-</div>

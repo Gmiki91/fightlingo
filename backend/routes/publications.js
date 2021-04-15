@@ -46,8 +46,18 @@ router.get('/own', authCheck, (req, res, next)=>{
 });
 
 
-router.get('/all', authCheck, (req, res, next)=>{
-    Publication.find({language : req.userData.language})
+router.get('/archived', authCheck, (req, res, next)=>{
+    Publication.find({language : req.userData.language, dateOfPublish: { $lte: new Date().getTime() - 1000 * 86400 * 30 }}) //more than 30 days old
+    .then(result => res.send(result));
+});
+
+router.get('/reviewed', authCheck, (req, res, next)=>{
+    Publication.find({language : req.userData.language, defended : true,  dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 }}) //less than 30 days old
+    .then(result => res.send(result));
+});
+
+router.get('/notReviewed', authCheck, (req, res, next)=>{
+    Publication.find({language : req.userData.language, reviewed:false,  dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30  }}) //less than 1 day old
     .then(result => res.send(result));
 });
 
