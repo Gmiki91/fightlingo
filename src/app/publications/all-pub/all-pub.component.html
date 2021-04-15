@@ -6,7 +6,7 @@
             <mat-radio-button (change)="onRadioChange($event)" value="reviewed">Reviewed</mat-radio-button>
             <mat-radio-button (change)="onRadioChange($event)" value="archived">Archived</mat-radio-button>
         </mat-radio-group>
-        <div *ngIf = "pubType">
+        <div *ngIf = "radioBtnSelected">
             <button *ngFor="let pub of pubs$ | async" (click)="onPubClick(pub)">{{pub.title}}</button>
             </div>
         </div>

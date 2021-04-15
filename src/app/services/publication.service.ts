@@ -7,13 +7,33 @@ import { Question } from '../models/question.enum';
 
 @Injectable()
 export class PublicationService {
+    numberOfOwnPublications = new Subject<number>();
     ownPublications = new Subject<Publication[]>();
     publications = new Subject<Publication[]>();
     questions = new Subject<Question[]>();
     constructor(private http: HttpClient) { }
 
-    pushOwnPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/own').subscribe(pubs => {
+    pushNumberOfOwnPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/numberOfOwnPublications').subscribe(pubs => {
+            this.numberOfOwnPublications.next(pubs.length);
+        })
+    }
+
+    pushReviewReadyPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/reviewReady').subscribe(pubs => {
+
+            this.ownPublications.next(pubs);
+        });
+    }
+
+    pushDefendReadyPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/defendReady').subscribe(pubs => {
+            this.ownPublications.next(pubs);
+        });
+    }
+
+    pushPublishedPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/published').subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
@@ -36,6 +56,10 @@ export class PublicationService {
         });
     }
 
+    getNumberOfOwnPublications() {
+        return this.numberOfOwnPublications.asObservable();
+    }
+
     getOwnPublications() {
         return this.ownPublications.asObservable();
     }
@@ -46,24 +70,29 @@ export class PublicationService {
 
 
     addPublication(pub: Publication) {
-        this.http.post('http://localhost:3300/api/publications', pub).subscribe(id=>{
+        this.http.post('http://localhost:3300/api/publications', pub).subscribe(id => {
             this.pushNotReviewedPublications();
-            this.pushOwnPublications();
+            this.pushReviewReadyPublications();
+            this.pushNumberOfOwnPublications();
         })
     }
 
-    pushQuestions(pubId:string){
-         this.http.get<Question[]>('http://localhost:3300/api/publications/getQuestions/' + pubId).subscribe(questions=>{
+    deleteOverduePublications() {
+        this.http.patch('http://localhost:3300/api/publications/delete', null).subscribe(() => console.log("clean"));
+    }
+
+    pushQuestions(pubId: string) {
+        this.http.get<Question[]>('http://localhost:3300/api/publications/getQuestions/' + pubId).subscribe(questions => {
             this.questions.next(questions);
         })
     }
 
-    getQuestions(){
+    getQuestions() {
         return this.questions.asObservable();
     }
 
     addQuestion(question: Question) {
-        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(id=>{
+        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(id => {
             this.pushQuestions(question.publicationId);
         })
     }

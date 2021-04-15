@@ -12,7 +12,7 @@ import { MatRadioChange } from '@angular/material/radio';
   styleUrls: ['./all-pub.component.css']
 })
 export class AllPubComponent implements OnInit {
-  pubType:string;
+  radioBtnSelected:boolean;
   currentPub: Publication;
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
@@ -21,6 +21,7 @@ export class AllPubComponent implements OnInit {
   ngOnInit(): void {
     this.pubs$ = this.pubService.getPublications().pipe(map(pubs => { return pubs }));
     this.questions$ = this.pubService.getQuestions().pipe(map(qs => { return qs }));
+    this.pubService.deleteOverduePublications();
   }
 
   onPubClick(pub: Publication): void {
@@ -39,7 +40,7 @@ export class AllPubComponent implements OnInit {
   */
 
   onRadioChange(event:MatRadioChange) {
-    this.pubType = event.value;
+    this.radioBtnSelected = true;
     if(event.value === "not reviewed"){
       this.pubService.pushNotReviewedPublications();
     }else if(event.value === "reviewed"){
