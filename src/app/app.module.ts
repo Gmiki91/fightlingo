@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input'
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
@@ -67,6 +68,7 @@ import { PublicationService } from './services/publication.service';
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatExpansionModule
   ],
   providers: [QuizService,
     AuthService,

@@ -12,7 +12,9 @@ import { MatRadioChange } from '@angular/material/radio';
   styleUrls: ['./all-pub.component.css']
 })
 export class AllPubComponent implements OnInit {
-  radioBtnSelected:boolean;
+  radioBtnSelected: boolean;
+  newQ: boolean;
+  answers:string[]=[];
   currentPub: Publication;
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
@@ -24,28 +26,49 @@ export class AllPubComponent implements OnInit {
     this.pubService.deleteOverduePublications();
   }
 
-  onPubClick(pub: Publication): void {
-    this.currentPub = pub;
-    //  this.pubService.pushQuestions(pub._id);
+  onExpPanelOpen(pub: Publication): void {
+    this.pubService.pushQuestions(pub._id);
   }
-  /*
-    onAddQuestion():void{
-      this.pubService.addQuestion({
-        "publicationId":this.currentPub._id,
-        "popularity":0,
-        "question":'dummy q',
-        "answers":['answer1', 'answer2', 'answer3']
-      });
-    }
-  */
 
-  onRadioChange(event:MatRadioChange) {
+  onAddQuestion(pub: Publication): void {
+    this.currentPub=pub;
+    this.newQ=true;
+    
+  }
+
+  onAddAnswer(input:string):void{
+    if(!this.answers.includes(input)){
+    this.answers.push(input);
+    }else{
+      console.log("that is already an answer.")
+    }
+  }
+
+  onRemoveAnswer(input:string):void{
+
+    this.answers = this.answers.filter(answer => input != answer)
+    console.log(this.answers);
+  }
+
+  onSubmitQ(question:string):void{
+    this.pubService.addQuestion({
+      "publicationId": this.currentPub._id,
+      "popularity": 0,
+      "question": question,
+      "answers": this.answers
+    });
+    this.currentPub=null;
+    this.newQ=false;
+    this.answers=[];
+  }
+
+  onRadioChange(event: MatRadioChange) {
     this.radioBtnSelected = true;
-    if(event.value === "not reviewed"){
+    if (event.value === "not reviewed") {
       this.pubService.pushNotReviewedPublications();
-    }else if(event.value === "reviewed"){
+    } else if (event.value === "reviewed") {
       this.pubService.pushReviewedPublications();
-    }else if(event.value === "archived"){
+    } else if (event.value === "archived") {
       this.pubService.pushArchivedPublications();
     }
   }
