@@ -31,9 +31,21 @@ router.post('/addQuestion', (req, res, next) => {
         question: req.body.question,
         answers: req.body.answers
     });
-    question.save().then((result) => {
-        res.status(200).json(result._id);
-    });
+    question.save();
+
+    Question.find({ publicationId: req.body.publicationId })
+        .then(result => {
+            if (result.length > 3) {
+                Publication
+                    .updateOne({ _id: req.body.publicationId, reviewed: false }, { $set: { "reviewed": true } })
+                    .then((result) => {
+                        nowReviewed = result != null;
+                        res.status(200).json(nowReviewed);
+                    });
+            }else{
+                res.status(200).json(false);
+            }
+        });
 });
 
 router.post('/addAnswer', (req, res, next) => {

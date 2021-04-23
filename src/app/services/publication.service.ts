@@ -92,9 +92,12 @@ export class PublicationService {
     }
 
     addQuestion(question: Question) {
-        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(id => {
+        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(isPubReviewed => {
             this.pushQuestions(question.publicationId);
+            if(isPubReviewed) {
+                this.pushNotReviewedPublications();
+                this.pushReviewReadyPublications();
+            }
         })
     }
-
 }

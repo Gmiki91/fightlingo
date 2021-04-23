@@ -33,21 +33,18 @@ export class AllPubComponent implements OnInit {
   onAddQuestion(pub: Publication): void {
     this.currentPub=pub;
     this.newQ=true;
-    
   }
 
   onAddAnswer(input:string):void{
     if(!this.answers.includes(input)){
-    this.answers.push(input);
+      this.answers.push(input);
     }else{
       console.log("that is already an answer.")
     }
   }
 
   onRemoveAnswer(input:string):void{
-
     this.answers = this.answers.filter(answer => input != answer)
-    console.log(this.answers);
   }
 
   onSubmitQ(question:string):void{
