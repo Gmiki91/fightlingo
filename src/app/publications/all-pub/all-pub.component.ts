@@ -5,6 +5,7 @@ import { PublicationService } from 'src/app/services/publication.service';
 import { Publication } from 'src/app/models/publication.model';
 import { Question } from 'src/app/models/question.enum';
 import { MatRadioChange } from '@angular/material/radio';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-all-pub',
@@ -14,7 +15,8 @@ import { MatRadioChange } from '@angular/material/radio';
 export class AllPubComponent implements OnInit {
   radioBtnSelected: boolean;
   newQ: boolean;
-  answers:string[]=[];
+  answers: string[] = [];
+  questions: string[] = [];
   currentPub: Publication;
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
@@ -22,7 +24,12 @@ export class AllPubComponent implements OnInit {
 
   ngOnInit(): void {
     this.pubs$ = this.pubService.getPublications().pipe(map(pubs => { return pubs }));
-    this.questions$ = this.pubService.getQuestions().pipe(map(qs => { return qs }));
+    this.questions$ = this.pubService.getQuestions().pipe(map(qs => {
+      this.questions = qs.map(q => {
+        return q.question;
+      });
+      return qs
+    }));
     this.pubService.deleteOverduePublications();
   }
 
@@ -31,32 +38,36 @@ export class AllPubComponent implements OnInit {
   }
 
   onAddQuestion(pub: Publication): void {
-    this.currentPub=pub;
-    this.newQ=true;
+    this.currentPub = pub;
+    this.newQ = true;
   }
 
-  onAddAnswer(input:string):void{
-    if(!this.answers.includes(input)){
+  onAddAnswer(input: string): void {
+    if (!this.answers.includes(input)) {
       this.answers.push(input);
-    }else{
+    } else {
       console.log("that is already an answer.")
     }
   }
 
-  onRemoveAnswer(input:string):void{
+  onRemoveAnswer(input: string): void {
     this.answers = this.answers.filter(answer => input != answer)
   }
 
-  onSubmitQ(question:string):void{
-    this.pubService.addQuestion({
-      "publicationId": this.currentPub._id,
-      "popularity": 0,
-      "question": question,
-      "answers": this.answers
-    });
-    this.currentPub=null;
-    this.newQ=false;
-    this.answers=[];
+  onSubmitQ(question: string): void {
+    if (this.questions.includes(question)) {
+      swal("This question is already submitted")
+    } else {
+      this.pubService.addQuestion({
+        "publicationId": this.currentPub._id,
+        "popularity": 0,
+        "question": question,
+        "answers": this.answers
+      });
+      this.currentPub = null;
+      this.newQ = false;
+      this.answers = [];
+    }
   }
 
   onRadioChange(event: MatRadioChange) {
