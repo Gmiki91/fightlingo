@@ -26,12 +26,6 @@ export class PublicationService {
         });
     }
 
-    pushDefendReadyPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/defendReady').subscribe(pubs => {
-            this.ownPublications.next(pubs);
-        });
-    }
-
     pushPublishedPublications() {
         this.http.get<Publication[]>('http://localhost:3300/api/publications/published').subscribe(pubs => {
             this.ownPublications.next(pubs);

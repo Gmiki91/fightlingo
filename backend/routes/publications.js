@@ -12,7 +12,6 @@ router.post('/', authCheck, (req, res, next) => {
         userId: req.userData.id,
         dateOfPublish: new Date(),
         reviewed: false,
-        defended: false,
         popularity: 0,
         language: req.userData.language,
         level: req.body.level,
@@ -66,10 +65,6 @@ router.get('/reviewReady', authCheck, (req, res, next) => {
         .then(result => res.send(result));
 });
 
-router.get('/defendReady', authCheck, (req, res, next) => {
-    Publication.find({ userId: req.userData.id, reviewed: true, defended: false })
-        .then(result => res.send(result));
-});
 
 router.get('/published', authCheck, (req, res, next) => {
     Publication.find({ userId: req.userData.id, defended: true })

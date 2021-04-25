@@ -4,7 +4,6 @@ const publicationSchema = mongoose.Schema({
     userId:String,
     dateOfPublish:Date,
     reviewed:Boolean,
-    defended:Boolean,
     popularity:Number,
     language:Object,
     level:Number,

@@ -28,7 +28,7 @@ export class AllPubComponent implements OnInit {
       this.questions = qs.map(q => {
         return q.question;
       });
-      return qs
+      return qs;
     }));
     this.pubService.deleteOverduePublications();
   }
