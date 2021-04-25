@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const publicationSchema = mongoose.Schema({
     userId:String,
     dateOfPublish:Date,
+    dateOfLastLecture:Date,
     reviewed:Boolean,
     popularity:Number,
     language:Object,

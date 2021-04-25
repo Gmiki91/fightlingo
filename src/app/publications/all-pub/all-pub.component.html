@@ -18,6 +18,7 @@
                     <br>
                     <p *ngFor="let question of questions$ | async">{{question.question}}</p>
                     <button *ngIf='!pub.reviewed' (click)="onAddQuestion(pub)">Add new question</button>
+                    <button *ngIf='pub.reviewed' (click)="onTeach(pub)">Teach</button>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>

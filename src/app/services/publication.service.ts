@@ -19,9 +19,8 @@ export class PublicationService {
         })
     }
 
-    pushReviewReadyPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/reviewReady').subscribe(pubs => {
-
+    pushSubmittedPublications() {
+        this.http.get<Publication[]>('http://localhost:3300/api/publications/submitted').subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
@@ -66,7 +65,7 @@ export class PublicationService {
     addPublication(pub: Publication) {
         this.http.post('http://localhost:3300/api/publications', pub).subscribe(id => {
             this.pushNotReviewedPublications();
-            this.pushReviewReadyPublications();
+            this.pushSubmittedPublications();
             this.pushNumberOfOwnPublications();
         })
     }
@@ -90,8 +89,14 @@ export class PublicationService {
             this.pushQuestions(question.publicationId);
             if(isPubReviewed) {
                 this.pushNotReviewedPublications();
-                this.pushReviewReadyPublications();
+                this.pushSubmittedPublications();
             }
+        })
+    }
+    hasBeenTaught(pub:Publication) {
+        this.http.patch('http://localhost:3300/api/publications/hasBeenTaught', pub).subscribe(id=>{
+            console.log("kész");
+            this.pushReviewedPublications();
         })
     }
 }

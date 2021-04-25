@@ -11,6 +11,7 @@ router.post('/', authCheck, (req, res, next) => {
     const pub = new Publication({
         userId: req.userData.id,
         dateOfPublish: new Date(),
+        dateOfLastLecture:null,
         reviewed: false,
         popularity: 0,
         language: req.userData.language,
@@ -34,9 +35,14 @@ router.post('/addQuestion', (req, res, next) => {
 
     Question.find({ publicationId: req.body.publicationId })
         .then(result => {
-            if (result.length > 3) {
+            if (result.length > 4) {
                 Publication
-                    .updateOne({ _id: req.body.publicationId, reviewed: false }, { $set: { "reviewed": true } })
+                    .updateOne({ _id: req.body.publicationId, reviewed: false },
+                         { $set: { 
+                             "reviewed": true ,
+                             "dateOfPublish": new Date(),
+                             "dateOfLastLecture": new Date(new Date().getTime() - 1000 * 86400 )
+                            } })
                     .then((result) => {
                         nowReviewed = result != null;
                         res.status(200).json(nowReviewed);
@@ -60,14 +66,14 @@ router.get('/numberOfOwnPublications', authCheck, (req, res, next) => {
         .then(result => res.send(result));
 });
 
-router.get('/reviewReady', authCheck, (req, res, next) => {
+router.get('/submitted', authCheck, (req, res, next) => {
     Publication.find({ userId: req.userData.id, reviewed: false })
         .then(result => res.send(result));
 });
 
 
 router.get('/published', authCheck, (req, res, next) => {
-    Publication.find({ userId: req.userData.id, defended: true })
+    Publication.find({ userId: req.userData.id, reviewed: true })
         .then(result => res.send(result));
 });
 
@@ -79,7 +85,11 @@ router.get('/archived', authCheck, (req, res, next) => {
 });
 
 router.get('/reviewed', authCheck, (req, res, next) => {
-    Publication.find({ language: req.userData.language, defended: true, dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } }) //less than 30 days old
+    Publication.find({ 
+        language: req.userData.language, 
+        reviewed: true, 
+        dateOfLastLecture: { $lte: new Date().getTime() - 1000 * 86400}, // last lectrue is more than a day
+        dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } }) //less than 30 days old
         .then(result => res.send(result));
 });
 
@@ -105,12 +115,12 @@ router.patch('/reviewed', (req, res, next) => {
         });
 });
 
-router.patch('/defended', (req, res, next) => {
+router.patch('/hasBeenTaught', (req, res, next) => {
     Publication.updateOne({ _id: req.body._id },
-        { $set: { "defended": true } },
+        { $set: { "dateOfLastLecture": new Date() } },
         { new: true },
         (err, pub) => {
-            return res.status(200).send({ message: "publication defended" });
+            return res.status(200).send({ message: "publication taught" });
         });
 });
 

@@ -20,6 +20,7 @@ export class AllPubComponent implements OnInit {
   currentPub: Publication;
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
+
   constructor(private pubService: PublicationService) { }
 
   ngOnInit(): void {
@@ -35,6 +36,10 @@ export class AllPubComponent implements OnInit {
 
   onExpPanelOpen(pub: Publication): void {
     this.pubService.pushQuestions(pub._id);
+  }
+
+  onTeach(pub:Publication):void{
+    this.pubService.hasBeenTaught(pub);
   }
 
   onAddQuestion(pub: Publication): void {

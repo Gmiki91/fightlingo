@@ -46,7 +46,7 @@ export class OwnPubComponent implements OnInit, OnDestroy {
   onRadioChange(event: MatRadioChange) {
     this.radioBtnSelected = true;
     if (event.value === "reviewbereit") {
-      this.pubService.pushReviewReadyPublications();
+      this.pubService.pushSubmittedPublications();
     } else if (event.value === "published") {
       this.pubService.pushPublishedPublications();
     }
