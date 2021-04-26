@@ -8,15 +8,14 @@
         </mat-radio-group>
         <div *ngIf="radioBtnSelected">
             <mat-accordion>
-                <mat-expansion-panel *ngFor="let pub of pubs$ | async" (opened)="onExpPanelOpen(pub)">
+                <mat-expansion-panel *ngFor="let pub of pubs$ | async" >
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{pub.title}}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <p>{{pub.text}}</p>
-                    <br>
-                    <p *ngFor="let question of questions$ | async">{{question.question}}</p>
+                    
                     <button *ngIf='!pub.reviewed' (click)="onAddQuestion(pub)">Add new question</button>
                     <button *ngIf='pub.reviewed' (click)="onTeach(pub)">Teach</button>
                 </mat-expansion-panel>
@@ -26,6 +25,11 @@
 </div>
 
 <div class="newQ" *ngIf="newQ">
+    <label>Questions already asked:</label>
+    <p  *ngFor="let question of questions$ | async"> {{question.question}}</p>
+    <br>
+    <br>
+       
     <label>Question</label>
     <input #question>
     <label>Answers</label>

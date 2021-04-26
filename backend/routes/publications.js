@@ -17,7 +17,8 @@ router.post('/', authCheck, (req, res, next) => {
         language: req.userData.language,
         level: req.body.level,
         title: req.body.title,
-        text: req.body.text
+        text: req.body.text,
+        author:req.userData.name
     });
     pub.save().then((result) => {
         res.status(200).json(result._id);
@@ -103,7 +104,9 @@ router.get('/getQuestions/:pubId', (req, res, next) => {
         .then(result => res.send(result));
 });
 
-
+router.get('/:id', (req, res, next) => {
+    Publication.findOne({_id:req.params.id}).then(result=>res.send(result));
+})
 //Updates
 
 router.patch('/reviewed', (req, res, next) => {

@@ -35,6 +35,7 @@ import { IntroComponent } from './auth/intro/intro.component';
 import { OwnPubComponent } from './publications/own-pub/own-pub.component';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
 import { PublicationService } from './services/publication.service';
+import { ClassroomComponent } from './capital/guild/classroom/classroom.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PublicationService } from './services/publication.service';
     IntroComponent,
     OwnPubComponent,
     AllPubComponent,
+    ClassroomComponent,
   ],
   imports: [
     FormsModule,

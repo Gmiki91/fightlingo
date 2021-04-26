@@ -39,7 +39,7 @@ export class AuthService {
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);
-                localStorage.setItem("confirmed", '' + response.confirmed)
+                localStorage.setItem("confirmed", '' + response.confirmed);
                 this.autoAuthUser();
             }));
     }

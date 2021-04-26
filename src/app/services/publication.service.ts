@@ -61,6 +61,9 @@ export class PublicationService {
         return this.publications.asObservable();
     }
 
+    getPublicationById(id:string){
+        return this.http.get<Publication>('http://localhost:3300/api/publications/'+id);
+    }
 
     addPublication(pub: Publication) {
         this.http.post('http://localhost:3300/api/publications', pub).subscribe(id => {
@@ -95,7 +98,6 @@ export class PublicationService {
     }
     hasBeenTaught(pub:Publication) {
         this.http.patch('http://localhost:3300/api/publications/hasBeenTaught', pub).subscribe(id=>{
-            console.log("kész");
             this.pushReviewedPublications();
         })
     }

@@ -7,7 +7,8 @@ export interface Publication{
     reviewed?:boolean,
     popularity?:number,
     language?:Language,
+    author?:string
     level:number,
     title:string,
-    text:string
+    text:string,
 }

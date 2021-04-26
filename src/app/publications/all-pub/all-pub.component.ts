@@ -6,6 +6,7 @@ import { Publication } from 'src/app/models/publication.model';
 import { Question } from 'src/app/models/question.enum';
 import { MatRadioChange } from '@angular/material/radio';
 import swal from 'sweetalert';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-pub',
@@ -21,7 +22,7 @@ export class AllPubComponent implements OnInit {
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
 
-  constructor(private pubService: PublicationService) { }
+  constructor(private pubService: PublicationService, private router:Router) { }
 
   ngOnInit(): void {
     this.pubs$ = this.pubService.getPublications().pipe(map(pubs => { return pubs }));
@@ -34,15 +35,12 @@ export class AllPubComponent implements OnInit {
     this.pubService.deleteOverduePublications();
   }
 
-  onExpPanelOpen(pub: Publication): void {
-    this.pubService.pushQuestions(pub._id);
-  }
-
   onTeach(pub:Publication):void{
-    this.pubService.hasBeenTaught(pub);
+    this.router.navigate(['/classroom'],{state:{id:pub._id}});
   }
 
   onAddQuestion(pub: Publication): void {
+    this.pubService.pushQuestions(pub._id);
     this.currentPub = pub;
     this.newQ = true;
   }
@@ -51,7 +49,7 @@ export class AllPubComponent implements OnInit {
     if (!this.answers.includes(input)) {
       this.answers.push(input);
     } else {
-      console.log("that is already an answer.")
+      console.log("that is already an answer.");
     }
   }
 
@@ -61,8 +59,10 @@ export class AllPubComponent implements OnInit {
 
   onSubmitQ(question: string): void {
     if (this.questions.includes(question)) {
-      swal("This question is already submitted")
-    } else {
+      swal("This question is already submitted");
+    } else if(this.answers.length<3){
+      swal("Add at least 3 answers");
+    }else{
       this.pubService.addQuestion({
         "publicationId": this.currentPub._id,
         "popularity": 0,

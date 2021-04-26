@@ -1,0 +1,7 @@
+<p>classroom works!</p>
+<button *ngIf="!currentQuestion" (click)="onQuestion()">Any questions?</button>
+<div *ngIf="currentQuestion">
+    <label>{{currentQuestion.question}}</label>
+    <input #answer>
+    <button (click)="onAnswer(answer.value)">Answer</button>
+</div>

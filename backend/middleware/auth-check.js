@@ -9,7 +9,9 @@ module.exports = function (req, res, next) {
             level: decodedToken.userLevel,
             rank:decodedToken.userRank,
             money:decodedToken.userMoney,
-            language:decodedToken.userLanguage
+            language:decodedToken.userLanguage,
+            name:decodedToken.userName,
+            
         };
         next();
     } catch (error) {
