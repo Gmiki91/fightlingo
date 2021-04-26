@@ -15,5 +15,6 @@ export interface User{
     hasShipTicket:boolean;
     isReadyForExam:boolean;
     lastLoggedIn:Date;
+    lastLecture:Date;
     scrollFinished:Date;
 }

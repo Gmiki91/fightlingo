@@ -7,6 +7,7 @@
             <mat-radio-button (change)="onRadioChange($event)" value="archived">Archived</mat-radio-button>
         </mat-radio-group>
         <div *ngIf="radioBtnSelected">
+            <p *ngIf="!(readyToTeach$ | async)">{{minutesUntilReady}} minutes left until ready to teach</p>
             <mat-accordion>
                 <mat-expansion-panel *ngFor="let pub of pubs$ | async" >
                     <mat-expansion-panel-header>
@@ -15,9 +16,10 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <p>{{pub.text}}</p>
-                    
+               
                     <button *ngIf='!pub.reviewed' (click)="onAddQuestion(pub)">Add new question</button>
-                    <button *ngIf='pub.reviewed' (click)="onTeach(pub)">Teach</button>
+                    <button *ngIf='pub.reviewed' [disabled]="!teachButtonOn"  (click)="onTeach(pub)">Teach</button>
+         
                 </mat-expansion-panel>
             </mat-accordion>
         </div>

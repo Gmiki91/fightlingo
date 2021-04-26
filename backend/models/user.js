@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
     isReadyForExam:Boolean,
     hasShipTicket:Boolean,
     lastLoggedIn:Date,
-    scrollFinished:Date
+    scrollFinished:Date,
+    lastLecture:Date
 });
 
 userSchema.plugin(uniqueValidator);

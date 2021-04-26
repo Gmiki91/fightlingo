@@ -40,6 +40,7 @@ router.post('/signup', (req, res, next) => {
                 hasShipTicket: req.body.hasShipTicket,
                 lastLoggedIn: req.body.lastLoggedIn,
                 scrollFinished: req.body.scrollFinished,
+                lastLecture:new Date(new Date().getTime() - 1000 * 86400 ),
                 confirmed:false,
                 isReadyForExam:false
             });
@@ -169,6 +170,15 @@ router.patch('/readyForExam', authCheck, (req, res, next) => {
         { new: true },
         (err, user) => {
             return res.status(200).send({message:"user stands before exam"});
+        });
+})
+
+router.patch('/gaveLecture', authCheck, (req, res, next) =>{
+    User.updateOne({ _id: req.userData.id },
+        { $set: { "lastLecture": new Date()} },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({message:"user gave lecture"});
         });
 })
 

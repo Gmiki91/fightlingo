@@ -25,12 +25,13 @@ router.post('/', authCheck, (req, res, next) => {
     })
 });
 
-router.post('/addQuestion', (req, res, next) => {
+router.post('/addQuestion',authCheck, (req, res, next) => {
     const question = new Question({
         publicationId: req.body.publicationId,
         popularity: req.body.popularity,
         question: req.body.question,
-        answers: req.body.answers
+        answers: req.body.answers,
+        userId:req.userData.id,
     });
     question.save();
 
@@ -89,7 +90,7 @@ router.get('/reviewed', authCheck, (req, res, next) => {
     Publication.find({ 
         language: req.userData.language, 
         reviewed: true, 
-        dateOfLastLecture: { $lte: new Date().getTime() - 1000 * 86400}, // last lectrue is more than a day
+        dateOfLastLecture: { $lte: new Date().getTime() - 1000 * 7200}, // last lectrue is more than 2 hours ago
         dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } }) //less than 30 days old
         .then(result => res.send(result));
 });
@@ -123,7 +124,7 @@ router.patch('/hasBeenTaught', (req, res, next) => {
         { $set: { "dateOfLastLecture": new Date() } },
         { new: true },
         (err, pub) => {
-            return res.status(200).send({ message: "publication taught" });
+            return res.status(200).json(pub._id);
         });
 });
 

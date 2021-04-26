@@ -7,6 +7,7 @@ import { Question } from 'src/app/models/question.enum';
 import { MatRadioChange } from '@angular/material/radio';
 import swal from 'sweetalert';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-all-pub',
@@ -21,11 +22,16 @@ export class AllPubComponent implements OnInit {
   currentPub: Publication;
   pubs$: Observable<Publication[]>;
   questions$: Observable<Question[]>;
+  readyToTeach$: Observable<boolean>;
+  minutesUntilReady: number;
+  teachButtonOn: boolean;
 
-  constructor(private pubService: PublicationService, private router:Router) { }
+  constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.pubs$ = this.pubService.getPublications().pipe(map(pubs => { return pubs }));
+    this.pubs$ = this.pubService.getPublications().pipe(map(pubs => {
+      return pubs
+    }));
     this.questions$ = this.pubService.getQuestions().pipe(map(qs => {
       this.questions = qs.map(q => {
         return q.question;
@@ -33,10 +39,17 @@ export class AllPubComponent implements OnInit {
       return qs;
     }));
     this.pubService.deleteOverduePublications();
+
+    this.readyToTeach$ = this.authService.getUpdatedUser().pipe(map(user => {
+      this.minutesUntilReady = (new Date().getTime() - new Date(user.lastLecture).getTime()) / 1000 / 60;
+      this.minutesUntilReady = Math.round(60 - this.minutesUntilReady);
+      this.teachButtonOn = this.minutesUntilReady <= 0;
+      return this.minutesUntilReady <= 0 ? true : false;
+    }));
   }
 
-  onTeach(pub:Publication):void{
-    this.router.navigate(['/classroom'],{state:{id:pub._id}});
+  onTeach(pub: Publication): void {
+    this.router.navigate(['/classroom'], { state: { id: pub._id } });
   }
 
   onAddQuestion(pub: Publication): void {
@@ -60,9 +73,9 @@ export class AllPubComponent implements OnInit {
   onSubmitQ(question: string): void {
     if (this.questions.includes(question)) {
       swal("This question is already submitted");
-    } else if(this.answers.length<3){
+    } else if (this.answers.length < 3) {
       swal("Add at least 3 answers");
-    }else{
+    } else {
       this.pubService.addQuestion({
         "publicationId": this.currentPub._id,
         "popularity": 0,

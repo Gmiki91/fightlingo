@@ -46,6 +46,7 @@ export class PublicationService {
     pushNotReviewedPublications() {
         this.http.get<Publication[]>('http://localhost:3300/api/publications/notReviewed').subscribe(pubs => {
             this.publications.next(pubs);
+           
         });
     }
 

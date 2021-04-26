@@ -5,6 +5,7 @@ const questionSchema = mongoose.Schema({
     popularity:Number,
     question:String,
     answers:[String],
+    userId:String
 
 })
 

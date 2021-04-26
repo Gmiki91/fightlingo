@@ -28,6 +28,7 @@ export class AuthService {
             money: 3,
             hasShipTicket: false,
             lastLoggedIn: new Date(),
+            lastLecture:null,
             scrollFinished: null
         };
         return this.http.post("http://localhost:3300/api/users/signup", user);
@@ -102,5 +103,12 @@ export class AuthService {
 
     scrollFinishedAt() {
         return this.http.get<Date>('http://localhost:3300/api/users/finishedAt');
+    }
+
+    gaveLecture(){
+        return this.http.patch("http://localhost:3300/api/users/gaveLecture", null)
+        .pipe(map(() => {
+            this.autoAuthUser();
+        }));
     }
 }
