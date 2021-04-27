@@ -26,20 +26,4 @@
     </div>
 </div>
 
-<div class="newQ" *ngIf="newQ">
-    <label>Questions already asked:</label>
-    <p  *ngFor="let question of questions$ | async"> {{question.question}}</p>
-    <br>
-    <br>
-       
-    <label>Question</label>
-    <input #question>
-    <label>Answers</label>
-    <div *ngFor="let answer of answers">
-        <p>{{answer}}</p>
-        <button (click)="onRemoveAnswer(answer)">Remove</button>
-    </div>
-    <input #answer>
-    <button (click)="onAddAnswer(answer.value)">Add</button>
-    <button (click)="onSubmitQ(question.value)">Submit</button>
-</div>
+<app-question-template *ngIf="newQ" [pubId]="currentPub._id" (submitQuestion)="onSubmitQ($event)" ></app-question-template>

@@ -36,6 +36,7 @@ import { OwnPubComponent } from './publications/own-pub/own-pub.component';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
 import { PublicationService } from './services/publication.service';
 import { ClassroomComponent } from './capital/guild/classroom/classroom.component';
+import { QuestionTemplateComponent } from './publications/question-template/question-template.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ClassroomComponent } from './capital/guild/classroom/classroom.componen
     OwnPubComponent,
     AllPubComponent,
     ClassroomComponent,
+    QuestionTemplateComponent,
   ],
   imports: [
     FormsModule,

@@ -6,6 +6,7 @@ import { Question } from 'src/app/models/question.enum';
 import { Observable, Subscription } from 'rxjs';
 import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-classroom',
@@ -13,34 +14,35 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./classroom.component.css']
 })
 export class ClassroomComponent implements OnInit {
-  
+
   publicationId: string;
-  questions:Question[];
-  currentQuestion:Question;
-  publication:Publication;
-  subscription:Subscription;
-  constructor(private router: Router, private pubService: PublicationService, private authService:AuthService) {
+  questions: Question[];
+  currentQuestion: Question;
+  publication: Publication;
+  subscription: Subscription;
+  showQuestionTemplate: boolean;
+  constructor(private router: Router, private pubService: PublicationService, private authService: AuthService) {
     this.publicationId = this.router.getCurrentNavigation().extras.state.id;
   }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.init();
-    
-  /*  this.questions$ =this.pubService.getQuestions().pipe(map(questions => {
-      return questions;
-    }));
 
-    
-   this.pubService.getQuestions().pipe(map(qs =>
-      this.questions = qs
-    ));*/
+    /*  this.questions$ =this.pubService.getQuestions().pipe(map(questions => {
+        return questions;
+      }));
+  
+      
+     this.pubService.getQuestions().pipe(map(qs =>
+        this.questions = qs
+      ));*/
     this.pubService.pushQuestions(this.publicationId);
-    
-    
+
+
   }
 
-  async init(){
-    this.subscription= this.pubService.getQuestions().subscribe(response => {
+  async init() {
+    this.subscription = this.pubService.getQuestions().subscribe(response => {
       this.questions = response;
     });
     this.publication = await this.pubService.getPublicationById(this.publicationId).toPromise();
@@ -50,31 +52,52 @@ export class ClassroomComponent implements OnInit {
     //
   }
 
-  onQuestion():void{
-    if(this.questions.length===0){
-      
+  onQuestion(): void {
+    if (this.questions.length === 0) {
       // Well, no more questions? OK then, thank you for your attention!
       this.onEndLecture();
-    }else{
-      this.currentQuestion =  this.questions[Math.floor(Math.random() * (this.questions.length))];
+    } else {
+      this.currentQuestion = this.questions[Math.floor(Math.random() * (this.questions.length))];
     }
   }
 
-  onAnswer(answer:string):void{
-    if(this.currentQuestion.answers.includes(answer)){
-      this.questions.splice(this.questions.indexOf(this.currentQuestion ),1);
+  onAnswer(answer: string): void {
+    if (this.currentQuestion.answers.includes(answer)) {
+      this.questions.splice(this.questions.indexOf(this.currentQuestion), 1);
       console.log("talált");
-    }else{
+    } else {
       console.log("elbasztad");
     }
-      this.currentQuestion=null;
+    this.currentQuestion = null;
   }
 
-  onEndLecture():void{
-    this.authService.gaveLecture().toPromise();
+  onEndLecture(): void {
+    swal("would you like to add one question?", {
+      buttons: {
+        yes: {
+          text: "Yes",
+          value: "yes"
+        },
+        no: {
+          text: "No",
+          value: "no",
+        },
+      },
+    }).then((answer) => {
+      if (answer === "yes") {
+        this.showQuestionTemplate = true;
+      } else {
+        this.quit(true);
+      }
+    })
+  }
+
+  quit(event: boolean): void {
+    if (event) {
+      this.authService.gaveLecture().toPromise();
       this.pubService.hasBeenTaught(this.publication);
-    this.subscription?.unsubscribe();
-    this.router.navigate(['/guild']);
+      this.subscription?.unsubscribe();
+      this.router.navigate(['/guild']);
+    }
   }
-
 }

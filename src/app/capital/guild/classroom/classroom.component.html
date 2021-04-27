@@ -6,3 +6,4 @@
     <input #answer>
     <button (click)="onAnswer(answer.value)">Answer</button>
 </div>
+<app-question-template *ngIf="showQuestionTemplate" [pubId]="publicationId" (submitQuestion)="quit($event)" > </app-question-template>
