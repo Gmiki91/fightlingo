@@ -5,5 +5,11 @@
     <label>{{currentQuestion.question}}</label>
     <input #answer>
     <button (click)="onAnswer(answer.value)">Answer</button>
+    <div *ngIf="!alreadyVoted">
+        <label>How did you like the question?</label>
+        <button (click)="like()">😊</button>
+        <button (click)="dislike()">😕</button>
+    </div>
 </div>
-<app-question-template *ngIf="showQuestionTemplate" [pubId]="publicationId" (submitQuestion)="quit($event)" > </app-question-template>
+<app-question-template *ngIf="showQuestionTemplate" [pubId]="publicationId" (submitQuestion)="quit($event)">
+</app-question-template>

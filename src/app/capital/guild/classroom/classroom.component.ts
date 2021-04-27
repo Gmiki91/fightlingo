@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicationService } from 'src/app/services/publication.service';
-import { map, switchMap } from 'rxjs/operators';
 import { Question } from 'src/app/models/question.enum';
 import { Observable, Subscription } from 'rxjs';
 import { Publication } from 'src/app/models/publication.model';
@@ -21,6 +20,7 @@ export class ClassroomComponent implements OnInit {
   publication: Publication;
   subscription: Subscription;
   showQuestionTemplate: boolean;
+  alreadyVoted:boolean;
   constructor(private router: Router, private pubService: PublicationService, private authService: AuthService) {
     this.publicationId = this.router.getCurrentNavigation().extras.state.id;
   }
@@ -37,8 +37,6 @@ export class ClassroomComponent implements OnInit {
         this.questions = qs
       ));*/
     this.pubService.pushQuestions(this.publicationId);
-
-
   }
 
   async init() {
@@ -58,7 +56,19 @@ export class ClassroomComponent implements OnInit {
       this.onEndLecture();
     } else {
       this.currentQuestion = this.questions[Math.floor(Math.random() * (this.questions.length))];
+      this.alreadyVoted = this.currentQuestion.votedBy.includes(localStorage.getItem('userId'));
     }
+  }
+
+  
+  like():void{
+    this.pubService.likeQuestion(1,this.currentQuestion._id);
+    this.alreadyVoted = true;
+  }
+
+  dislike():void{
+    this.pubService.likeQuestion(-1,this.currentQuestion._id);
+    this.alreadyVoted = true;
   }
 
   onAnswer(answer: string): void {

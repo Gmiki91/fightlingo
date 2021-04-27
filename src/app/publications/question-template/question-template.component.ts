@@ -50,7 +50,8 @@ export class QuestionTemplateComponent implements OnInit {
         "publicationId": this.pubId,
         "popularity": 0,
         "question": question,
-        "answers": this.answers
+        "answers": this.answers,
+        "votedBy":[]
       });
       this.answers = [];
       this.submitQuestion.next(true);

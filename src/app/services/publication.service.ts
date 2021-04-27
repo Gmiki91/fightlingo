@@ -97,8 +97,13 @@ export class PublicationService {
             }
         })
     }
+    
+    likeQuestion(like:number, id:string) {
+        return this.http.patch('http://localhost:3300/api/publications/likeQuestion', {like, id}).subscribe((pubId:string)=>this.pushQuestions(pubId))
+    }
+
     hasBeenTaught(pub:Publication) {
-        this.http.patch('http://localhost:3300/api/publications/hasBeenTaught', pub).subscribe(id=>{
+        this.http.patch('http://localhost:3300/api/publications/hasBeenTaught', pub).subscribe(()=>{
             this.pushReviewedPublications();
         })
     }

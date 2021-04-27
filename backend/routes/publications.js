@@ -5,33 +5,35 @@ const authCheck = require('../middleware/auth-check');
 const Publication = require("../models/publication");
 const Question = require("../models/question");
 
+
 // Posts
 
 router.post('/', authCheck, (req, res, next) => {
     const pub = new Publication({
         userId: req.userData.id,
         dateOfPublish: new Date(),
-        dateOfLastLecture:null,
+        dateOfLastLecture: null,
         reviewed: false,
         popularity: 0,
         language: req.userData.language,
         level: req.body.level,
         title: req.body.title,
         text: req.body.text,
-        author:req.userData.name
+        author: req.userData.name
     });
     pub.save().then((result) => {
         res.status(200).json(result._id);
     })
 });
 
-router.post('/addQuestion',authCheck, (req, res, next) => {
+router.post('/addQuestion', authCheck, (req, res, next) => {
     const question = new Question({
         publicationId: req.body.publicationId,
         popularity: req.body.popularity,
         question: req.body.question,
         answers: req.body.answers,
-        userId:req.userData.id,
+        userId: req.userData.id,
+        votedBy: []
     });
     question.save();
 
@@ -40,16 +42,18 @@ router.post('/addQuestion',authCheck, (req, res, next) => {
             if (result.length > 4) {
                 Publication
                     .updateOne({ _id: req.body.publicationId, reviewed: false },
-                         { $set: { 
-                             "reviewed": true ,
-                             "dateOfPublish": new Date(),
-                             "dateOfLastLecture": new Date(new Date().getTime() - 1000 * 86400 )
-                            } })
+                        {
+                            $set: {
+                                "reviewed": true,
+                                "dateOfPublish": new Date(),
+                                "dateOfLastLecture": new Date(new Date().getTime() - 1000 * 86400)
+                            }
+                        })
                     .then((result) => {
                         nowReviewed = result != null;
                         res.status(200).json(nowReviewed);
                     });
-            }else{
+            } else {
                 res.status(200).json(false);
             }
         });
@@ -87,11 +91,12 @@ router.get('/archived', authCheck, (req, res, next) => {
 });
 
 router.get('/reviewed', authCheck, (req, res, next) => {
-    Publication.find({ 
-        language: req.userData.language, 
-        reviewed: true, 
-        dateOfLastLecture: { $lte: new Date().getTime() - 1000 * 7200}, // last lectrue is more than 2 hours ago
-        dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } }) //less than 30 days old
+    Publication.find({
+        language: req.userData.language,
+        reviewed: true,
+        dateOfLastLecture: { $lte: new Date().getTime() - 1000 * 7200 }, // last lectrue is more than 2 hours ago
+        dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 }
+    }) //less than 30 days old
         .then(result => res.send(result));
 });
 
@@ -106,7 +111,7 @@ router.get('/getQuestions/:pubId', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-    Publication.findOne({_id:req.params.id}).then(result=>res.send(result));
+    Publication.findOne({ _id: req.params.id }).then(result => res.send(result));
 })
 //Updates
 
@@ -128,6 +133,26 @@ router.patch('/hasBeenTaught', (req, res, next) => {
         });
 });
 
+router.patch('/likeQuestion', authCheck, (req, res, next) => {
+    Question.findOneAndUpdate({ _id: new ObjectId(req.body.id) },
+        {
+            $inc: { popularity: req.body.like },
+            $push: { votedBy: req.userData.id }
+        }).then((question) => {
+            return res.status(200).json(question.publicationId);
+        })
+})
+
+/*
+router.patch('/questionPopularityInc',authCheck, (req, res, next) => {
+    Question.updateOne({ _id: req.body.id },
+        { $inc: { popularity: 1 } },
+        { $push: { votedBy: req.userData.id } })
+        .then(() => {
+            res.status(200).json("question liked");
+        })
+})
+ 
 router.patch('/pubPopularityInc', (req, res, next) => {
     Publication.updateOne({ _id: req.body.id },
         { $inc: { popularity: 1 } })
@@ -135,15 +160,7 @@ router.patch('/pubPopularityInc', (req, res, next) => {
             res.status(200).json("publication liked");
         })
 })
-
-router.patch('/questionPopularityInc', (req, res, next) => {
-    Question.updateOne({ _id: req.body.id },
-        { $inc: { popularity: 1 } })
-        .then(() => {
-            res.status(200).json("question liked");
-        })
-})
-
+ 
 router.patch('/pubPopularityDec', (req, res, next) => {
     Publication.updateOne({ _id: req.body.id },
         { $inc: { popularity: -1 } })
@@ -151,14 +168,8 @@ router.patch('/pubPopularityDec', (req, res, next) => {
             res.status(200).json("publication disliked");
         })
 })
-
-router.patch('/questionPopularityDec', (req, res, next) => {
-    Question.updateOne({ _id: req.body.id },
-        { $inc: { popularity: -1 } })
-        .then(() => {
-            res.status(200).json("question disliked");
-        })
-})
+ 
+*/
 
 router.patch('/delete', (req, res) => {
     Publication.deleteMany({
