@@ -19,7 +19,7 @@ router.post('/', authCheck, (req, res, next) => {
         level: req.body.level,
         title: req.body.title,
         text: req.body.text,
-        author: req.userData.name
+        author: req.userData.id
     });
     pub.save().then((result) => {
         res.status(200).json(result._id);

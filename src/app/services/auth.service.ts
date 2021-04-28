@@ -20,7 +20,7 @@ export class AuthService {
             pic: form.avatar,
             language: form.language,
             confirmed: false,
-            isReadyForExam:false,
+            isReadyForExam: false,
             strength: 5,
             hitpoint: 10,
             level: 0,
@@ -28,7 +28,7 @@ export class AuthService {
             money: 3,
             hasShipTicket: false,
             lastLoggedIn: new Date(),
-            lastLecture:null,
+            lastLecture: null,
             scrollFinished: null
         };
         return this.http.post("http://localhost:3300/api/users/signup", user);
@@ -80,11 +80,11 @@ export class AuthService {
             }));
     }
 
-    readyForExam(){
+    readyForExam() {
         return this.http.patch("http://localhost:3300/api/users/readyForExam", null)
-        .pipe(map(() => {
-            this.autoAuthUser();
-        }));
+            .pipe(map(() => {
+                this.autoAuthUser();
+            }));
     }
 
     logout() {
@@ -105,10 +105,21 @@ export class AuthService {
         return this.http.get<Date>('http://localhost:3300/api/users/finishedAt');
     }
 
-    gaveLecture(){
+    gaveLecture() {
         return this.http.patch("http://localhost:3300/api/users/gaveLecture", null)
-        .pipe(map(() => {
-            this.autoAuthUser();
-        }));
+            .pipe(map(() => {
+                this.autoAuthUser();
+            }));
+    }
+
+    giveMoney(id: string, amount: number) {
+        return this.http.patch("http://localhost:3300/api/users/giveMoney", { id: id, amount: amount });
+    }
+
+    updateMoney(amount: number) {
+        return this.http.patch("http://localhost:3300/api/users/updateMoney", { amount: amount })
+            .pipe(map(() => {
+                this.autoAuthUser();
+            }));
     }
 }

@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-classroom',
@@ -14,11 +15,12 @@ import swal from 'sweetalert';
 })
 export class ClassroomComponent implements OnInit {
 
+  readonly authorMoney:number = 30;
+  readonly baseQuestionMoney:number = 1;
   publicationId: string;
   questions: Question[];
   currentQuestion: Question;
   publication: Publication;
-  subscription: Subscription;
   showQuestionTemplate: boolean;
   alreadyVoted:boolean;
   constructor(private router: Router, private pubService: PublicationService, private authService: AuthService) {
@@ -40,7 +42,7 @@ export class ClassroomComponent implements OnInit {
   }
 
   async init() {
-    this.subscription = this.pubService.getQuestions().subscribe(response => {
+    this.pubService.getQuestions().pipe(first()).subscribe(response => {
       this.questions = response;
     });
     this.publication = await this.pubService.getPublicationById(this.publicationId).toPromise();
@@ -61,20 +63,22 @@ export class ClassroomComponent implements OnInit {
   }
 
   
-  like():void{
-    this.pubService.likeQuestion(1,this.currentQuestion._id);
+  like(value:number):void{
+    console.log(value, typeof value);
+    this.pubService.likeQuestion(value,this.currentQuestion._id);
+    this.currentQuestion.votedBy.push(localStorage.getItem('userId'));
     this.alreadyVoted = true;
   }
 
-  dislike():void{
-    this.pubService.likeQuestion(-1,this.currentQuestion._id);
-    this.alreadyVoted = true;
-  }
 
   onAnswer(answer: string): void {
     if (this.currentQuestion.answers.includes(answer)) {
       this.questions.splice(this.questions.indexOf(this.currentQuestion), 1);
       console.log("talált");
+      if(this.currentQuestion.userId !== localStorage.getItem('userId')){
+        this.authService.giveMoney(this.currentQuestion.userId, this.baseQuestionMoney * answer.length).toPromise();
+        this.authService.updateMoney(this.baseQuestionMoney * answer.length).toPromise();
+      }
     } else {
       console.log("elbasztad");
     }
@@ -104,9 +108,9 @@ export class ClassroomComponent implements OnInit {
 
   quit(event: boolean): void {
     if (event) {
+      this.authService.giveMoney(this.publication.author,this.authorMoney).toPromise();
       this.authService.gaveLecture().toPromise();
       this.pubService.hasBeenTaught(this.publication);
-      this.subscription?.unsubscribe();
       this.router.navigate(['/guild']);
     }
   }

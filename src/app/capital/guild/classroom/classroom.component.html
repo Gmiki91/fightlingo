@@ -1,4 +1,3 @@
-<p>classroom works!</p>
 <button *ngIf="!currentQuestion" (click)="onQuestion()">Any questions?</button>
 <button (click)="onEndLecture()">End lecture</button>
 <div *ngIf="currentQuestion">
@@ -7,8 +6,8 @@
     <button (click)="onAnswer(answer.value)">Answer</button>
     <div *ngIf="!alreadyVoted">
         <label>How did you like the question?</label>
-        <button (click)="like()">😊</button>
-        <button (click)="dislike()">😕</button>
+        <button (click)="like(1)">😊</button>
+        <button (click)="like(-1)">😕</button>
     </div>
 </div>
 <app-question-template *ngIf="showQuestionTemplate" [pubId]="publicationId" (submitQuestion)="quit($event)">

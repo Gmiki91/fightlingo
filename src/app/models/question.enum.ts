@@ -5,4 +5,5 @@ export interface Question{
     question:string;
     votedBy:string[];
     answers:string[];
+    userId?:string;
 }

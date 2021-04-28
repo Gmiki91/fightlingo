@@ -182,6 +182,22 @@ router.patch('/gaveLecture', authCheck, (req, res, next) =>{
         });
 })
 
+router.patch('/updateMoney', authCheck, (req, res, next) =>{
+    User.updateOne({ _id: req.userData.id },
+        {   $inc: { money: req.body.amount }})
+        .then(() => {
+            return res.status(200).send({message:"money updated"});
+        });
+})
+
+router.patch('/giveMoney', (req, res, next) =>{
+    User.updateOne({ _id: req.body.id },
+        {   $inc: { money: req.body.amount }})
+        .then(() => {
+            return res.status(200).send({message:"money sent"});
+        });
+})
+
 function initProgress(language, rank) {
     Scroll.findOne({
         language: language,
