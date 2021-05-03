@@ -10,7 +10,8 @@ const publicationSchema = mongoose.Schema({
     level:Number,
     title:String,
     text:String,
-    author:String
+    author:String,
+    numberOfQuestions:Number
 })
 
 module.exports=mongoose.model("Publication",publicationSchema);

@@ -19,7 +19,8 @@ router.post('/', authCheck, (req, res, next) => {
         level: req.body.level,
         title: req.body.title,
         text: req.body.text,
-        author: req.userData.id
+        author: req.userData.id,
+        numberOfQuestions: req.body.numberOfQuestions
     });
     pub.save().then((result) => {
         res.status(200).json(result._id);
@@ -37,11 +38,13 @@ router.post('/addQuestion', authCheck, (req, res, next) => {
     });
     question.save();
 
-    Question.find({ publicationId: req.body.publicationId })
-        .then(result => {
-            if (result.length > 4) {
-                Publication
-                    .updateOne({ _id: req.body.publicationId, reviewed: false },
+
+    Publication.findOneAndUpdate({ _id: new ObjectId(req.body.publicationId) },
+        {
+            $inc: { numberOfQuestions: 1 }
+        }).then((publication) => {
+            if (publication.numberOfQuestions > 4) {
+                Publication.updateOne({ _id: req.body.publicationId, reviewed: false },
                         {
                             $set: {
                                 "reviewed": true,

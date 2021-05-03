@@ -12,7 +12,7 @@
                 <mat-expansion-panel *ngFor="let pub of pubs$ | async" >
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            {{pub.title}}
+                            {{pub.title}} (Questions: {{pub.numberOfQuestions}} )
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <p>{{pub.text}}</p>

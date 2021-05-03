@@ -11,4 +11,5 @@ export interface Publication{
     level:number,
     title:string,
     text:string,
+    numberOfQuestions:number
 }

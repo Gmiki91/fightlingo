@@ -39,7 +39,8 @@ export class OwnPubComponent implements OnInit, OnDestroy {
     this.pubService.addPublication({
       "level": +Proficiency[form.value.level],
       "title": form.value.title,
-      "text": form.value.text
+      "text": form.value.text,
+      "numberOfQuestions" : 0
     });
   }
 
