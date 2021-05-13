@@ -19,7 +19,7 @@ router.post('/', authCheck, (req, res, next) => {
         level: req.body.level,
         title: req.body.title,
         text: req.body.text,
-        author: req.userData.id,
+        author: req.userData.userName,
         numberOfQuestions: req.body.numberOfQuestions
     });
     pub.save().then((result) => {

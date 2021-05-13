@@ -18,15 +18,15 @@ export class QuizService {
     }
 
     getPracticableSentences(id: string) {
-        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/practice/' + id);
+        return this.http.get<Sentence[]>(`${environment.apiUrl}/sentences/practice/` + id);
     }
 
     getLearnableSentences() {
-        return this.http.get<Sentence[]>('http://localhost:3300/api/sentences/learn');
+        return this.http.get<Sentence[]>(`${environment.apiUrl}/sentences/learn`);
     }
 
     getOverdueSentences() {
-        return this.http.get('http://localhost:3300/api/sentences/overdue/')
+        return this.http.get(`${environment.apiUrl}/sentences/overdue/`)
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));
@@ -37,7 +37,7 @@ export class QuizService {
     }
 
     updateSentence(sentenceId: string, answerEfficieny: number) {
-        this.http.get<Progress>('http://localhost:3300/api/progress/' + sentenceId)
+        this.http.get<Progress>(`${environment.apiUrl}/progress/` + sentenceId)
             .subscribe((progress: Progress) => {
                 if (!progress.learned) {
                     if (answerEfficieny >= 3) {
@@ -73,7 +73,7 @@ export class QuizService {
                         progress.nextReviewDate = new Date(now + millisecondsInDay * progress.interval);
                     }
                 }
-                this.http.patch('http://localhost:3300/api/sentences', progress).toPromise();
+                this.http.patch(`${environment.apiUrl}/sentences`, progress).toPromise();
             });
     }
 

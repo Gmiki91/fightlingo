@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
+  //NodeJS && Spring  urls:
   apiUrl: 'http://localhost:3300/api',
+  //apiUrl: http://localhost:8080    
   PUSHER_API_KEY: '22c8d45dd4c3c860bf17',
   PUSHER_API_CLUSTER: 'eu'
 };

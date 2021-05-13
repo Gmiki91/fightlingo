@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Publication } from '../models/publication.model';
 import { Question } from '../models/question.enum';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable()
@@ -14,37 +15,37 @@ export class PublicationService {
     constructor(private http: HttpClient) { }
 
     pushNumberOfOwnPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/numberOfOwnPublications').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/numberOfOwnPublications`).subscribe(pubs => {
             this.numberOfOwnPublications.next(pubs.length);
         })
     }
 
     pushSubmittedPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/submitted').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/submitted`).subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
 
     pushPublishedPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/published').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/published`).subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
 
     pushArchivedPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/archived').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/archived`).subscribe(pubs => {
             this.publications.next(pubs);
         });
     }
 
     pushReviewedPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/reviewed').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/reviewed`).subscribe(pubs => {
             this.publications.next(pubs);
         });
     }
 
     pushNotReviewedPublications() {
-        this.http.get<Publication[]>('http://localhost:3300/api/publications/notReviewed').subscribe(pubs => {
+        this.http.get<Publication[]>(`${environment.apiUrl}/publications/notReviewed`).subscribe(pubs => {
             this.publications.next(pubs);
            
         });
@@ -63,11 +64,12 @@ export class PublicationService {
     }
 
     getPublicationById(id:string){
-        return this.http.get<Publication>('http://localhost:3300/api/publications/'+id);
+        return this.http.get<Publication>(`${environment.apiUrl}/publications/`+id);
     }
 
     addPublication(pub: Publication) {
-        this.http.post('http://localhost:3300/api/publications', pub).subscribe(id => {
+        this.http.post(`${environment.apiUrl}/publications`, pub).subscribe(id => {
+            console.log("siker");
             this.pushNotReviewedPublications();
             this.pushSubmittedPublications();
             this.pushNumberOfOwnPublications();
@@ -75,11 +77,11 @@ export class PublicationService {
     }
 
     deleteOverduePublications() {
-        this.http.patch('http://localhost:3300/api/publications/delete', null).subscribe(() => console.log("clean"));
+        this.http.patch(`${environment.apiUrl}/publications/delete`, null).subscribe(() => console.log("clean"));
     }
 
     pushQuestions(pubId: string) {
-        this.http.get<Question[]>('http://localhost:3300/api/publications/getQuestions/' + pubId).subscribe(questions => {
+        this.http.get<Question[]>(`${environment.apiUrl}/publications/getQuestions/` + pubId).subscribe(questions => {
             this.questions.next(questions);
         })
     }
@@ -89,7 +91,7 @@ export class PublicationService {
     }
 
     addQuestion(question: Question) {
-        this.http.post('http://localhost:3300/api/publications/addQuestion', question).subscribe(isPubReviewed => {
+        this.http.post(`${environment.apiUrl}/publications/addQuestion`, question).subscribe(isPubReviewed => {
             this.pushQuestions(question.publicationId);
             if(isPubReviewed) {
                 this.pushNotReviewedPublications();
@@ -99,11 +101,11 @@ export class PublicationService {
     }
     
     likeQuestion(like:number, id:string) {
-        return this.http.patch('http://localhost:3300/api/publications/likeQuestion', {like, id}).subscribe((pubId:string)=>this.pushQuestions(pubId))
+        return this.http.patch(`${environment.apiUrl}/publications/likeQuestion`, {like, id}).subscribe((pubId:string)=>this.pushQuestions(pubId))
     }
 
     hasBeenTaught(pub:Publication) {
-        this.http.patch('http://localhost:3300/api/publications/hasBeenTaught', pub).subscribe(()=>{
+        this.http.patch(`${environment.apiUrl}/publications/hasBeenTaught`, pub).subscribe(()=>{
             this.pushReviewedPublications();
         })
     }
