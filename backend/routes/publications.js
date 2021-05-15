@@ -19,7 +19,7 @@ router.post('/', authCheck, (req, res, next) => {
         level: req.body.level,
         title: req.body.title,
         text: req.body.text,
-        author: req.userData.userName,
+        author: req.userData.name,
         numberOfQuestions: req.body.numberOfQuestions
     });
     pub.save().then((result) => {
@@ -43,7 +43,7 @@ router.post('/addQuestion', authCheck, (req, res, next) => {
         {
             $inc: { numberOfQuestions: 1 }
         }).then((publication) => {
-            if (publication.numberOfQuestions > 4) {
+            if (publication.numberOfQuestions > 0) {
                 Publication.updateOne({ _id: req.body.publicationId, reviewed: false },
                         {
                             $set: {

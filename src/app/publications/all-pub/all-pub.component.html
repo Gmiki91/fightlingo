@@ -8,7 +8,7 @@
         </mat-radio-group>
         <div *ngIf="radioBtnSelected">
             <p *ngIf="!(readyToTeach$ | async)">{{minutesUntilReady}} minutes left until ready to teach</p>
-            <mat-accordion>
+            <!--   <mat-accordion>
                 <mat-expansion-panel *ngFor="let pub of pubs$ | async" >
                     <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -21,9 +21,43 @@
                     <button *ngIf='pub.reviewed' [disabled]="!teachButtonOn"  (click)="onTeach(pub)">Teach</button>
          
                 </mat-expansion-panel>
-            </mat-accordion>
+            </mat-accordion> -->
+            <table mat-table matSort [dataSource]="dataSource">
+
+                <ng-container matColumnDef="author">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Author </th>
+                    <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Title </th>
+                    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                </ng-container>
+
+                
+                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="questions">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Number of questiosn </th>
+                    <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+                </ng-container>
+
+                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="published">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Published </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dateOfPublish}} </td>
+                </ng-container>
+
+                <ng-container *ngIf="radioBtnSelected>2" matColumnDef="lastlecture">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Last lecture </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dateOfLastLecture}} </td>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
+
+            </table>
         </div>
     </div>
 </div>
 
-<app-question-template *ngIf="newQ" [pubId]="currentPub._id" (submitQuestion)="onSubmitQ($event)" ></app-question-template>
+<app-question-template *ngIf="newQ" [pubId]="currentPub._id" (submitQuestion)="onSubmitQ($event)">
+</app-question-template>

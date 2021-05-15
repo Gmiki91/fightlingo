@@ -4,6 +4,7 @@ export interface Publication{
     _id?:string;
     userId?:string,
     dateOfPublish?:Date,
+    dateOfLastLecture?:Date,
     reviewed?:boolean,
     popularity?:number,
     language?:Language,

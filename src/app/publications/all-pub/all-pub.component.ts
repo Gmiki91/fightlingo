@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PublicationService } from 'src/app/services/publication.service';
 import { Publication } from 'src/app/models/publication.model';
@@ -7,27 +7,36 @@ import { MatRadioChange } from '@angular/material/radio';
 import swal from 'sweetalert';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-all-pub',
   templateUrl: './all-pub.component.html',
   styleUrls: ['./all-pub.component.css']
 })
-export class AllPubComponent implements OnInit {
-  radioBtnSelected: boolean;
+export class AllPubComponent implements OnInit, OnDestroy {
+  radioBtnSelected: number;
   newQ: boolean;
   currentPub: Publication;
-  pubs$: Observable<Publication[]>;
+  pubs:Subscription;
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
 
+  displayedColumns:string[];
+  dataSource = new MatTableDataSource<Publication>();
+  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.pubs$ = this.pubService.getPublications().pipe(map(pubs => {
-      return pubs
-    }));
+    this.pubs = this.pubService.getPublications().subscribe(pubs => {
+      this.dataSource.data = pubs;
+   
+    });
    
     this.pubService.deleteOverduePublications();
 
@@ -38,6 +47,7 @@ export class AllPubComponent implements OnInit {
       return this.minutesUntilReady <= 0 ? true : false;
     }));
   }
+
 
   onTeach(pub: Publication): void {
     this.router.navigate(['/classroom'], { state: { id: pub._id } });
@@ -54,15 +64,27 @@ export class AllPubComponent implements OnInit {
     this.newQ = false;
     }
   }
+  onRowClicked(pub:Publication){
+    console.log(pub.title);
+  }
 
   onRadioChange(event: MatRadioChange) {
-    this.radioBtnSelected = true;
     if (event.value === "not reviewed") {
+      this.radioBtnSelected = 2;
+      this.displayedColumns = ["author","title", "questions", "published"];
       this.pubService.pushNotReviewedPublications();
     } else if (event.value === "reviewed") {
+      this.radioBtnSelected = 3;
+      this.displayedColumns = ["author","title", "questions", "published", "lastlecture"];
       this.pubService.pushReviewedPublications();
     } else if (event.value === "archived") {
-      this.pubService.pushArchivedPublications();
+      this.radioBtnSelected = 1;
+      this.displayedColumns = ["author","title"];
+      this.pubService.pushArchivedPublications();;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.pubs?.unsubscribe();
   }
 }
