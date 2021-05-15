@@ -22,7 +22,7 @@
          
                 </mat-expansion-panel>
             </mat-accordion> -->
-            <table mat-table matSort [dataSource]="dataSource">
+            <table mat-table matSort [dataSource]="pubs$ | async">
 
                 <ng-container matColumnDef="author">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Author </th>

@@ -15,11 +15,11 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './all-pub.component.html',
   styleUrls: ['./all-pub.component.css']
 })
-export class AllPubComponent implements OnInit, OnDestroy {
+export class AllPubComponent implements OnInit {
   radioBtnSelected: number;
   newQ: boolean;
   currentPub: Publication;
-  pubs:Subscription;
+  pubs$:Observable<Publication[]>;
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
@@ -33,10 +33,11 @@ export class AllPubComponent implements OnInit, OnDestroy {
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.pubs = this.pubService.getPublications().subscribe(pubs => {
+    this.pubs$ = this.pubService.getPublications().pipe(map(pubs => {
       this.dataSource.data = pubs;
-   
-    });
+      console.log(pubs);
+      return pubs
+    }));
    
     this.pubService.deleteOverduePublications();
 
@@ -84,7 +85,4 @@ export class AllPubComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.pubs?.unsubscribe();
-  }
 }
