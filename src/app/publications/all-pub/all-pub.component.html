@@ -22,6 +22,10 @@
          
                 </mat-expansion-panel>
             </mat-accordion> -->
+
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search by author or title">
+            </mat-form-field>
             <mat-table matSort [dataSource]="dataSource">
 
                 <ng-container matColumnDef="author">
@@ -33,7 +37,7 @@
                     <mat-header-cell mat-sort-header *matHeaderCellDef> Title </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
                 </ng-container>
-                
+
                 <ng-container *ngIf="radioBtnSelected>1" matColumnDef="numberOfQuestions">
                     <mat-header-cell mat-sort-header *matHeaderCellDef> Number of questiosn </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </mat-cell>
@@ -54,6 +58,7 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
 
             </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
 </div>

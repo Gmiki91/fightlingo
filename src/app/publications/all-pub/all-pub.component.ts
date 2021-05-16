@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-all-pub',
@@ -26,8 +27,11 @@ export class AllPubComponent implements OnInit, OnDestroy {
 
   displayedColumns:string[];
   dataSource = new MatTableDataSource<Publication>();
-  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+  @ViewChild(MatSort, {static: false}) set contentSort(sort: MatSort) {
     this.dataSource.sort = sort;
+  }
+  @ViewChild(MatPaginator, {static:false}) set contentPaginator(paginator: MatPaginator){
+    this.dataSource.paginator=paginator;
   }
 
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
@@ -91,6 +95,12 @@ export class AllPubComponent implements OnInit, OnDestroy {
       this.displayedColumns = ["author","title"];
       this.pubService.pushArchivedPublications();;
     }
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); 
+    filterValue = filterValue.toLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
 
 }
