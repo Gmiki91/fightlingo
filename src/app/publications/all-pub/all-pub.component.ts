@@ -15,11 +15,11 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './all-pub.component.html',
   styleUrls: ['./all-pub.component.css']
 })
-export class AllPubComponent implements OnInit {
+export class AllPubComponent implements OnInit, OnDestroy {
   radioBtnSelected: number;
   newQ: boolean;
   currentPub: Publication;
-  pubs$:Observable<Publication[]>;
+  pubSub:Subscription;
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
@@ -31,14 +31,17 @@ export class AllPubComponent implements OnInit {
   }
 
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
+  
 
   ngOnInit(): void {
+    /*
     this.pubs$ = this.pubService.getPublications().pipe(map(pubs => {
       this.dataSource.data = pubs;
-      console.log(pubs);
       return pubs
     }));
-   
+   */
+
+    this.pubSub=this.pubService.getPublications().subscribe(result=>this.dataSource.data=result);
     this.pubService.deleteOverduePublications();
 
     this.readyToTeach$ = this.authService.getUpdatedUser().pipe(map(user => {
@@ -48,7 +51,9 @@ export class AllPubComponent implements OnInit {
       return this.minutesUntilReady <= 0 ? true : false;
     }));
   }
-
+  ngOnDestroy(): void {
+    this.pubSub?.unsubscribe();
+  }
 
   onTeach(pub: Publication): void {
     this.router.navigate(['/classroom'], { state: { id: pub._id } });
@@ -67,16 +72,19 @@ export class AllPubComponent implements OnInit {
   }
   onRowClicked(pub:Publication){
     console.log(pub.title);
+    if(!pub.reviewed){
+      this.onAddQuestion(pub);
+    }
   }
 
   onRadioChange(event: MatRadioChange) {
     if (event.value === "not reviewed") {
       this.radioBtnSelected = 2;
-      this.displayedColumns = ["author","title", "questions", "published"];
+      this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish"];
       this.pubService.pushNotReviewedPublications();
     } else if (event.value === "reviewed") {
       this.radioBtnSelected = 3;
-      this.displayedColumns = ["author","title", "questions", "published", "lastlecture"];
+      this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish", "dateOfLastLecture"];
       this.pubService.pushReviewedPublications();
     } else if (event.value === "archived") {
       this.radioBtnSelected = 1;

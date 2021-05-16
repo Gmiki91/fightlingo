@@ -22,39 +22,38 @@
          
                 </mat-expansion-panel>
             </mat-accordion> -->
-            <table mat-table matSort [dataSource]="pubs$ | async">
+            <mat-table matSort [dataSource]="dataSource">
 
                 <ng-container matColumnDef="author">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Author </th>
-                    <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Author </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="title">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Title </th>
-                    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Title </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
                 </ng-container>
-
                 
-                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="questions">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Number of questiosn </th>
-                    <td mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </td>
+                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="numberOfQuestions">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Number of questiosn </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </mat-cell>
                 </ng-container>
 
-                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="published">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Published </th>
-                    <td mat-cell *matCellDef="let element"> {{element.dateOfPublish}} </td>
+                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="dateOfPublish">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Published </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dateOfPublish | dateAgo }} </mat-cell>
                 </ng-container>
 
-                <ng-container *ngIf="radioBtnSelected>2" matColumnDef="lastlecture">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef> Last lecture </th>
-                    <td mat-cell *matCellDef="let element"> {{element.dateOfLastLecture}} </td>
+                <ng-container *ngIf="radioBtnSelected>2" matColumnDef="dateOfLastLecture">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Last lecture </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dateOfLastLecture | dateAgo}} </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
                 <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
 
-            </table>
+            </mat-table>
         </div>
     </div>
 </div>

@@ -41,6 +41,7 @@ import { QuestionTemplateComponent } from './publications/question-template/ques
 import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DateAgoPipe } from './publications/date-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AllPubComponent,
     ClassroomComponent,
     QuestionTemplateComponent,
+    DateAgoPipe
   ],
   imports: [
     FormsModule,
