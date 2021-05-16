@@ -8,20 +8,6 @@
         </mat-radio-group>
         <div *ngIf="radioBtnSelected">
             <p *ngIf="!(readyToTeach$ | async)">{{minutesUntilReady}} minutes left until ready to teach</p>
-            <!--   <mat-accordion>
-                <mat-expansion-panel *ngFor="let pub of pubs$ | async" >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{pub.title}} (Questions: {{pub.numberOfQuestions}} )
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>{{pub.text}}</p>
-               
-                    <button *ngIf='!pub.reviewed' (click)="onAddQuestion(pub)">Add new question</button>
-                    <button *ngIf='pub.reviewed' [disabled]="!teachButtonOn"  (click)="onTeach(pub)">Teach</button>
-         
-                </mat-expansion-panel>
-            </mat-accordion> -->
 
             <mat-form-field>
                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search by author or title">

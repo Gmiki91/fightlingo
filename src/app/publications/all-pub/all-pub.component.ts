@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { PublicationService } from 'src/app/services/publication.service';
 import { Publication } from 'src/app/models/publication.model';
 import { MatRadioChange } from '@angular/material/radio';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -38,13 +38,6 @@ export class AllPubComponent implements OnInit, OnDestroy {
   
 
   ngOnInit(): void {
-    /*
-    this.pubs$ = this.pubService.getPublications().pipe(map(pubs => {
-      this.dataSource.data = pubs;
-      return pubs
-    }));
-   */
-
     this.pubSub=this.pubService.getPublications().subscribe(result=>this.dataSource.data=result);
     this.pubService.deleteOverduePublications();
 
@@ -59,11 +52,11 @@ export class AllPubComponent implements OnInit, OnDestroy {
     this.pubSub?.unsubscribe();
   }
 
-  onTeach(pub: Publication): void {
+  teach(pub: Publication): void {
     this.router.navigate(['/classroom'], { state: { id: pub._id } });
   }
 
-  onAddQuestion(pub: Publication): void {
+  addQuestion(pub: Publication): void {
     this.currentPub = pub;
     this.newQ = true;
   }
@@ -74,11 +67,33 @@ export class AllPubComponent implements OnInit, OnDestroy {
     this.newQ = false;
     }
   }
+  
   onRowClicked(pub:Publication){
-    console.log(pub.title);
-    if(!pub.reviewed){
-      this.onAddQuestion(pub);
-    }
+    const button = pub.reviewed ? 'Teach' : 'Add question';
+    Swal.fire({
+      title: pub.title,
+      text: pub.text,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: button,
+      cancelButtonText:'Close'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if(!pub.reviewed){
+          this.addQuestion(pub);
+        }else
+        if(pub.reviewed && this.teachButtonOn){
+          this.teach(pub);
+        }else if(pub.reviewed && !this.teachButtonOn){
+          Swal.fire(
+            'Your previous class has just recently finished',
+            `Try again in ${this.minutesUntilReady} minutes`,
+            'error'
+          )
+        }
+      }
+    })
   }
 
   onRadioChange(event: MatRadioChange) {
