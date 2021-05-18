@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicationService } from 'src/app/services/publication.service';
 import { Question } from 'src/app/models/question.enum';
-import { Observable, Subscription } from 'rxjs';
 import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';
@@ -44,6 +43,7 @@ export class ClassroomComponent implements OnInit {
   async init() {
     this.pubService.getQuestions().pipe(first()).subscribe(response => {
       this.questions = response;
+      this.questions.sort((a,b)=>b.popularity-a.popularity);
     });
     this.publication = await this.pubService.getPublicationById(this.publicationId).toPromise();
 
@@ -108,9 +108,10 @@ export class ClassroomComponent implements OnInit {
 
   quit(event: boolean): void {
     if (event) {
-      this.authService.giveMoney(this.publication.author,this.authorMoney).toPromise();
+      this.authService.giveMoney(this.publication.userId,this.authorMoney).toPromise();
       this.authService.gaveLecture().toPromise();
       this.pubService.hasBeenTaught(this.publication);
+      this.pubService.deleteUnpopularQs(this.publication);
       this.router.navigate(['/guild']);
     }
   }

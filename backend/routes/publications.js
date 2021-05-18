@@ -146,33 +146,14 @@ router.patch('/likeQuestion', authCheck, (req, res, next) => {
         })
 })
 
-/*
-router.patch('/questionPopularityInc',authCheck, (req, res, next) => {
-    Question.updateOne({ _id: req.body.id },
-        { $inc: { popularity: 1 } },
-        { $push: { votedBy: req.userData.id } })
-        .then(() => {
-            res.status(200).json("question liked");
-        })
+router.patch('/deleteUnpopularQs', (req,res,next)=>{
+    Question.deleteMany({
+        publicationId: req.body._id,
+        popularity:{ $lte: -10}
+    }).then(()=>{
+        res.status(200).json("Unpopular questions deleted");
+    })
 })
- 
-router.patch('/pubPopularityInc', (req, res, next) => {
-    Publication.updateOne({ _id: req.body.id },
-        { $inc: { popularity: 1 } })
-        .then(() => {
-            res.status(200).json("publication liked");
-        })
-})
- 
-router.patch('/pubPopularityDec', (req, res, next) => {
-    Publication.updateOne({ _id: req.body.id },
-        { $inc: { popularity: -1 } })
-        .then(() => {
-            res.status(200).json("publication disliked");
-        })
-})
- 
-*/
 
 router.patch('/delete', (req, res) => {
     Publication.deleteMany({

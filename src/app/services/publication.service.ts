@@ -77,7 +77,11 @@ export class PublicationService {
     }
 
     deleteOverduePublications() {
-        this.http.patch(`${environment.apiUrl}/publications/delete`, null).subscribe(() => console.log("clean"));
+        this.http.patch(`${environment.apiUrl}/publications/delete`, null).subscribe(() => console.log("clean pubs"));
+    }
+
+    deleteUnpopularQs(pub:Publication){
+        this.http.patch(`${environment.apiUrl}/publications/deleteUnpopularQs`, pub).subscribe(() => console.log("clean qs"));
     }
 
     pushQuestions(pubId: string) {
