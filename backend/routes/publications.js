@@ -75,16 +75,6 @@ router.get('/numberOfOwnPublications', authCheck, (req, res, next) => {
         .then(result => res.send(result));
 });
 
-router.get('/submitted', authCheck, (req, res, next) => {
-    Publication.find({ userId: req.userData.id, reviewed: false })
-        .then(result => res.send(result));
-});
-
-
-router.get('/published', authCheck, (req, res, next) => {
-    Publication.find({ userId: req.userData.id, reviewed: true })
-        .then(result => res.send(result));
-});
 
 // All publications
 

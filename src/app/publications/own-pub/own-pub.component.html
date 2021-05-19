@@ -1,6 +1,6 @@
-<div *ngIf="numberOfPublications>-1">
-    <label> {{numberOfPublications}} / 10</label>
-    <div *ngIf="numberOfPublications<10">
+<div *ngIf="(numberOfPublications$ | async) >-1">
+    <label> {{numberOfPublications$ | async}} / 10</label>
+    <div *ngIf="(numberOfPublications$ | async)  < 10">
         <form (ngSubmit)="onSubmit(form)" #form="ngForm">
             <div class="form-group">
                 <label for="title">Title</label>
@@ -18,19 +18,5 @@
             <br>
             <button type="submit" class="btn btn-success" [disabled]="!form.form.valid">Submit</button>
         </form>
-    </div>
-    <br>
-    <br>
-    <br>
-    <mat-radio-group>
-        <mat-radio-button (change)="onRadioChange($event)" value="reviewbereit">Waiting to be review</mat-radio-button>
-        <mat-radio-button (change)="onRadioChange($event)" value="published">Reviewed</mat-radio-button>
-    </mat-radio-group>
-    <div *ngIf="radioBtnSelected">
-        <div *ngFor="let pub of pubs$ | async">
-            <button>{{pub.title}}</button>
-            <br>
-            <br>
-        </div>
     </div>
 </div>

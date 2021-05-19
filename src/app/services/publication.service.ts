@@ -9,12 +9,10 @@ const BACKEND_URL = environment.apiUrl + '/publications/';
 
 @Injectable()
 export class PublicationService {
-    private ownPublications = new Subject<Publication[]>();
     private publications = new Subject<Publication[]>();
     private numberOfOwnPublications = new Subject<number>();
     private questions = new Subject<Question[]>();
 
-    ownPublications$  = this.ownPublications.asObservable();
     publications$ = this.publications.asObservable();
     numberOfPublications$ = this.numberOfOwnPublications.asObservable();
     questions$ =this.questions.asObservable();
@@ -24,18 +22,6 @@ export class PublicationService {
         this.http.get<Publication[]>(BACKEND_URL+'numberOfOwnPublications').subscribe(pubs => {
             this.numberOfOwnPublications.next(pubs.length);
         })
-    }
-
-    getSubmittedPublications() {
-        this.http.get<Publication[]>(BACKEND_URL+'submitted').subscribe(pubs => {
-            this.ownPublications.next(pubs);
-        });
-    }
-
-    getPublishedPublications() {
-        this.http.get<Publication[]>(BACKEND_URL+'published').subscribe(pubs => {
-            this.ownPublications.next(pubs);
-        });
     }
 
     getArchivedPublications() {
@@ -64,7 +50,6 @@ export class PublicationService {
     addPublication(pub: Publication) {
         this.http.post(BACKEND_URL, pub).subscribe(id => {
             this.getNotReviewedPublications();
-            this.getSubmittedPublications();
             this.getNumberOfOwnPublications();
         })
     }
@@ -89,7 +74,6 @@ export class PublicationService {
             this.pushQuestions(question.publicationId);
             if(isPubReviewed) {
                 this.getNotReviewedPublications();
-                this.getSubmittedPublications();
             }
         })
     }

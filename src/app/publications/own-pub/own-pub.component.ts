@@ -1,39 +1,28 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { map } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
-import { Publication } from 'src/app/models/publication.model';
+import { Observable } from 'rxjs';
 import { Proficiency } from 'src/app/proficiency.enum';
 import { PublicationService } from 'src/app/services/publication.service';
-import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-own-pub',
   templateUrl: './own-pub.component.html',
   styleUrls: ['./own-pub.component.css']
 })
-export class OwnPubComponent implements OnInit, OnDestroy {
+export class OwnPubComponent implements OnInit {
 
-  radioBtnSelected: boolean;
-  numberOfPublications: number;
-  pubs$: Observable<Publication[]>;
+  numberOfPublications$: Observable<number>;
   levels: string[];
-  sub:Subscription;
   constructor(private pubService: PublicationService) { }
  
 
   ngOnInit(): void {
     this.levels = Object.keys(Proficiency).filter(k => isNaN(Number(k)));
-    this.pubs$ = this.pubService.ownPublications$.pipe(map(pubs => { return pubs }));
-    this.sub= this.pubService.numberOfPublications$.subscribe(nr => {
-      this.numberOfPublications = nr;
-    });
+    this.numberOfPublications$ = this.pubService.numberOfPublications$.pipe(map(nr => {return nr;}));
     this.pubService.getNumberOfOwnPublications();
   }
 
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
-  }
 
   onSubmit(form: NgForm) {
     this.pubService.addPublication({
@@ -44,13 +33,6 @@ export class OwnPubComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRadioChange(event: MatRadioChange) {
-    this.radioBtnSelected = true;
-    if (event.value === "reviewbereit") {
-      this.pubService.getSubmittedPublications();
-    } else if (event.value === "published") {
-      this.pubService.getPublishedPublications();
-    }
-  }
+  
 
 }
