@@ -63,7 +63,6 @@ export class PublicationService {
 
     addPublication(pub: Publication) {
         this.http.post(BACKEND_URL, pub).subscribe(id => {
-            console.log("siker");
             this.getNotReviewedPublications();
             this.getSubmittedPublications();
             this.getNumberOfOwnPublications();

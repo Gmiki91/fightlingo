@@ -24,19 +24,24 @@
                     <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
                 </ng-container>
 
-                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="numberOfQuestions">
+                <ng-container *ngIf="radioBtnSelected=='r' || radioBtnSelected =='nr'" matColumnDef="numberOfQuestions">
                     <mat-header-cell mat-sort-header *matHeaderCellDef> Number of questiosn </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.numberOfQuestions}} </mat-cell>
                 </ng-container>
 
-                <ng-container *ngIf="radioBtnSelected>1" matColumnDef="dateOfPublish">
+                <ng-container *ngIf="radioBtnSelected=='nr'" matColumnDef="dateOfPublish">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef> Submitted </mat-header-cell>
+                    <mat-cell title='{{element.dateOfPublish|timelefttitle}}' *matCellDef="let element"> {{element.dateOfPublish | dateAgo | timeleft }} </mat-cell>
+                </ng-container>
+
+                <ng-container *ngIf="radioBtnSelected=='r'" matColumnDef="dateOfPublish">
                     <mat-header-cell mat-sort-header *matHeaderCellDef> Published </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.dateOfPublish | dateAgo }} </mat-cell>
                 </ng-container>
 
-                <ng-container *ngIf="radioBtnSelected>2" matColumnDef="dateOfLastLecture">
+                <ng-container *ngIf="radioBtnSelected=='r'" matColumnDef="dateOfLastLecture">
                     <mat-header-cell mat-sort-header *matHeaderCellDef> Last lecture </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.dateOfLastLecture | dateAgo}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.dateOfLastLecture | dateAgo}} {{element.dateOfLastLecture | money}}</mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -17,7 +17,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./all-pub.component.css']
 })
 export class AllPubComponent implements OnInit, OnDestroy {
-  radioBtnSelected: number;
+  radioBtnSelected: string;
   newQ: boolean;
   currentPub: Publication;
   pubSub:Subscription;
@@ -98,15 +98,15 @@ export class AllPubComponent implements OnInit, OnDestroy {
 
   onRadioChange(event: MatRadioChange) {
     if (event.value === "not reviewed") {
-      this.radioBtnSelected = 2;
+      this.radioBtnSelected = "nr";
       this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish"];
       this.pubService.getNotReviewedPublications();
     } else if (event.value === "reviewed") {
-      this.radioBtnSelected = 3;
+      this.radioBtnSelected = "r";
       this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish", "dateOfLastLecture"];
       this.pubService.getReviewedPublications();
     } else if (event.value === "archived") {
-      this.radioBtnSelected = 1;
+      this.radioBtnSelected = "a";
       this.displayedColumns = ["author","title"];
       this.pubService.getArchivedPublications();;
     }
@@ -116,6 +116,10 @@ export class AllPubComponent implements OnInit, OnDestroy {
     filterValue = filterValue.trim(); 
     filterValue = filterValue.toLowerCase(); 
     this.dataSource.filter = filterValue;
+  }
+
+  timeLeft(publishedAt:string){
+    console.log(publishedAt);
   }
 
 }

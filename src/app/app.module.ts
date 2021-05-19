@@ -41,7 +41,11 @@ import { QuestionTemplateComponent } from './publications/question-template/ques
 import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { DateAgoPipe } from './publications/date-ago.pipe';
+import { DateAgoPipe } from './publications/pipes/date-ago.pipe';
+import { MoneyPipe } from './publications/pipes/money.pipe copy';
+import { TimeLeftPipe } from './publications/pipes/time-left.pipe';
+import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +65,10 @@ import { DateAgoPipe } from './publications/date-ago.pipe';
     AllPubComponent,
     ClassroomComponent,
     QuestionTemplateComponent,
-    DateAgoPipe
+    DateAgoPipe,
+    MoneyPipe,
+    TimeLeftPipe,
+    TimeLeftTitlePipe
   ],
   imports: [
     FormsModule,
