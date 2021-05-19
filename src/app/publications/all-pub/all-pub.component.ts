@@ -16,29 +16,28 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './all-pub.component.html',
   styleUrls: ['./all-pub.component.css']
 })
-export class AllPubComponent implements OnInit, OnDestroy {
+export class AllPubComponent implements OnInit {
   radioBtnSelected: string;
   newQ: boolean;
   currentPub: Publication;
-  pubSub:Subscription;
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
 
-  displayedColumns:string[];
+  displayedColumns: string[];
   dataSource = new MatTableDataSource<Publication>();
-  @ViewChild(MatSort, {static: false}) set contentSort(sort: MatSort) {
+  @ViewChild(MatSort, { static: false }) set contentSort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
-  @ViewChild(MatPaginator, {static:false}) set contentPaginator(paginator: MatPaginator){
-    this.dataSource.paginator=paginator;
+  @ViewChild(MatPaginator, { static: false }) set contentPaginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
   }
 
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
-  
+
 
   ngOnInit(): void {
-    this.pubSub=this.pubService.publications$.subscribe(result=>this.dataSource.data=result);
+    this.pubService.publications$.subscribe(result => this.dataSource.data = result);
     this.pubService.deleteOverduePublications();
 
     this.readyToTeach$ = this.authService.getUpdatedUser().pipe(map(user => {
@@ -47,9 +46,6 @@ export class AllPubComponent implements OnInit, OnDestroy {
       this.teachButtonOn = this.minutesUntilReady <= 0;
       return this.minutesUntilReady <= 0 ? true : false;
     }));
-  }
-  ngOnDestroy(): void {
-    this.pubSub?.unsubscribe();
   }
 
   teach(pub: Publication): void {
@@ -62,30 +58,32 @@ export class AllPubComponent implements OnInit, OnDestroy {
   }
 
   onSubmitQ(event: boolean): void {
-  if(event){
-    this.currentPub = null;
-    this.newQ = false;
+    if (event) {
+      this.currentPub = null;
+      this.newQ = false;
     }
   }
-  
-  onRowClicked(pub:Publication){
+
+  onRowClicked(pub: Publication) {
     const button = pub.reviewed ? 'Teach' : 'Add question';
+    const notYourOwn = pub.userId!=localStorage.getItem('userId') ? true: false;
+    console.log(notYourOwn);
     Swal.fire({
       title: pub.title,
       text: pub.text,
       showCancelButton: true,
+      showConfirmButton: notYourOwn,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: button,
-      cancelButtonText:'Close'
+      cancelButtonText: 'Close'
     }).then((result) => {
       if (result.isConfirmed) {
-        if(!pub.reviewed){
+        if (!pub.reviewed) {
           this.addQuestion(pub);
-        }else
-        if(pub.reviewed && this.teachButtonOn){
+        } else if (pub.reviewed && this.teachButtonOn) {
           this.teach(pub);
-        }else if(pub.reviewed && !this.teachButtonOn){
+        } else if (pub.reviewed && !this.teachButtonOn) {
           Swal.fire(
             'Your previous class has just recently finished',
             `Try again in ${this.minutesUntilReady} minutes`,
@@ -99,27 +97,23 @@ export class AllPubComponent implements OnInit, OnDestroy {
   onRadioChange(event: MatRadioChange) {
     if (event.value === "not reviewed") {
       this.radioBtnSelected = "nr";
-      this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish"];
+      this.displayedColumns = ["author", "title", "numberOfQuestions", "dateOfPublish"];
       this.pubService.getNotReviewedPublications();
     } else if (event.value === "reviewed") {
       this.radioBtnSelected = "r";
-      this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish", "dateOfLastLecture"];
+      this.displayedColumns = ["author", "title", "numberOfQuestions", "dateOfPublish", "dateOfLastLecture"];
       this.pubService.getReviewedPublications();
     } else if (event.value === "archived") {
       this.radioBtnSelected = "a";
-      this.displayedColumns = ["author","title"];
+      this.displayedColumns = ["author", "title"];
       this.pubService.getArchivedPublications();;
     }
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); 
-    filterValue = filterValue.toLowerCase(); 
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
-  }
-
-  timeLeft(publishedAt:string){
-    console.log(publishedAt);
   }
 
 }
