@@ -24,11 +24,11 @@ export class OwnPubComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.levels = Object.keys(Proficiency).filter(k => isNaN(Number(k)));
-    this.pubs$ = this.pubService.getOwnPublications().pipe(map(pubs => { return pubs }));
-    this.sub= this.pubService.getNumberOfOwnPublications().subscribe(nr => {
+    this.pubs$ = this.pubService.ownPublications$.pipe(map(pubs => { return pubs }));
+    this.sub= this.pubService.numberOfPublications$.subscribe(nr => {
       this.numberOfPublications = nr;
     });
-    this.pubService.pushNumberOfOwnPublications();
+    this.pubService.getNumberOfOwnPublications();
   }
 
   ngOnDestroy(): void {
@@ -47,9 +47,9 @@ export class OwnPubComponent implements OnInit, OnDestroy {
   onRadioChange(event: MatRadioChange) {
     this.radioBtnSelected = true;
     if (event.value === "reviewbereit") {
-      this.pubService.pushSubmittedPublications();
+      this.pubService.getSubmittedPublications();
     } else if (event.value === "published") {
-      this.pubService.pushPublishedPublications();
+      this.pubService.getPublishedPublications();
     }
   }
 

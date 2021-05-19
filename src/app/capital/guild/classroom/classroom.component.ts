@@ -41,7 +41,7 @@ export class ClassroomComponent implements OnInit {
   }
 
   async init() {
-    this.pubService.getQuestions().pipe(first()).subscribe(response => {
+    this.pubService.questions$.pipe(first()).subscribe(response => {
       this.questions = response;
       this.questions.sort((a,b)=>b.popularity-a.popularity);
     });

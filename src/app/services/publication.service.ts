@@ -5,112 +5,103 @@ import { Publication } from '../models/publication.model';
 import { Question } from '../models/question.enum';
 import { environment } from 'src/environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/publications/';
 
 @Injectable()
 export class PublicationService {
-    numberOfOwnPublications = new Subject<number>();
-    ownPublications = new Subject<Publication[]>();
-    publications = new Subject<Publication[]>();
-    questions = new Subject<Question[]>();
+    private ownPublications = new Subject<Publication[]>();
+    private publications = new Subject<Publication[]>();
+    private numberOfOwnPublications = new Subject<number>();
+    private questions = new Subject<Question[]>();
+
+    ownPublications$  = this.ownPublications.asObservable();
+    publications$ = this.publications.asObservable();
+    numberOfPublications$ = this.numberOfOwnPublications.asObservable();
+    questions$ =this.questions.asObservable();
     constructor(private http: HttpClient) { }
 
-    pushNumberOfOwnPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/numberOfOwnPublications`).subscribe(pubs => {
+    getNumberOfOwnPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'numberOfOwnPublications').subscribe(pubs => {
             this.numberOfOwnPublications.next(pubs.length);
         })
     }
 
-    pushSubmittedPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/submitted`).subscribe(pubs => {
+    getSubmittedPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'submitted').subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
 
-    pushPublishedPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/published`).subscribe(pubs => {
+    getPublishedPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'published').subscribe(pubs => {
             this.ownPublications.next(pubs);
         });
     }
 
-    pushArchivedPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/archived`).subscribe(pubs => {
+    getArchivedPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'archived').subscribe(pubs => {
             this.publications.next(pubs);
         });
     }
 
-    pushReviewedPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/reviewed`).subscribe(pubs => {
+    getReviewedPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'reviewed').subscribe(pubs => {
             this.publications.next(pubs);
         });
     }
 
-    pushNotReviewedPublications() {
-        this.http.get<Publication[]>(`${environment.apiUrl}/publications/notReviewed`).subscribe(pubs => {
+    getNotReviewedPublications() {
+        this.http.get<Publication[]>(BACKEND_URL+'notReviewed').subscribe(pubs => {
             this.publications.next(pubs);
            
         });
     }
 
-    getNumberOfOwnPublications() {
-        return this.numberOfOwnPublications.asObservable();
-    }
-
-    getOwnPublications() {
-        return this.ownPublications.asObservable();
-    }
-
-    getPublications() {
-        return this.publications.asObservable();
-    }
-
     getPublicationById(id:string){
-        return this.http.get<Publication>(`${environment.apiUrl}/publications/`+id);
+        return this.http.get<Publication>(BACKEND_URL+id);
     }
 
     addPublication(pub: Publication) {
-        this.http.post(`${environment.apiUrl}/publications`, pub).subscribe(id => {
+        this.http.post(BACKEND_URL, pub).subscribe(id => {
             console.log("siker");
-            this.pushNotReviewedPublications();
-            this.pushSubmittedPublications();
-            this.pushNumberOfOwnPublications();
+            this.getNotReviewedPublications();
+            this.getSubmittedPublications();
+            this.getNumberOfOwnPublications();
         })
     }
 
     deleteOverduePublications() {
-        this.http.patch(`${environment.apiUrl}/publications/delete`, null).subscribe(() => console.log("clean pubs"));
+        this.http.patch(BACKEND_URL+'delete', null).subscribe(() => console.log("clean pubs"));
     }
 
     deleteUnpopularQs(pub:Publication){
-        this.http.patch(`${environment.apiUrl}/publications/deleteUnpopularQs`, pub).subscribe(() => console.log("clean qs"));
+        this.http.patch(BACKEND_URL+'deleteUnpopularQs', pub).subscribe(() => console.log("clean qs"));
     }
 
     pushQuestions(pubId: string) {
-        this.http.get<Question[]>(`${environment.apiUrl}/publications/getQuestions/` + pubId).subscribe(questions => {
+        this.http.get<Question[]>(BACKEND_URL+'getQuestions/'+ pubId).subscribe(questions => {
             this.questions.next(questions);
         })
     }
 
-    getQuestions() {
-        return this.questions.asObservable();
-    }
 
     addQuestion(question: Question) {
-        this.http.post(`${environment.apiUrl}/publications/addQuestion`, question).subscribe(isPubReviewed => {
+        this.http.post(BACKEND_URL+'addQuestion', question).subscribe(isPubReviewed => {
             this.pushQuestions(question.publicationId);
             if(isPubReviewed) {
-                this.pushNotReviewedPublications();
-                this.pushSubmittedPublications();
+                this.getNotReviewedPublications();
+                this.getSubmittedPublications();
             }
         })
     }
     
     likeQuestion(like:number, id:string) {
-        return this.http.patch(`${environment.apiUrl}/publications/likeQuestion`, {like, id}).subscribe((pubId:string)=>this.pushQuestions(pubId))
+        return this.http.patch(BACKEND_URL+'likeQuestion', {like, id}).subscribe((pubId:string)=>this.pushQuestions(pubId))
     }
 
     hasBeenTaught(pub:Publication) {
-        this.http.patch(`${environment.apiUrl}/publications/hasBeenTaught`, pub).subscribe(()=>{
-            this.pushReviewedPublications();
+        this.http.patch(BACKEND_URL+'hasBeenTaught', pub).subscribe(()=>{
+            this.getReviewedPublications();
         })
     }
 }

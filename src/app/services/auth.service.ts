@@ -7,12 +7,15 @@ import { map } from 'rxjs/operators';
 import { SignupForm } from '../models/signupform.model';
 import { environment } from 'src/environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/users/';
+
 @Injectable()
 export class AuthService {
 
     private updatedUser = new BehaviorSubject<User>(null);
 
     constructor(private http: HttpClient) { }
+
     createUser(form: SignupForm) {
         const user: User = {
             email: form.email,
@@ -32,12 +35,12 @@ export class AuthService {
             lastLecture: null,
             scrollFinished: null
         };
-        return this.http.post(`${environment.apiUrl}/users/signup`, user);
+        return this.http.post(BACKEND_URL+'signup', user);
     }
 
     login(name: string, password: string) {
         const authData: AuthData = { name, password };
-        return this.http.post<{ token: string, user: User, userId: string, confirmed: boolean }>(`${environment.apiUrl}/users/login`, authData)
+        return this.http.post<{ token: string, user: User, userId: string, confirmed: boolean }>(BACKEND_URL+'login', authData)
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("userId", response.userId);
@@ -47,7 +50,7 @@ export class AuthService {
     }
 
     refreshLoggedInUser(userId: string) {
-        return this.http.get<{ user: User, token: string }>(`${environment.apiUrl}/users/findById/` + userId)
+        return this.http.get<{ user: User, token: string }>(BACKEND_URL+'findById/' + userId)
             .pipe(map(response => {
                 localStorage.setItem("token", response.token);
                 this.updatedUser.next(response.user);
@@ -61,28 +64,28 @@ export class AuthService {
 
     confirmUser() {
         localStorage.setItem("confirmed", 'true');
-        return this.http.patch(`${environment.apiUrl}/users/confirm`, null)
+        return this.http.patch(BACKEND_URL+'confirm', null)
             .pipe(map(() => {
                 this.autoAuthUser();
             }));
     }
 
     updateRank() {
-        return this.http.patch(`${environment.apiUrl}/users/rank`, null)
+        return this.http.patch(BACKEND_URL+'rank', null)
             .pipe(map(() => {
                 this.autoAuthUser(); //to refresh token with new rank
             }));
     }
 
     levelUp() {
-        return this.http.patch(`${environment.apiUrl}/users/level`, null)
+        return this.http.patch(BACKEND_URL+'level', null)
             .pipe(map(() => {
                 this.autoAuthUser();
             }));
     }
 
     readyForExam() {
-        return this.http.patch(`${environment.apiUrl}/users/readyForExam`, null)
+        return this.http.patch(BACKEND_URL+'readyForExam', null)
             .pipe(map(() => {
                 this.autoAuthUser();
             }));
@@ -103,22 +106,22 @@ export class AuthService {
     }
 
     scrollFinishedAt() {
-        return this.http.get<Date>(`${environment.apiUrl}/users/finishedAt`);
+        return this.http.get<Date>(BACKEND_URL+'finishedAt');
     }
 
     gaveLecture() {
-        return this.http.patch(`${environment.apiUrl}/users/gaveLecture`, null)
+        return this.http.patch(BACKEND_URL+'gaveLecture', null)
             .pipe(map(() => {
                 this.autoAuthUser();
             }));
     }
 
     giveMoney(id: string, amount: number) {
-        return this.http.patch(`${environment.apiUrl}/users/giveMoney`, { id: id, amount: amount });
+        return this.http.patch(BACKEND_URL+'giveMoney', { id: id, amount: amount });
     }
 
     updateMoney(amount: number) {
-        return this.http.patch(`${environment.apiUrl}/users/updateMoney`, { amount: amount })
+        return this.http.patch(BACKEND_URL+'updateMoney', { amount: amount })
             .pipe(map(() => {
                 this.autoAuthUser();
             }));

@@ -38,7 +38,7 @@ export class AllPubComponent implements OnInit, OnDestroy {
   
 
   ngOnInit(): void {
-    this.pubSub=this.pubService.getPublications().subscribe(result=>this.dataSource.data=result);
+    this.pubSub=this.pubService.publications$.subscribe(result=>this.dataSource.data=result);
     this.pubService.deleteOverduePublications();
 
     this.readyToTeach$ = this.authService.getUpdatedUser().pipe(map(user => {
@@ -100,15 +100,15 @@ export class AllPubComponent implements OnInit, OnDestroy {
     if (event.value === "not reviewed") {
       this.radioBtnSelected = 2;
       this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish"];
-      this.pubService.pushNotReviewedPublications();
+      this.pubService.getNotReviewedPublications();
     } else if (event.value === "reviewed") {
       this.radioBtnSelected = 3;
       this.displayedColumns = ["author","title", "numberOfQuestions", "dateOfPublish", "dateOfLastLecture"];
-      this.pubService.pushReviewedPublications();
+      this.pubService.getReviewedPublications();
     } else if (event.value === "archived") {
       this.radioBtnSelected = 1;
       this.displayedColumns = ["author","title"];
-      this.pubService.pushArchivedPublications();;
+      this.pubService.getArchivedPublications();;
     }
   }
 

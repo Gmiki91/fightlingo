@@ -19,7 +19,7 @@ export class QuestionTemplateComponent implements OnInit {
   constructor(private pubService:PublicationService) { }
 
   ngOnInit(): void {
-    this.questions$ = this.pubService.getQuestions().pipe(map(qs => {
+    this.questions$ = this.pubService.questions$.pipe(map(qs => {
       this.questions = qs.map(q => {
         return q.question;
       });
