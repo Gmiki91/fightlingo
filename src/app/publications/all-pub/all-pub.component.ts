@@ -66,13 +66,11 @@ export class AllPubComponent implements OnInit {
 
   onRowClicked(pub: Publication) {
     const button = pub.reviewed ? 'Teach' : 'Add question';
-    const notYourOwn = pub.userId!=localStorage.getItem('userId') ? true: false;
-    console.log(notYourOwn);
+    const ownPub = pub.userId == localStorage.getItem('userId') ? true : false;
     Swal.fire({
       title: pub.title,
       text: pub.text,
       showCancelButton: true,
-      showConfirmButton: notYourOwn,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: button,
@@ -80,7 +78,13 @@ export class AllPubComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         if (!pub.reviewed) {
-          this.addQuestion(pub);
+          if (ownPub) {
+            Swal.fire(
+              "You can't add question to your own story"
+            );
+          } else {
+            this.addQuestion(pub);
+          }
         } else if (pub.reviewed && this.teachButtonOn) {
           this.teach(pub);
         } else if (pub.reviewed && !this.teachButtonOn) {
