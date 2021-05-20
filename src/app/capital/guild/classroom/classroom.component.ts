@@ -86,6 +86,7 @@ export class ClassroomComponent implements OnInit {
   }
 
   onEndLecture(): void {
+    if(this.publication.userId != localStorage.getItem('userId')){
     swal("would you like to add one question?", {
       buttons: {
         yes: {
@@ -104,6 +105,9 @@ export class ClassroomComponent implements OnInit {
         this.quit(true);
       }
     })
+  }else{
+    this.quit(true);
+  }
   }
 
   quit(event: boolean): void {

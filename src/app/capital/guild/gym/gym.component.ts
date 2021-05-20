@@ -80,6 +80,7 @@ export class GymComponent implements OnInit, AfterViewInit {
     if (this.socket && !this.isExam){
       this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
     }
+    this.readyToAttack = false;
     setTimeout(() => {
       this.path = "../../assets/duel.png";
       this.count++;
@@ -106,7 +107,7 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   private nextTurn(): void {
     this.quizType = null;
-    this.readyToAttack = false;
+   
     this.spellType = null;
     this.selectedButton = null;
     this.miss = false;
