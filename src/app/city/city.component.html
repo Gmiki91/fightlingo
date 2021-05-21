@@ -14,4 +14,4 @@
 <button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
 
 <div class="tw"></div>
-<app-quiz *ngIf="startQuiz" [overdueSentences]="overdueSentences$ | async"></app-quiz>
+<app-quiz *ngIf="startQuiz" (exitQuizEmitter)="quizFinished($event)" [overdueSentences]="overdueSentences$ | async"></app-quiz>

@@ -67,6 +67,10 @@ export class CityComponent implements OnInit {
     
   }
 
+  quizFinished(event:boolean){
+    this.setDistrict(null);
+  }
+
   private init() {
     this.returnAvailable = this.district ? true : false;
     document.querySelector('.tw').innerHTML = "";

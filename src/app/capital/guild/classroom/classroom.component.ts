@@ -40,12 +40,12 @@ export class ClassroomComponent implements OnInit {
     this.pubService.pushQuestions(this.publicationId);
   }
 
-  async init() {
+  init() {
     this.pubService.questions$.pipe(first()).subscribe(response => {
       this.questions = response;
       this.questions.sort((a, b) => b.popularity - a.popularity);
     });
-    this.publication = await this.pubService.getPublicationById(this.publicationId).toPromise();
+    this.pubService.getPublicationById(this.publicationId).toPromise().then((publication)=>{this.publication=publication});
 
     // ... and that concludes our analysis of ${this.publication.title} from the great $this.publication.author}
     // any questions?

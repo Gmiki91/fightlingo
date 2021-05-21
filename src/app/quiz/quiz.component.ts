@@ -16,15 +16,15 @@ export class QuizComponent implements OnInit, OnChanges {
   @Input() quizType: string;
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
-  @Output() readyForPromotion: EventEmitter<boolean> = new EventEmitter();
+  @Output() exitQuizEmitter: EventEmitter<boolean> = new EventEmitter();
   @Output() fightQuizResult: EventEmitter<boolean> = new EventEmitter();
   numberOfSentences: number;
   displayedSentence: string;
-  translation:string;
+  translation: string;
   sentence: Sentence;
   sentences: Sentence[];
   quizInProgress: boolean;
-  fightInProgress:boolean;
+  fightInProgress: boolean;
   flashCardsInProgress: boolean;
 
   constructor(private quizService: QuizService) { }
@@ -36,14 +36,15 @@ export class QuizComponent implements OnInit, OnChanges {
       this.subscribeToLearn();
     else if (this.quizType === 'practice')
       this.subscribeToPractice();
-  }   
-
-  ngOnChanges() {
-    if(this.quizType ==='fight')
-      this.fight();
   }
 
-  checkFight():void{
+  ngOnChanges() {
+    if (this.quizType === 'fight'){
+      this.fight();
+    }
+  }
+
+  checkFight(): void {
     const answer = this.userAnswer.nativeElement.value;
 
     if (this.sentence.translation.find((translation) => translation === answer)) {
@@ -54,11 +55,11 @@ export class QuizComponent implements OnInit, OnChanges {
       this.fightQuizResult.emit(false);
     }
     this.fightInProgress = false;
-    this.sentence=null;
+    this.sentence = null;
   }
 
   checkQuiz(): void {
-    this.translation=null;
+    this.translation = null;
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
@@ -74,18 +75,22 @@ export class QuizComponent implements OnInit, OnChanges {
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
     } else {
       swal("Well done!", "...You finished the quiz!")
-        .then(async () => {
+        .then(() => {
           this.sentence = null;
           this.quizInProgress = false;
           if (this.quizType === 'learn') {
-            const sentencesLeft = await this.quizService.getLearnableSentences().toPromise();
-            if (sentencesLeft.length === 0) {
-              this.readyForPromotion.emit(true);
-            } else {
-              this.readyForPromotion.emit(false);
-            }
-          }else{ //overdue
-            await this.quizService.getOverdueSentences().toPromise();
+            this.quizService.getLearnableSentences().toPromise().then((result) => {
+              const sentencesLeft = result;
+              if (sentencesLeft.length === 0) {
+                this.exitQuizEmitter.emit(true);
+              } else {
+                this.exitQuizEmitter.emit(false);
+              }
+            });
+
+          } else { //overdue
+            this.quizService.getOverdueSentences().toPromise();
+            this.exitQuizEmitter.emit(false);
           }
         })
     }
@@ -122,10 +127,10 @@ export class QuizComponent implements OnInit, OnChanges {
   stopFlashCards(): void {
     this.sentence = null;
     this.flashCardsInProgress = false;
-    this.readyForPromotion.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
+    this.exitQuizEmitter.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
   }
-  showTranslation():void{
-    this.translation=this.sentence.english[0];
+  showTranslation(): void {
+    this.translation = this.sentence.english[0];
   }
 
   private displaySentence(sentences: Sentence[]): void {
@@ -156,29 +161,43 @@ export class QuizComponent implements OnInit, OnChanges {
     this.displaySentence(sentences);
   }
 
-  private async fight(){
+  private fight() {
     this.fightInProgress = true;
-    if(typeof this.sentences==='undefined')
-    this.sentences = await this.quizService.getFightSentences().toPromise();
+    if (typeof this.sentences === 'undefined'){
+      this.quizService.getFightSentences().toPromise().then((result) => {
+        this.sentences = result;
+        this.displayFightSentence();
+      });
+    }else{
+      this.displayFightSentence();
+    }
+
+  }
+
+  private displayFightSentence(){
     this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length)];
     this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
   }
 
-  private async subscribeToLearn() {
-    const sentences = await this.quizService.getLearnableSentences().toPromise();
-    if (sentences.length != 0) {
-      this.startQuiz(sentences);
-    } else {
-      swal("Hold your horses!", "There is nothing to learn :(");
-    }
+  private subscribeToLearn() {
+    this.quizService.getLearnableSentences().toPromise().then((result) => {
+      const sentences = result;
+      if (sentences.length != 0) {
+        this.startQuiz(sentences);
+      } else {
+        swal("Hold your horses!", "There is nothing to learn :(");
+      }
+    })
   }
 
-  private async subscribeToPractice() {
-    const sentences = await this.quizService.getPracticableSentences(this.scroll._id).toPromise();
-    if (sentences.length != 0) {
-      this.startFlashCards(sentences);
-    } else {
-      swal("Oops", "You haven't learned anything from this lesson yet.");
-    }
+  private subscribeToPractice() {
+    this.quizService.getPracticableSentences(this.scroll._id).toPromise().then((result) => {
+      const sentences = result;
+      if (sentences.length != 0) {
+        this.startFlashCards(sentences);
+      } else {
+        swal("Oops", "You haven't learned anything from this lesson yet.");
+      }
+    })
   }
 }

@@ -28,7 +28,7 @@ export class SignUpComponent implements OnInit {
     this.imagePath = this.imagePaths[this.imagePathIndex];
   }
 
-  async onSignUp(form: NgForm) {
+   onSignUp(form: NgForm) {
     // check for mail/userename in database for duplicates
     const signupform: SignupForm = {
       email:form.value.email, 
@@ -37,8 +37,9 @@ export class SignUpComponent implements OnInit {
       avatar: this.imagePath,
       language: this.language
     }
-    await this.authService.createUser(signupform).toPromise();
-    this.router.navigate(['/']);
+    this.authService.createUser(signupform).toPromise().then(()=>{
+      this.router.navigate(['/']);
+    });
   }
 
   previousPic() {

@@ -75,11 +75,12 @@ export class IntroComponent implements OnInit, OnDestroy{
     this.showGym = true;
   }
 
-  async fightFinished() {
+  fightFinished() {
     this.showGym = false;
     swal("congrats");
     this.authService.levelUp().toPromise();
-    await this.authService.confirmUser().toPromise();
-    this.router.navigate(['/']);
+    this.authService.confirmUser().toPromise().then(()=>{
+      this.router.navigate(['/']);
+    });
   }
 }

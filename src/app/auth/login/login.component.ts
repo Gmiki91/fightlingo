@@ -18,14 +18,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void { }
 
-  async onLogin(form: NgForm) {
-    await this.authService.login(form.value.username, form.value.password).toPromise();
-    this.sub = this.authService.getUpdatedUser().subscribe(user => {
-      if (user && user.confirmed)
-      this.router.navigate(['/']);
-      else if(user && !user.confirmed)
-      this.router.navigate(['/intro']);
-    })
+  onLogin(form: NgForm) {
+     this.authService.login(form.value.username, form.value.password).toPromise().then(()=>{
+      this.sub = this.authService.getUpdatedUser().subscribe(user => {
+        if (user && user.confirmed)
+        this.router.navigate(['/']);
+        else if(user && !user.confirmed)
+        this.router.navigate(['/intro']);
+      })
+     });
   }
 
   ngOnDestroy(): void {
