@@ -1,0 +1,12 @@
+{
+  "defaultProject": "fightlingo",
+  "projects": {
+    "fightlingo": {
+      "name": "fightlingo",
+      "integrations": {
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
+}

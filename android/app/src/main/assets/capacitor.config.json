@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "fightlingo",
+	"webDir": "dist/fightlingo",
+	"bundledWebRuntime": false
+}
