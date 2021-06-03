@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start:ng": "ng serve --port 4400",
-    "start:server": "nodemon server.js",
+    "server": "nodemon server.js",
+    "android": "npx cap open android",
+    "ionic":"npx ionic serve",
+    "external":"npx ionic capacitor run android -l --external",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
