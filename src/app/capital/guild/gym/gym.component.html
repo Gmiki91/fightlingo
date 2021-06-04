@@ -1,12 +1,15 @@
-<mat-radio-group [disabled]="spellType" [selected]="selectedButton" (change)="spellTypeChange($event)">
-    <mat-radio-button value="fire">fire</mat-radio-button>
-    <mat-radio-button value="water" >water</mat-radio-button>
-    <mat-radio-button value="earth" >earth</mat-radio-button>
-</mat-radio-group>
-<app-quiz [hidden]="hideQuiz" [quizType]="quizType" (fightQuizResult)="quizResult($event)"></app-quiz>
-<div *ngIf="miss">{{cooldown}}</div>
-<button *ngIf="readyToAttack" (click)="attack()">Cast!</button>
-<p  *ngIf="socket && !isExam" class="enemy_name">{{enemy.userName}}</p>
-<div class="animation">
-    <img  [src]="path">
+<div class="container">
+    <img src="assets/gym_bg.png">
+    <mat-radio-group [disabled]="spellType" [selected]="selectedButton" (change)="spellTypeChange($event)">
+        <mat-radio-button value="fire">fire</mat-radio-button>
+        <mat-radio-button value="water">water</mat-radio-button>
+        <mat-radio-button value="earth">earth</mat-radio-button>
+    </mat-radio-group>
+    <app-quiz [hidden]="hideQuiz" [quizType]="quizType" (fightQuizResult)="quizResult($event)"></app-quiz>
+    <div *ngIf="miss">{{cooldown}}</div>
+    <button *ngIf="readyToAttack" (click)="attack()">Cast!</button>
+    <p *ngIf="socket && !isExam" class="enemy_name">{{enemy.userName}}</p>
+    <div class="animation">
+        <img [src]="path">
+    </div>
 </div>

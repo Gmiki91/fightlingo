@@ -11,7 +11,6 @@ module.exports = function (req, res, next) {
             money:decodedToken.userMoney,
             language:decodedToken.userLanguage,
             name:decodedToken.userName,
-            
         };
         next();
     } catch (error) {
