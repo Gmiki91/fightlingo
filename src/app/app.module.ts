@@ -40,6 +40,7 @@ import { ClassroomComponent } from './capital/guild/classroom/classroom.componen
 import { QuestionTemplateComponent } from './publications/question-template/question-template.component';
 import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import {GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DateAgoPipe } from './publications/pipes/date-ago.pipe';
 import { MoneyPipe } from './publications/pipes/money.pipe copy';
@@ -89,7 +90,8 @@ import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SocialLoginModule
   ],
   providers: [QuizService,
     AuthService,
@@ -97,7 +99,18 @@ import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
     DialogService,
     EventHandler,
     PublicationService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
+    {provide: 'SocialAuthServiceConfig',
+    useValue: {
+      autoLogin: true, //keeps the user signed in
+      providers: [
+        {
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider('584741243002-kkpcup8la9lvuv7f03hj147ggjcrpvj8.apps.googleusercontent.com') // your client id
+        }
+      ]
+    }
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
