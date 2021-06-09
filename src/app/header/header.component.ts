@@ -9,6 +9,7 @@ import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
+import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +24,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription = Subscription.EMPTY;
   user: User;
 
-  constructor(private quizService: QuizService, private auth: AuthService, private router: Router, private eventHandler: EventHandler) { }
+  constructor(
+    private quizService: QuizService,
+    private auth: AuthService,
+    private router: Router,
+    private eventHandler: EventHandler,
+    public socialAuthService: SocialAuthService) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -39,6 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.eventHandler.reset();
+    this.socialAuthService.signOut().then(()=>{});
     this.auth.logout();
     this.router.navigate(['/']);
   }

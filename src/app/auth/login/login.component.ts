@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 logout():void{
-
+  this.socialAuthService.signOut()
+  .then(()=> this.router.navigate(['/']));
 }
 
   

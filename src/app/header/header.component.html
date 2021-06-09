@@ -1,10 +1,10 @@
-<div *ngIf="!loggedIn">
+<div *ngIf="!loggedIn &&  !(socialAuthService.authState | async) ">
     <mat-toolbar color="primary">
         <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/login">Login</a>
         <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/signup">Sign up</a>
     </mat-toolbar>
 </div>
-<div class="navbar" *ngIf="loggedIn">
+<div class="navbar" *ngIf="loggedIn || (socialAuthService.authState | async) ">
     <a mat-flat-button color=primary routerLinkActive="mat-accent" routerLink="/publication">Publications</a>
     <a (click)="onPollyClicked()"><img class="icon" src='../../assets/header/pollyicon.jpg'></a>
     <a (click)="logout()"><img class="icon" src='../../assets/header/logout.png'></a>
