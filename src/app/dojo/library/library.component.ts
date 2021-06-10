@@ -2,9 +2,11 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Character } from 'src/app/models/character.model';
 import { Scroll } from 'src/app/models/scroll.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { CharacterService } from 'src/app/services/character.service';
 import { ScrollService } from 'src/app/services/scroll.service';
 import swal from 'sweetalert';
 
@@ -17,15 +19,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   buttonText: string;
   user: User;
+  character:Character;
   scrolls: Scroll[];
   selectedScroll: Scroll;
   quizType: string;
   sub: Subscription;
 
-  constructor(private auth: AuthService, private scrollService: ScrollService, private router: Router) { }
+  constructor(private auth: AuthService, private characterService: CharacterService, private scrollService: ScrollService, private router: Router) { }
 
   ngOnInit(): void {
     this.sub = this.auth.getUpdatedUser().subscribe((user: User) => this.user = user);
+    this.sub = this.characterService.character$.subscribe((char:Character)=>this.character=char)
   }
 
   onChooseScroll() {
@@ -35,9 +39,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   onScrollClicked(scroll: Scroll): void {
-    if (this.user.rank < scroll.number)
+    if (this.character.rank < scroll.number)
       this.buttonText = "";
-    else if (this.user.rank == scroll.number && !this.user.isReadyForExam)
+    else if (this.character.rank == scroll.number && !this.character.isReadyForExam)
       this.buttonText = "Translate";
     else
       this.buttonText = "Practice";
@@ -47,7 +51,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   onScrollBtnClicked(): void {
     if (this.buttonText === "Translate") {
-      if (this.user.isReadyForExam) {
+      if (this.character.isReadyForExam) {
         swal("You have to take your exam first.");
       } else {
         this.readyToWork();
@@ -59,9 +63,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
    quizFinished(event) {
     if (event) {
-      this.scrollService.getOneScroll(this.user.rank + 1).toPromise().then((scroll) => {
+      this.scrollService.getOneScroll(this.character.rank + 1).toPromise().then((scroll) => {
         const nextScroll = scroll;
-        const isReadyForExam = nextScroll.level > this.user.level;
+        const isReadyForExam = nextScroll.level > this.character.level;
         if (!isReadyForExam) {
           this.auth.updateRank().toPromise().then(() => {
             swal(`You've finished this scroll! Well done!`);

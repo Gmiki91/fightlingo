@@ -6,6 +6,7 @@ import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
 import { SignupForm } from '../models/signupform.model';
 import { environment } from 'src/environments/environment';
+import { Character } from '../models/character.model';
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 
@@ -20,7 +21,7 @@ export class AuthService {
         const user: User = {
             email: form.email,
             password: form.password,
-            name: form.name,
+           /* name: form.name,
             pic: form.avatar,
             language: form.language,
             confirmed: false,
@@ -33,7 +34,7 @@ export class AuthService {
             hasShipTicket: false,
             lastLoggedIn: new Date(),
             lastLecture: null,
-            scrollFinished: null
+            scrollFinished: null*/
         };
         return this.http.post(BACKEND_URL+'signup', user);
     }
@@ -55,6 +56,10 @@ export class AuthService {
                 localStorage.setItem("token", response.token);
                 this.updatedUser.next(response.user);
             }))
+    }
+
+    getCurrentCharacter(){
+        return this.http.get<Character>(BACKEND_URL+'currentCharacter');
     }
 
     getUpdatedUser() {

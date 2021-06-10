@@ -3,6 +3,8 @@ import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Character } from '../models/character.model';
+import { CharacterService } from '../services/character.service';
 
 @Component({
   selector: 'app-dojo',
@@ -10,40 +12,54 @@ import { Router } from '@angular/router';
   styleUrls: ['./dojo.component.css']
 })
 export class DojoComponent implements OnInit {
-  
-  loggedIn$: Observable<boolean>;
 
-  constructor(private auth: AuthService, private router: Router) {  }
-  
+  loggedIn$: Observable<boolean>;
+  characterList$: Observable<Character[]>;
+  currentCharacter$: Observable<Character>;
+  sajt: string;
+  constructor(private auth: AuthService, private charService: CharacterService, private router: Router) { }
+
   ngOnInit(): void {
-    this.loggedIn$= this.auth.getUpdatedUser().pipe(map(user=>{return user ? true:false;}))
+    this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
+      if (user)
+        this.characterList$ = this.charService.getCharactersByUserId(user._id);
+      this.currentCharacter$ = this.auth.getCurrentCharacter();
+      return user ? true : false;
+    }))
 
   }
-  toTheCapital():void{
+
+  onCreate(): void {
+    this.charService.createCharacter().subscribe((char: Character) => {
+      console.log(char);
+    })
+  }
+
+  toTheCapital(): void {
     localStorage.setItem("hasTicket", 'true');
     this.router.navigate(['/guild']);
   }
-/*
-  onMailBox(): void {
-    if (this.authService.user.currentStoryLearned && !this.authService.user.currentStorySent) {
-      this.authService.currentStorySent();
-      swal("You sent your report to the guild.");
-
-    }else if (this.authService.user.currentStorySent && !this.authService.user.currentStoryFinished) {
-      let diff = (new Date().getTime()- new Date(this.authService.user.currentStorySent).getTime())/1000/3600;
-      let diffInHours = Math.abs(Math.floor(diff))
-      if (diffInHours > 1) {
-        swal("The guild has sent some questions regarding your report. Go to the library to write them the answers!")
-        this.authService.currentStoryRecieved();
+  /*
+    onMailBox(): void {
+      if (this.authService.user.currentStoryLearned && !this.authService.user.currentStorySent) {
+        this.authService.currentStorySent();
+        swal("You sent your report to the guild.");
+  
+      }else if (this.authService.user.currentStorySent && !this.authService.user.currentStoryFinished) {
+        let diff = (new Date().getTime()- new Date(this.authService.user.currentStorySent).getTime())/1000/3600;
+        let diffInHours = Math.abs(Math.floor(diff))
+        if (diffInHours > 1) {
+          swal("The guild has sent some questions regarding your report. Go to the library to write them the answers!")
+          this.authService.currentStoryRecieved();
+        }
+        
+      }else if (this.authService.user.currentLessonFinished && this.authService.user.currentStoryFinished) {
+        let diffS = Math.abs(Math.floor((new Date().getTime() - new Date(this.authService.user.currentStoryFinished).getTime())/1000/3600));
+        let diffL = Math.abs(Math.floor((new Date().getTime() - new Date(this.authService.user.currentLessonFinished).getTime())/1000/3600));
+        if (diffS > 8 && diffL > 8) {
+          this.authService.updateRank();
+          swal("The guild has approved your latest translation. You recieved a new book.")
+        }
       }
-      
-    }else if (this.authService.user.currentLessonFinished && this.authService.user.currentStoryFinished) {
-      let diffS = Math.abs(Math.floor((new Date().getTime() - new Date(this.authService.user.currentStoryFinished).getTime())/1000/3600));
-      let diffL = Math.abs(Math.floor((new Date().getTime() - new Date(this.authService.user.currentLessonFinished).getTime())/1000/3600));
-      if (diffS > 8 && diffL > 8) {
-        this.authService.updateRank();
-        swal("The guild has approved your latest translation. You recieved a new book.")
-      }
-    }
-  }*/
+    }*/
 }

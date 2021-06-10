@@ -3,7 +3,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 const progressSchema = mongoose.Schema({
     sentenceId:ObjectId,
-    userId:ObjectId,
+    characterId:ObjectId,
     learned:Boolean,
     learningProgress:Number,
     consecutiveCorrectAnswers:Number,

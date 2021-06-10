@@ -2,7 +2,6 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
@@ -16,9 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private sub: Subscription;
   constructor(
     private authService: AuthService, 
-    private router: Router,
-    public socialAuthService: SocialAuthService
-    ) { }
+    private router: Router) { }
 
 
   ngOnInit(): void { }
@@ -26,18 +23,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   onLogin(form: NgForm) {
     this.authService.login(form.value.username, form.value.password).toPromise().then(() => {
       this.sub = this.authService.getUpdatedUser().subscribe(user => {
-        if (user && user.confirmed)
+        if (user /*&& user.confirmed*/)
           this.router.navigate(['/']);
-        else if (user && !user.confirmed)
-          this.router.navigate(['/intro']);
+ //       else if (user && !user.confirmed)
+ //         this.router.navigate(['/intro']);
       })
     });
   }
 
-  loginWithGoogle(): void {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then(() => this.router.navigate(['/']));
-  }
+ 
 
   ngOnDestroy(): void {
     if (this.sub)
@@ -45,8 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 logout():void{
-  this.socialAuthService.signOut()
-  .then(()=> this.router.navigate(['/']));
+ 
 }
 
   

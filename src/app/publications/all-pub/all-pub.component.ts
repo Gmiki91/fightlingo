@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { CharacterService } from 'src/app/services/character.service';
 
 @Component({
   selector: 'app-all-pub',
@@ -33,15 +34,15 @@ export class AllPubComponent implements OnInit {
     this.dataSource.paginator = paginator;
   }
 
-  constructor(private pubService: PublicationService, private router: Router, private authService: AuthService) { }
+  constructor(private pubService: PublicationService, private router: Router, private authService: AuthService, private characterService:CharacterService) { }
 
 
   ngOnInit(): void {
     this.pubService.publications$.subscribe(result => this.dataSource.data = result);
     this.pubService.deleteOverduePublications();
 
-    this.readyToTeach$ = this.authService.getUpdatedUser().pipe(map(user => {
-      this.minutesUntilReady = (new Date().getTime() - new Date(user.lastLecture).getTime()) / 1000 / 60;
+    this.readyToTeach$ = this.characterService.getUpdatedCharacter().pipe(map(char => {
+      this.minutesUntilReady = (new Date().getTime() - new Date(char.lastLecture).getTime()) / 1000 / 60;
       this.minutesUntilReady = Math.round(60 - this.minutesUntilReady);
       this.teachButtonOn = this.minutesUntilReady <= 0;
       return this.minutesUntilReady <= 0 ? true : false;

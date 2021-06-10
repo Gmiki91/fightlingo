@@ -1,4 +1,4 @@
-<app-gym *ngIf="showGym" [enemy]="enemy" [user]="user" [socket]="socket" [isExam]="isExam" (fightFinishedEmitter)="fightFinished($event)"></app-gym>
+<app-gym *ngIf="showGym" [enemy]="enemy" [user]="char" [socket]="socket" [isExam]="isExam" (fightFinishedEmitter)="fightFinished($event)"></app-gym>
 <div *ngIf="!showGym">
     <div>
         <div *ngIf="onlineUsers">

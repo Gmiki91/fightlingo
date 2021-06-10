@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Progress = require("../models/progress");
 const Scroll = require("../models/scroll");
+const Character = require("../models/character");
 const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 let Sentence;
@@ -27,25 +28,12 @@ router.post('/signup', (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             user = new User({
-                email: req.body.mail,
-                name: req.body.name,
+                email: req.body.email,
                 password: hash,
-                pic: req.body.pic,
-                level: req.body.level,
-                language: req.body.language,
-                rank: req.body.rank,
-                strength: req.body.strength,
-                hitpoint: req.body.hitpoint,
-                money: req.body.money,
-                hasShipTicket: req.body.hasShipTicket,
-                lastLoggedIn: req.body.lastLoggedIn,
-                scrollFinished: req.body.scrollFinished,
-                lastLecture:new Date(new Date().getTime() - 1000 * 86400 ),
-                confirmed:false,
-                isReadyForExam:false
+                characterList:[],
+                currentCharacter:null,
             });
             user.save()
-                .then(initProgressFirst(req.body.language, req.body.rank))
                 .then(result => {
                     res.status(201).json({
                         message: "user created",
@@ -60,8 +48,9 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
     let userData;
-    User.findOne({ name: req.body.name })
+    User.findOne({ email: req.body.name })
         .then(user => {
+           
             if (!user) {
                 return res.status(404).json({
                     message: "User not found"
@@ -71,6 +60,7 @@ router.post('/login', (req, res, next) => {
             return bcrypt.compare(req.body.password, user.password);
         })
         .then(result => {
+          
             if (!result) {
                 return res.status(401).json({
                     message: "Auth failed"
@@ -78,12 +68,7 @@ router.post('/login', (req, res, next) => {
             }
             const token = jwt.sign(
                 {
-                    userName: userData.name,
                     userId: userData._id,
-                    userLevel:userData.level,
-                    userRank:userData.rank,
-                    userMoney:userData.money,
-                    userLanguage:userData.language,
                 },
                 process.env.JWT_KEY,
                 { expiresIn: '1h' }
@@ -103,6 +88,18 @@ router.post('/login', (req, res, next) => {
         })
 })
 
+router.get('/currentCharacter', authCheck, (req,res,next)=>{
+    Character.findOne({_id: new ObjectId(req.userData.currentCharacter)})
+    .then((char)=>{return res.status(200).send(char)})
+})
+
+router.put('/selectCurrentCharacter', authCheck, (req,res,next)=>{
+    User.updateOne({ _id: req.userData.id },
+        { $set: {"currentCharacter" : req.charId}},
+        (err, user) => {
+            return res.status(200).send({message:"character selected"});
+        });
+})
 
 router.get('/findById/:id', (req, res, next) => {
     User.findOne({ _id: new ObjectId(req.params.id) })
@@ -224,29 +221,5 @@ function initProgress(language, rank) {
             
 }
 
-function initProgressFirst(language, rank) {
-    Scroll.findOne({
-        language: language,
-        number: rank
-    }, '_id')
-        .then(id => 
-            Sentence.find({ "scroll_id": id._id })
-            .then(documents => {
-                for (let document of documents) {
-                    const prog = new Progress({
-                        sentenceId: document._id,
-                        userId: user._id,
-                        learned: true,
-                        learningProgress: 5,
-                        consecutiveCorrectAnswers: 0,
-                        interval: 1,
-                        difficulty: 2.5,
-                        nextReviewDate: null
-                    });
-                    prog.save();
-                }
-            })
-        )
-            
-}
+
 module.exports = router;

@@ -46,6 +46,7 @@ import { DateAgoPipe } from './publications/pipes/date-ago.pipe';
 import { MoneyPipe } from './publications/pipes/money.pipe copy';
 import { TimeLeftPipe } from './publications/pipes/time-left.pipe';
 import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
+import { CharacterService } from './services/character.service';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
     DialogService,
     EventHandler,
     PublicationService,
+    CharacterService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
     {provide: 'SocialAuthServiceConfig',
     useValue: {

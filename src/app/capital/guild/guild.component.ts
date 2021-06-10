@@ -9,6 +9,8 @@ import { io } from 'socket.io-client';
 import swal from 'sweetalert';
 import { User } from 'src/app/models/user.model';
 import { OnlineUser } from 'src/app/models/online-user.model';
+import { CharacterService } from 'src/app/services/character.service';
+import { Character } from 'src/app/models/character.model';
 
 @Component({
   selector: 'app-guild',
@@ -25,21 +27,21 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
   hasTicket: boolean;
   isReadyForExam:boolean;
   isExam:boolean;
-  user: User;
+  char: Character;
   onlineUser: OnlineUser;
   onlineUsers;
   private sub: Subscription;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private characterService:CharacterService , private authService: AuthService) { }
 
   ngOnInit(): void {
     this.socket = io("http://localhost:3300/");
-    this.sub = this.authService.getUpdatedUser().subscribe((user: User) => {
-      if (user) {
-        this.user = user;
-        this.isReadyForExam = user.isReadyForExam;
-        this.onlineUser = { userName: user.name, socketId: null };
-        this.socket.emit("enter", user.name);
+    this.sub = this.characterService.getUpdatedCharacter().subscribe((char: Character) => {
+      if (char) {
+        this.char = char;
+        this.isReadyForExam = char.isReadyForExam;
+        this.onlineUser = { userName: char.name, socketId: null };
+        this.socket.emit("enter", char.name);
       }
     })
   }

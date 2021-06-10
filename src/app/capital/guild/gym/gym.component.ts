@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
+import { Character } from 'src/app/models/character.model';
 import { Style } from 'src/app/models/items/style.enum';
 import { OnlineUser } from 'src/app/models/online-user.model';
 import { User } from 'src/app/models/user.model';
@@ -14,7 +15,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
   @Input() socket: any;
   @Input() enemy: OnlineUser;
-  @Input() user: User;
+  @Input() user: Character;
   @Input() isExam:boolean;
 
   selectedButton;

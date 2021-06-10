@@ -17,7 +17,7 @@ router.post("/all", (req, res, next)=>{
 //overdue sentences
 router.get("/overdue", authCheck, (req, res, next) => {
     instantiateSentence(req.userData.language);
-    Progress.find({ userId: req.userData.id, nextReviewDate: { $lte: new Date() } })
+    Progress.find({ characterId: req.userData.id, nextReviewDate: { $lte: new Date() } })
         .then(documents => {
             findSentences(documents)
                 .then(results => {
@@ -38,7 +38,7 @@ router.get("/practice/:lessonId", authCheck, (req, res, next) => {
 //get all learned sentences for fight
 router.get("/fight", authCheck, (req, res, next) => {
     instantiateSentence(req.userData.language);
-    Progress.find({ userId: req.userData.id, learned: true })
+    Progress.find({ characterId: req.userData.id, learned: true })
         .then(documents => {
             findSentences(documents)
                 .then(results => {

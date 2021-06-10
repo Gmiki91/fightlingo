@@ -1,7 +1,7 @@
 export interface Progress{
     _id:string;
     sentenceId: string;
-    userId: string;
+    characterId: string;
     learned: boolean;
     learningProgress: number;
     consecutiveCorrectAnswers: number;

@@ -15,14 +15,6 @@
         </mat-form-field>
       </mat-card-content>
       <button mat-stroked-button color="accent" class="btn-block">Log in</button>
-      <div *ngIf="socialAuthService.authState | async as socialUser else elseblock">
-        <p>Hello, {{socialUser.name}}!</p>
-        <p>Your email: {{socialUser.email}}</p>
-        <button mat-raised-button (click)="logout()">Logout</button>
-      </div>
-      <ng-template #elseblock>
-        <button  (click)="loginWithGoogle()" mat-raised-button class="google-login-btn">Google</button>   
-      </ng-template>
     </form>
   </mat-card>
 </div>

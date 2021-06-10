@@ -9,7 +9,7 @@ import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
-import { SocialAuthService } from 'angularx-social-login';
+import { Character } from '../models/character.model';
 
 @Component({
   selector: 'app-header',
@@ -23,13 +23,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
   user: User;
+  char:Character;
 
   constructor(
     private quizService: QuizService,
     private auth: AuthService,
     private router: Router,
-    private eventHandler: EventHandler,
-    public socialAuthService: SocialAuthService) { }
+    private eventHandler: EventHandler) { }
 
   ngOnInit(): void {
     this.subscribeToOverdue();
@@ -45,7 +45,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.eventHandler.reset();
-    this.socialAuthService.signOut().then(()=>{});
     this.auth.logout();
     this.router.navigate(['/']);
   }
@@ -59,12 +58,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToUser(): void {
+    
     if (this.userSub)
       this.userSub.unsubscribe();
 
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
       if (user) {
-        this.quizService.getOverdueSentences().toPromise();
+        
+        this.auth.getCurrentCharacter().subscribe((char:Character)=>{
+          this.char=char;
+          if(char){
+            this.quizService.getOverdueSentences().toPromise();
+            
+          }
+        })
         this.user = user;
         this.loggedIn = true;
       } else {
@@ -92,7 +99,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private sortEvents(overdues: number) {
     this.eventHandler.reset();
     let count = overdues;
-    const events: Event[] = this.eventHandler.getEventsByLevel(this.user.level);
+    const events: Event[] = this.eventHandler.getEventsByLevel(this.char.level);
     while (count > 0) {
       let amount = count > 5 ? 5 : count;
       count -= this.addToRandomEvent(amount, events);
