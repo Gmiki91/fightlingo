@@ -6,6 +6,7 @@ import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';
 import { first } from 'rxjs/operators';
+import { CharacterService } from 'src/app/services/character.service';
 
 @Component({
   selector: 'app-classroom',
@@ -22,7 +23,7 @@ export class ClassroomComponent implements OnInit {
   publication: Publication;
   showQuestionTemplate: boolean;
   alreadyVoted: boolean;
-  constructor(private router: Router, private pubService: PublicationService, private authService: AuthService) {
+  constructor(private router: Router, private pubService: PublicationService, private authService: AuthService, private characterService:CharacterService) {
     this.publicationId = this.router.getCurrentNavigation().extras.state.id;
   }
 
@@ -76,8 +77,8 @@ export class ClassroomComponent implements OnInit {
       this.questions.splice(this.questions.indexOf(this.currentQuestion), 1);
       console.log("talált");
       if (this.currentQuestion.userId !== localStorage.getItem('userId')) {
-        this.authService.giveMoney(this.currentQuestion.userId, this.baseQuestionMoney * answer.length).toPromise();
-        this.authService.updateMoney(this.baseQuestionMoney * answer.length).toPromise();
+        this.characterService.giveMoney(this.currentQuestion.userId, this.baseQuestionMoney * answer.length).toPromise();
+        this.characterService.updateMoney(this.baseQuestionMoney * answer.length).toPromise();
       }
     } else {
       console.log("elbasztad");
@@ -113,9 +114,9 @@ export class ClassroomComponent implements OnInit {
   quit(event: boolean): void {
     if (event) {
       if (this.publication.userId != localStorage.getItem('userId')) {
-        this.authService.giveMoney(this.publication.userId, this.authorMoney).toPromise();
+        this.characterService.giveMoney(this.publication.userId, this.authorMoney).toPromise();
       }
-      this.authService.gaveLecture().toPromise();
+      this.characterService.gaveLecture().toPromise();
       this.pubService.hasBeenTaught(this.publication);
       this.pubService.deleteUnpopularQs(this.publication);
       this.router.navigate(['/guild']);

@@ -1,15 +1,17 @@
-<div *ngIf="loggedIn$ | async">
-    <div *ngIf="(characterList$ | async)?.length==0">
-        <p>No characters found</p>
-        <button (click)="onCreate()">Create</button>
-    </div>
+<div class="container">
+    <img src="assets/background.png">
 
-    <div *ngIf="(characterList$ | async)?.length>0" class="container">
-        <img src="assets/background.png">
-        <a class="library_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
-            routerLink="/library">Library</a>
-        <button mattButton class="city_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
-            routerLink="/city">City</button>
-        <button (click)="toTheCapital()">Capital</button>
+    <div *ngIf="loggedIn$ | async">
+        <div *ngIf="!hasCharacter">
+            <p>No characters found</p>
+            <button (click)="onCreate()">Create</button>
+        </div>
+        <div *ngIf="hasCharacter">
+            <a class="library_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
+                routerLink="/library">Library</a>
+            <button mattButton class="city_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
+                routerLink="/city">City</button>
+            <button (click)="toTheCapital()">Capital</button>
+        </div>
     </div>
 </div>

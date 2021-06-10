@@ -1,5 +1,6 @@
 const express = require('express');
 const ObjectId = require('mongoose').Types.ObjectId;
+const jwt = require("jsonwebtoken");
 const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 const Character = require("../models/character");
@@ -7,7 +8,8 @@ const Scroll = require("../models/scroll");
 const Progress = require("../models/progress");
 let Sentence;
 let character;
-router.post('/create',authCheck, (req, res, next) => {
+
+router.post('/create', authCheck, (req, res, next) => {
     let language = 'russian'; // req.body.language;
     switch (language) {
         case 'russian':
@@ -22,7 +24,7 @@ router.post('/create',authCheck, (req, res, next) => {
     }
 
     character = new Character({
-        userId:req.userData.id,
+        userId: req.userData.id,
         name: "jani",
         pic: "szorny1",
         level: 1,
@@ -30,48 +32,120 @@ router.post('/create',authCheck, (req, res, next) => {
         rank: 1,
         strength: 1,
         hitpoint: 1,
-        money:3,
-        hasShipTicket:false,
+        money: 3,
+        hasShipTicket: false,
         lastLoggedIn: new Date(),
         scrollFinished: new Date(),
         lastLecture: new Date(new Date().getTime() - 1000 * 86400),
         confirmed: false,
         isReadyForExam: false
-        /*
-        name: req.body.name,
-        pic: req.body.pic,
-        level: req.body.level,
-        language: req.body.language,
-        rank: req.body.rank,
-        strength: req.body.strength,
-        hitpoint: req.body.hitpoint,
-        money: req.body.money,
-        hasShipTicket: req.body.hasShipTicket,
-        lastLoggedIn: req.body.lastLoggedIn,
-        scrollFinished: req.body.scrollFinished,
-        lastLecture: new Date(new Date().getTime() - 1000 * 86400),
-        confirmed: false,
-        isReadyForExam: false
-        */
+    
     });
     character.save()
         .then(initProgressFirst("russian", 0))//(req.body.language, req.body.rank))
-        .then(result => {
-            res.status(201).json({
-                message: "character created",
-                result: result
+        .then(() => {
+            const token = getToken(character);
+            
+            return res.json({
+                char: character,
+                token: token
             });
         })
         .catch(err => {
-            res.status(500).json({ error: err });
+           return res.status(500).json({ error: err });
         })
 });
 
 router.get('/findByUserId/:id', (req, res, next) => {
     Character.find({ userId: new ObjectId(req.params.id) })
-    .then((result) => {
-        return res.json(result);
-    })
+        .then((result) => {
+            return res.json(result);
+        })
+})
+
+router.get('/currentCharacter', authCheck, (req, res, next) => {
+    Character.findOne({ _id: new ObjectId(req.userData.currentCharacter) })
+        .then((char) => {
+            const token = getToken(char);
+            return res.status(200).send({char:char, token:token}) })
+})
+
+router.get('/finishedAt', authCheck, (req, res, next) => {
+    Character.findOne({ _id: req.userData.currentCharacter }, 'scrollFinished').then((result) => { return res.status(200).send(result.scrollFinished) });
+})
+
+router.patch('/rank', authCheck, (req, res, next) => {
+    initProgress(req.userData.language, req.userData.rank + 1);
+    Character.findOneAndUpdate({ _id: req.userData.currentCharacter },
+        {
+            $set: {
+                "rank": req.userData.rank + 1,
+                "scrollFinished": new Date()
+            }
+        },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({ message: "rank updated" });
+        });
+})
+
+router.patch('/level', authCheck, (req, res, next) => {
+    initProgress(req.userData.language, req.userData.rank + 1);
+    Character.updateOne({ _id: req.userData.currentCharacter },
+        {
+            $set: {
+                "level": req.userData.level + 1,
+                "rank": req.userData.rank + 1,
+                "isReadyForExam": false
+            }
+        },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({ message: "level updated" });
+        });
+})
+
+router.patch('/confirm', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.currentCharacter },
+        { $set: { "confirmed": true } },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({ message: "user confirmed" });
+        });
+})
+
+router.patch('/readyForExam', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.currentCharacter },
+        { $set: { "isReadyForExam": true } },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({ message: "user stands before exam" });
+        });
+})
+
+router.patch('/gaveLecture', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.currentCharacter },
+        { $set: { "lastLecture": new Date() } },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send({ message: "user gave lecture" });
+        });
+})
+
+router.patch('/updateMoney', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.currentCharacter },
+        { $inc: { money: req.body.amount } })
+        .then(() => {
+            return res.status(200).send({ message: "money updated" });
+        });
+})
+
+router.patch('/giveMoney', (req, res, next) => {
+    Character.updateOne({ _id: req.body.currentCharacter },
+        { $inc: { money: req.body.amount } })
+        .then(() => {
+            return res.status(200).send({ message: "money sent" });
+        });
 })
 
 function initProgressFirst(language, rank) {
@@ -97,6 +171,23 @@ function initProgressFirst(language, rank) {
                     }
                 })
         )
+}
+
+function getToken(character){
+   return jwt.sign(
+        {
+            userId: character.userId,
+            characterId: character._id,
+            level: character.level,
+            rank: character.rank,
+            money: character.money,
+            language: character.language,
+            name: character.name
+        },
+        process.env.JWT_KEY,
+        { expiresIn: '1h' }
+    );
+
 }
 
 module.exports = router;

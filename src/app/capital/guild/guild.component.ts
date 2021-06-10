@@ -36,7 +36,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.socket = io("http://localhost:3300/");
-    this.sub = this.characterService.getUpdatedCharacter().subscribe((char: Character) => {
+    this.sub = this.characterService.character$.subscribe((char: Character) => {
       if (char) {
         this.char = char;
         this.isReadyForExam = char.isReadyForExam;
@@ -131,7 +131,7 @@ export class GuildComponent implements OnInit, OnDestroy, AfterViewInit {
     if (youWon){
       swal("congrats");
       if(this.isReadyForExam)
-        this.authService.levelUp().toPromise();
+        this.characterService.levelUp().toPromise();
     }
     else
       swal("noob")

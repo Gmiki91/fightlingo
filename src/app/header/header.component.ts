@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
 import { Character } from '../models/character.model';
+import { CharacterService } from '../services/character.service';
 
 @Component({
   selector: 'app-header',
@@ -23,9 +24,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
   user: User;
-  char:Character;
+  char: Character;
 
   constructor(
+    private charService: CharacterService,
     private quizService: QuizService,
     private auth: AuthService,
     private router: Router,
@@ -58,22 +60,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToUser(): void {
-    
+
     if (this.userSub)
       this.userSub.unsubscribe();
 
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
       if (user) {
-        
-        this.auth.getCurrentCharacter().subscribe((char:Character)=>{
-          this.char=char;
-          if(char){
-            this.quizService.getOverdueSentences().toPromise();
-            
-          }
-        })
         this.user = user;
         this.loggedIn = true;
+        if (user.currentCharacter) {
+          this.charService.character$.subscribe((char: Character) => {
+            this.char = char;
+            if (char) {
+              this.quizService.getOverdueSentences().toPromise();
+            }
+          })
+        }
       } else {
         this.loggedIn = false;
       }

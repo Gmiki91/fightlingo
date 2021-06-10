@@ -67,12 +67,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const nextScroll = scroll;
         const isReadyForExam = nextScroll.level > this.character.level;
         if (!isReadyForExam) {
-          this.auth.updateRank().toPromise().then(() => {
+          this.characterService.updateRank().toPromise().then(() => {
             swal(`You've finished this scroll! Well done!`);
             this.reasonForRest();
           })
         } else {
-          this.auth.readyForExam().toPromise().then(() => {
+          this.characterService.readyForExam().toPromise().then(() => {
             swal(`You're ready for your next exam.`);
           });
         }
@@ -112,7 +112,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   private  readyToWork() {
-    this.auth.scrollFinishedAt().toPromise().then((date)=>{
+    this.characterService.scrollFinishedAt().toPromise().then((date)=>{
       const finishedAt = new Date(date);
       const difference = 8 - (new Date().getTime() - finishedAt.getTime()) / 1000 / 60 / 60;
       if (difference < 0)
@@ -137,7 +137,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   private reasonForRest() {
-    this.auth.scrollFinishedAt().toPromise().then((date)=>{
+    this.characterService.scrollFinishedAt().toPromise().then((date)=>{
       const finishedAt = new Date(date);
       switch (finishedAt.getSeconds() % 4) {
         case 0:

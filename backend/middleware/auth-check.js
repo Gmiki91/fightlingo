@@ -6,13 +6,12 @@ module.exports = function (req, res, next) {
         const decodedToken = jwt.verify(token, process.env.JWT_KEY);
         req.userData = {
             id: decodedToken.userId,
-            currentCharacter : decodedToken.currentCharacter
-            /*
-            level: decodedToken.userLevel,
-            rank:decodedToken.userRank,
-            money:decodedToken.userMoney,
-            language:decodedToken.userLanguage,
-            name:decodedToken.userName,*/
+            currentCharacter : decodedToken.characterId,
+            level: decodedToken.level,
+            rank:decodedToken.rank,
+            money:decodedToken.money,
+            language:decodedToken.language,
+            name:decodedToken.name,
         };
         next();
     } catch (error) {

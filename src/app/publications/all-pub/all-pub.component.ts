@@ -41,7 +41,7 @@ export class AllPubComponent implements OnInit {
     this.pubService.publications$.subscribe(result => this.dataSource.data = result);
     this.pubService.deleteOverduePublications();
 
-    this.readyToTeach$ = this.characterService.getUpdatedCharacter().pipe(map(char => {
+    this.readyToTeach$ = this.characterService.character$.pipe(map(char => {
       this.minutesUntilReady = (new Date().getTime() - new Date(char.lastLecture).getTime()) / 1000 / 60;
       this.minutesUntilReady = Math.round(60 - this.minutesUntilReady);
       this.teachButtonOn = this.minutesUntilReady <= 0;

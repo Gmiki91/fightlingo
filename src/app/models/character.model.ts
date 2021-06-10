@@ -1,6 +1,8 @@
 import { Language } from '../language.enum';
 
 export interface Character{
+    _id?:string;
+    userId:string;
     name:string;
     pic:string;
     language:Language;

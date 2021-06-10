@@ -27,7 +27,7 @@ export class IntroComponent implements OnInit, OnDestroy{
   
 
   ngOnInit(): void {
-   this.sub= this.characterService.getUpdatedCharacter().subscribe((char: Character) => {
+   this.sub= this.characterService.character$.subscribe((char: Character) => {
      this.checkProficiency(char.language);
     });
   }
@@ -80,8 +80,8 @@ export class IntroComponent implements OnInit, OnDestroy{
   fightFinished() {
     this.showGym = false;
     swal("congrats");
-    this.authService.levelUp().toPromise();
-    this.authService.confirmUser().toPromise().then(()=>{
+    this.characterService.levelUp().toPromise();
+    this.characterService.confirmCharacter().toPromise().then(()=>{
       this.router.navigate(['/']);
     });
   }

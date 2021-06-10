@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Progress = require("../models/progress");
 const Scroll = require("../models/scroll");
-const Character = require("../models/character");
 const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 let Sentence;
@@ -30,8 +29,7 @@ router.post('/signup', (req, res, next) => {
             user = new User({
                 email: req.body.email,
                 password: hash,
-                characterList:[],
-                currentCharacter:null,
+                currentCharacter: null,
             });
             user.save()
                 .then(result => {
@@ -50,7 +48,6 @@ router.post('/login', (req, res, next) => {
     let userData;
     User.findOne({ email: req.body.name })
         .then(user => {
-           
             if (!user) {
                 return res.status(404).json({
                     message: "User not found"
@@ -60,26 +57,21 @@ router.post('/login', (req, res, next) => {
             return bcrypt.compare(req.body.password, user.password);
         })
         .then(result => {
-          
             if (!result) {
                 return res.status(401).json({
                     message: "Auth failed"
                 });
             }
+            
             const token = jwt.sign(
-                {
-                    userId: userData._id,
-                },
+                {userId: userData._id,
+                    characterId: userData.currentCharacter},
                 process.env.JWT_KEY,
                 { expiresIn: '1h' }
+                
             );
             res.setHeader('Authorization', 'Bearer ' + token);
-            res.status(200).json({
-                token: token,
-                userId: userData._id,
-                confirmed:userData.confirmed,
-                user: userData
-            });
+            res.status(200).json({user: userData, token:token});
         })
         .catch(err => {
             return res.status(401).json({
@@ -88,138 +80,22 @@ router.post('/login', (req, res, next) => {
         })
 })
 
-router.get('/currentCharacter', authCheck, (req,res,next)=>{
-    Character.findOne({_id: new ObjectId(req.userData.currentCharacter)})
-    .then((char)=>{return res.status(200).send(char)})
-})
 
-router.put('/selectCurrentCharacter', authCheck, (req,res,next)=>{
+
+router.patch('/selectCurrentCharacter', authCheck, (req, res, next) => {
     User.updateOne({ _id: req.userData.id },
-        { $set: {"currentCharacter" : req.charId}},
+        { $set: { "currentCharacter": req.body.charId } },
         (err, user) => {
-            return res.status(200).send({message:"character selected"});
+            return res.status(200).send({ message: "character selected" });
         });
 })
 
 router.get('/findById/:id', (req, res, next) => {
     User.findOne({ _id: new ObjectId(req.params.id) })
         .then((user) => {
-            const token = jwt.sign(
-                {
-                    userName: user.name,
-                    userId: user._id,
-                    userLevel:user.level,
-                    userRank:user.rank,
-                    userMoney:user.money,
-                    userLanguage:user.language,
-                },
-                process.env.JWT_KEY,
-                { expiresIn: '1h' }
-            );
-            res.setHeader('Authorization', 'Bearer ' + token);
-            return res.status(200).send({user:user, token:token})
+            return res.status(200).send({ user: user })
         })
 })
-
-router.get('/finishedAt',authCheck, (req, res, next) => {
-    User.findOne({_id:req.userData.id},'scrollFinished').then((result) => {return res.status(200).send(result.scrollFinished)});
-})
-
-router.patch('/rank', authCheck, (req, res, next) => {
-    initProgress(req.userData.language, req.userData.rank + 1);
-    User.findOneAndUpdate({ _id: req.userData.id },
-        { $set: {
-             "rank": req.userData.rank + 1,
-             "scrollFinished": new Date()
-             }},
-        { new: true },
-        (err, user) => {
-            return res.status(200).send({message:"rank updated"});
-        });
-})
-
-router.patch('/level', authCheck, (req, res, next) => {
-    initProgress(req.userData.language, req.userData.rank + 1);
-    User.updateOne({ _id: req.userData.id },
-        { $set: {
-             "level": req.userData.level + 1,
-             "rank": req.userData.rank + 1,
-             "isReadyForExam" : false
-            }},
-        { new: true },
-        (err, user) => {
-            return res.status(200).send({message:"level updated"});
-        });
-})
-
-router.patch('/confirm', authCheck, (req, res, next) => {
-    User.updateOne({ _id: req.userData.id },
-        { $set: { "confirmed": true} },
-        { new: true },
-        (err, user) => {
-            return res.status(200).send({message:"user confirmed"});
-        });
-})
-
-router.patch('/readyForExam', authCheck, (req, res, next) => {
-    User.updateOne({ _id: req.userData.id },
-        { $set: { "isReadyForExam": true} },
-        { new: true },
-        (err, user) => {
-            return res.status(200).send({message:"user stands before exam"});
-        });
-})
-
-router.patch('/gaveLecture', authCheck, (req, res, next) =>{
-    User.updateOne({ _id: req.userData.id },
-        { $set: { "lastLecture": new Date()} },
-        { new: true },
-        (err, user) => {
-            return res.status(200).send({message:"user gave lecture"});
-        });
-})
-
-router.patch('/updateMoney', authCheck, (req, res, next) =>{
-    User.updateOne({ _id: req.userData.id },
-        {   $inc: { money: req.body.amount }})
-        .then(() => {
-            return res.status(200).send({message:"money updated"});
-        });
-})
-
-router.patch('/giveMoney', (req, res, next) =>{
-    User.updateOne({ _id: req.body.id },
-        {   $inc: { money: req.body.amount }})
-        .then(() => {
-            return res.status(200).send({message:"money sent"});
-        });
-})
-
-function initProgress(language, rank) {
-    Scroll.findOne({
-        language: language,
-        number: rank
-    }, '_id')
-        .then(id => 
-            Sentence.find({ "scroll_id": id._id })
-            .then(documents => {
-                for (let document of documents) {
-                    const prog = new Progress({
-                        sentenceId: document._id,
-                        userId: user._id,
-                        learned: false,
-                        learningProgress: 4,
-                        consecutiveCorrectAnswers: 0,
-                        interval: 1,
-                        difficulty: 2.5,
-                        nextReviewDate: null
-                    });
-                    prog.save();
-                }
-            })
-        )
-            
-}
 
 
 module.exports = router;
