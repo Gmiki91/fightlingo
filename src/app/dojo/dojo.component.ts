@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
@@ -10,26 +10,29 @@ import { CharacterService } from '../services/character.service';
   templateUrl: './dojo.component.html',
   styleUrls: ['./dojo.component.css']
 })
-export class DojoComponent implements OnInit {
+export class DojoComponent implements OnInit, OnDestroy {
 
   loggedIn$: Observable<boolean>;
   hasCharacter: boolean;
+  sub: Subscription = Subscription.EMPTY;
 
   constructor(private auth: AuthService, private charService: CharacterService, private router: Router) { }
 
+
   ngOnInit(): void {
+    this.charService.getCurrentCharacter();
     this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
       if (user) {
         this.hasCharacter = user.currentCharacter != null;
-        if(this.hasCharacter){
-          this.charService.character$.subscribe(char=>{
-            if(char.confirmed){
-              console.log("confirmed");
-              localStorage.setItem("confirmed", "true");
-            }else{
-              console.log("not confirmed");
-              localStorage.setItem("confirmed", "false");
-              this.router.navigate(["/intro"])
+        if (this.hasCharacter) {
+          this.sub = this.charService.character$.subscribe(char => {
+            if (char) {
+              if (char.confirmed) {
+                localStorage.setItem("confirmed", "true");
+              } else {
+                localStorage.setItem("confirmed", "false");
+                this.router.navigate(["/intro"])
+              }
             }
           })
         }
@@ -39,9 +42,13 @@ export class DojoComponent implements OnInit {
   }
 
   onCreate(): void {
-    this.charService.createCharacter().subscribe(result=>{
+    this.charService.createCharacter().subscribe(result => {
       this.auth.selectCurrentCharacter(result);
     })
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   toTheCapital(): void {

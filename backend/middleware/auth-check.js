@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
         const decodedToken = jwt.verify(token, process.env.JWT_KEY);
         req.userData = {
             id: decodedToken.userId,
-            currentCharacter : decodedToken.characterId,
+            characterId : decodedToken.characterId,
             level: decodedToken.level,
             rank:decodedToken.rank,
             money:decodedToken.money,

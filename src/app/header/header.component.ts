@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
+  charSub:Subscription =Subscription.EMPTY;
   user: User;
   char: Character;
 
@@ -39,10 +40,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.overdueSub)
-      this.overdueSub.unsubscribe();
-    if (this.userSub)
-      this.userSub.unsubscribe();
+    this.overdueSub?.unsubscribe();
+    this.charSub?.unsubscribe();
+    this.userSub?.unsubscribe();
   }
 
   logout(): void {
@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user = user;
         this.loggedIn = true;
         if (user.currentCharacter) {
-          this.charService.character$.subscribe((char: Character) => {
+         this.charSub= this.charService.character$.subscribe((char: Character) => {
             this.char = char;
             if (char) {
               this.quizService.getOverdueSentences().toPromise();

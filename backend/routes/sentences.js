@@ -17,7 +17,7 @@ router.post("/all", (req, res, next)=>{
 //overdue sentences
 router.get("/overdue", authCheck, (req, res, next) => {
     instantiateSentence(req.userData.language);
-    Progress.find({ characterId: req.userData.id, nextReviewDate: { $lte: new Date() } })
+    Progress.find({ characterId: req.userData.characterId, nextReviewDate: { $lte: new Date() } })
         .then(documents => {
             findSentences(documents)
                 .then(results => {
@@ -29,7 +29,7 @@ router.get("/overdue", authCheck, (req, res, next) => {
 //practicable sentences
 router.get("/practice/:lessonId", authCheck, (req, res, next) => {
     Scroll.findOne({ _id: req.params.lessonId })
-        .then(lesson => findProgress(lesson, true, req.userData.id)
+        .then(lesson => findProgress(lesson, true, req.userData.characterId)
             .then(result => {
                 res.status(200).send(result);
             }))
@@ -38,7 +38,7 @@ router.get("/practice/:lessonId", authCheck, (req, res, next) => {
 //get all learned sentences for fight
 router.get("/fight", authCheck, (req, res, next) => {
     instantiateSentence(req.userData.language);
-    Progress.find({ characterId: req.userData.id, learned: true })
+    Progress.find({ characterId: req.userData.characterId, learned: true })
         .then(documents => {
             findSentences(documents)
                 .then(results => {
@@ -50,7 +50,7 @@ router.get("/fight", authCheck, (req, res, next) => {
 //learnable sentences
 router.get("/learn", authCheck, (req, res, next) => {
     Scroll.findOne({ number: req.userData.rank, language: req.userData.language })
-        .then(scroll => findProgress(scroll, false, req.userData.id)
+        .then(scroll => findProgress(scroll, false, req.userData.characterId)
             .then(result => {
                 res.status(200).send(result);
             }))
@@ -70,7 +70,7 @@ router.patch("/", (req, res, next) => {
     });
 });
 
-function findProgress(lesson, learned, userId) {
+function findProgress(lesson, learned, charId) {
     return new Promise(function (resolve, reject) {
         let language = lesson.language;
         instantiateSentence(language);
@@ -80,7 +80,7 @@ function findProgress(lesson, learned, userId) {
                 sentences.forEach(sentence => {
                     sentenceIds.push(new ObjectId(sentence._id));
                 })
-                Progress.find({ userId: new ObjectId(userId), learned: learned, sentenceId: { $in: sentenceIds } })
+                Progress.find({ characterId: new ObjectId(charId), learned: learned, sentenceId: { $in: sentenceIds } })
                     .then(progressData => {
                         findSentences(progressData)
                             .then(sentences => {

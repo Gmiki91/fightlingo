@@ -11,6 +11,7 @@ export class CharacterService {
 
     private updatedCharacter = new BehaviorSubject<Character>(null);
     public character$: Observable<Character> = this.updatedCharacter.asObservable();
+    public currentCharConfirmed:boolean;
     constructor(private http: HttpClient) { }
 
     getCharactersByUserId(userId: string) {
@@ -27,17 +28,18 @@ export class CharacterService {
 
     getCurrentCharacter() {
         this.http.get<{ char: Character, token: string }>(BACKEND_URL + 'currentCharacter').subscribe(result => {
-            this.updatedCharacter.next(result.char);
             localStorage.setItem("token", result.token);
+            this.updatedCharacter.next(result.char);
+            this.currentCharConfirmed=result.char.confirmed;
             localStorage.setItem("userId", result.char.userId);
         })
     }
 
     confirmCharacter() {
         localStorage.setItem("confirmed", 'true');
-        return this.http.patch(BACKEND_URL + 'confirm', null)
-            .pipe(map(() => {
-                this.getCurrentCharacter();
+        return this.http.patch<Character>(BACKEND_URL + 'confirm', null)
+            .pipe(map((char) => {
+                this.updatedCharacter.next(char);
             }));
     }
 

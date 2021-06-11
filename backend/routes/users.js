@@ -3,8 +3,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const Progress = require("../models/progress");
-const Scroll = require("../models/scroll");
 const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 let Sentence;
@@ -62,7 +60,6 @@ router.post('/login', (req, res, next) => {
                     message: "Auth failed"
                 });
             }
-            
             const token = jwt.sign(
                 {userId: userData._id,
                     characterId: userData.currentCharacter},

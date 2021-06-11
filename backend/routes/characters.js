@@ -64,19 +64,19 @@ router.get('/findByUserId/:id', (req, res, next) => {
 })
 
 router.get('/currentCharacter', authCheck, (req, res, next) => {
-    Character.findOne({ _id: new ObjectId(req.userData.currentCharacter) })
+    Character.findOne({ _id: new ObjectId(req.userData.characterId) })
         .then((char) => {
             const token = getToken(char);
             return res.status(200).send({char:char, token:token}) })
 })
 
 router.get('/finishedAt', authCheck, (req, res, next) => {
-    Character.findOne({ _id: req.userData.currentCharacter }, 'scrollFinished').then((result) => { return res.status(200).send(result.scrollFinished) });
+    Character.findOne({ _id: req.userData.characterId }, 'scrollFinished').then((result) => { return res.status(200).send(result.scrollFinished) });
 })
 
 router.patch('/rank', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
-    Character.findOneAndUpdate({ _id: req.userData.currentCharacter },
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
                 "rank": req.userData.rank + 1,
@@ -85,13 +85,13 @@ router.patch('/rank', authCheck, (req, res, next) => {
         },
         { new: true },
         (err, user) => {
-            return res.status(200).send({ message: "rank updated" });
+            return res.status(200).send(user);
         });
 })
 
 router.patch('/level', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
-    Character.updateOne({ _id: req.userData.currentCharacter },
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
                 "level": req.userData.level + 1,
@@ -101,39 +101,39 @@ router.patch('/level', authCheck, (req, res, next) => {
         },
         { new: true },
         (err, user) => {
-            return res.status(200).send({ message: "level updated" });
+            return res.status(200).send(user);
         });
 })
 
 router.patch('/confirm', authCheck, (req, res, next) => {
-    Character.updateOne({ _id: req.userData.currentCharacter },
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
         { $set: { "confirmed": true } },
         { new: true },
         (err, user) => {
-            return res.status(200).send({ message: "user confirmed" });
+            return res.status(200).send(user);
         });
 })
 
 router.patch('/readyForExam', authCheck, (req, res, next) => {
-    Character.updateOne({ _id: req.userData.currentCharacter },
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
         { $set: { "isReadyForExam": true } },
         { new: true },
         (err, user) => {
-            return res.status(200).send({ message: "user stands before exam" });
+            return res.status(200).send( user );
         });
 })
 
 router.patch('/gaveLecture', authCheck, (req, res, next) => {
-    Character.updateOne({ _id: req.userData.currentCharacter },
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
         { $set: { "lastLecture": new Date() } },
         { new: true },
         (err, user) => {
-            return res.status(200).send({ message: "user gave lecture" });
+            return res.status(200).send(user);
         });
 })
 
 router.patch('/updateMoney', authCheck, (req, res, next) => {
-    Character.updateOne({ _id: req.userData.currentCharacter },
+    Character.updateOne({ _id: req.userData.characterId },
         { $inc: { money: req.body.amount } })
         .then(() => {
             return res.status(200).send({ message: "money updated" });
@@ -147,6 +147,32 @@ router.patch('/giveMoney', (req, res, next) => {
             return res.status(200).send({ message: "money sent" });
         });
 })
+
+function initProgress(language, rank) {
+    Scroll.findOne({
+        language: language,
+        number: rank
+    }, '_id')
+        .then(id => 
+            Sentence.find({ "scroll_id": id._id })
+            .then(documents => {
+                for (let document of documents) {
+                    const prog = new Progress({
+                        sentenceId: document._id,
+                        characterId: character._id,
+                        learned: false,
+                        learningProgress: 4,
+                        consecutiveCorrectAnswers: 0,
+                        interval: 1,
+                        difficulty: 2.5,
+                        nextReviewDate: null
+                    });
+                    prog.save();
+                }
+            })
+        )
+            
+}
 
 function initProgressFirst(language, rank) {
     Scroll.findOne({

@@ -28,7 +28,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   constructor(private auth: AuthService, private characterService: CharacterService, private scrollService: ScrollService, private router: Router) { }
 
   ngOnInit(): void {
-    this.sub = this.auth.getUpdatedUser().subscribe((user: User) => this.user = user);
+    //this.sub = this.auth.getUpdatedUser().subscribe((user: User) => this.user = user);
     this.sub = this.characterService.character$.subscribe((char:Character)=>this.character=char)
   }
 

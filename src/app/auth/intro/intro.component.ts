@@ -78,6 +78,7 @@ export class IntroComponent implements OnInit, OnDestroy{
   }
 
   fightFinished() {
+    this.sub.unsubscribe();
     this.showGym = false;
     swal("congrats");
     this.characterService.levelUp().toPromise();

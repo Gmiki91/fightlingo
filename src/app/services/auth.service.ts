@@ -13,6 +13,7 @@ const BACKEND_URL = environment.apiUrl + '/users/';
 @Injectable()
 export class AuthService {
 
+   
     private updatedUser = new BehaviorSubject<User>(null);
 
     constructor(private http: HttpClient, private charService:CharacterService) { }
@@ -31,6 +32,7 @@ export class AuthService {
         return this.http.post<{ token: string, user: User}>(BACKEND_URL+'login', authData)
             .pipe(map(response => {
              localStorage.setItem("token", response.token);
+             localStorage.setItem("loggedIn", "true");
              if(response.user.currentCharacter){
                 this.charService.getCurrentCharacter();
              }
@@ -61,6 +63,8 @@ export class AuthService {
         localStorage.removeItem("userId");
         localStorage.removeItem("confirmed");
         localStorage.removeItem("hasTicket");
+        localStorage.removeItem("loggedIn");
+   
         this.updatedUser.next(null);
     }
 
