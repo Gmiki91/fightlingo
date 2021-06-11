@@ -10,7 +10,7 @@ const Question = require("../models/question");
 
 router.post('/', authCheck, (req, res, next) => {
     const pub = new Publication({
-        userId: req.userData.id,
+        characterId: req.userData.characterId,
         dateOfPublish: new Date(),
         dateOfLastLecture: null,
         reviewed: false,
@@ -33,7 +33,7 @@ router.post('/addQuestion', authCheck, (req, res, next) => {
         popularity: req.body.popularity,
         question: req.body.question,
         answers: req.body.answers,
-        userId: req.userData.id,
+        characterId: req.userData.characterId,
         votedBy: []
     });
     question.save();
@@ -71,7 +71,7 @@ router.post('/addAnswer', (req, res, next) => {
 // Own Publications
 
 router.get('/numberOfOwnPublications', authCheck, (req, res, next) => {
-    Publication.find({ userId: req.userData.id, dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } })
+    Publication.find({ characterId: req.userData.characterId, dateOfPublish: { $gte: new Date().getTime() - 1000 * 86400 * 30 } })
         .then(result => res.send(result));
 });
 
@@ -107,15 +107,6 @@ router.get('/:id', (req, res, next) => {
     Publication.findOne({ _id: req.params.id }).then(result => res.send(result));
 })
 //Updates
-
-router.patch('/reviewed', (req, res, next) => {
-    Publication.updateOne({ _id: req.body_id },
-        { $set: { "reviewed": true } },
-        { new: true },
-        (err, pub) => {
-            return res.status(200).send({ message: "publication reviewed" });
-        });
-});
 
 router.patch('/hasBeenTaught', (req, res, next) => {
     Publication.updateOne({ _id: req.body._id },

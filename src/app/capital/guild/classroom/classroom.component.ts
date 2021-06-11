@@ -87,7 +87,7 @@ export class ClassroomComponent implements OnInit {
   }
 
   onEndLecture(): void {
-    if(this.publication.userId != localStorage.getItem('userId')){
+    if(this.publication.characterId != localStorage.getItem('userId')){
     swal("would you like to add one question?", {
       buttons: {
         yes: {
@@ -113,8 +113,8 @@ export class ClassroomComponent implements OnInit {
 
   quit(event: boolean): void {
     if (event) {
-      if (this.publication.userId != localStorage.getItem('userId')) {
-        this.characterService.giveMoney(this.publication.userId, this.authorMoney).toPromise();
+      if (this.publication.characterId != localStorage.getItem('userId')) {
+        this.characterService.giveMoney(this.publication.characterId, this.authorMoney).toPromise();
       }
       this.characterService.gaveLecture().toPromise();
       this.pubService.hasBeenTaught(this.publication);

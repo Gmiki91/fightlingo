@@ -2,7 +2,7 @@ import { Language } from "../language.enum";
 
 export interface Publication{
     _id?:string;
-    userId?:string,
+    characterId?:string,
     dateOfPublish?:Date,
     dateOfLastLecture?:Date,
     reviewed?:boolean,

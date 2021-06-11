@@ -67,7 +67,7 @@ export class AllPubComponent implements OnInit {
 
   onRowClicked(pub: Publication) {
     const button = pub.reviewed ? 'Teach' : 'Add question';
-    const ownPub = pub.userId == localStorage.getItem('userId') ? true : false;
+    const ownPub = pub.characterId == localStorage.getItem('userId') ? true : false;
     Swal.fire({
       title: pub.title,
       text: pub.text,
