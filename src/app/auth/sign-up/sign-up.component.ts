@@ -33,9 +33,9 @@ export class SignUpComponent implements OnInit {
     const signupform: SignupForm = {
       email:form.value.email, 
       password:form.value.password,
-      name: form.value.fightername, 
+    /*  name: form.value.fightername, 
       avatar: this.imagePath,
-      language: this.language
+      language: this.language*/
     }
     this.authService.createUser(signupform).toPromise().then(()=>{
       this.router.navigate(['/']);
