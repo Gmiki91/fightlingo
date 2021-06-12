@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 import swal from 'sweetalert';
-import { AuthService } from "../services/auth.service";
 import { CharacterService } from "../services/character.service";
 
 @Injectable({
@@ -9,9 +9,9 @@ import { CharacterService } from "../services/character.service";
 })
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router, private authService: AuthService, private charachterService: CharacterService) { };
+    constructor(private router: Router, private charachterService: CharacterService) { };
     canActivate(): boolean {
-        if (localStorage.getItem("token")) {
+        if (localStorage.getItem(environment.JWT_TOKEN)) {
             if (this.charachterService.currentCharConfirmed)
                 return true;
             else if (!this.charachterService.currentCharConfirmed) {

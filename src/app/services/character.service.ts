@@ -21,7 +21,6 @@ export class CharacterService {
 
     createCharacter() {
         return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', null).pipe(map(result => {
-            localStorage.setItem("token", result.token);
             this.getCurrentCharacter();
             return result.char._id;
         }))
@@ -29,7 +28,7 @@ export class CharacterService {
 
     getCurrentCharacter() {
         this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter').subscribe(result => {
-            localStorage.setItem("token", result.token);
+            localStorage.setItem(environment.JWT_TOKEN, result.token);
             this.updatedCharacter.next(result.char);
             this.currentCharConfirmed=result.char.confirmed;
         })

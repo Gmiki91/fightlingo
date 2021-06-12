@@ -29,7 +29,7 @@ export class AuthService {
         const authData: AuthData = { name, password };
         return this.http.post<{ token: string, user: User }>(this.BACKEND_URL + 'login', authData)
             .pipe(map(response => {
-                localStorage.setItem("token", response.token);
+                localStorage.setItem(environment.JWT_TOKEN, response.token);
             }));
     }
 
@@ -51,7 +51,7 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem("token");
+        localStorage.removeItem(environment.JWT_TOKEN);
         this.updatedUser.next(null);
     }
 
