@@ -1,9 +1,5 @@
-import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
-import { QuizService } from './services/quiz.service';
 
 
 @Component({
@@ -13,10 +9,10 @@ import { QuizService } from './services/quiz.service';
 })
 export class AppComponent implements OnInit {
   title = 'fightlingo';
-  constructor(private auth: AuthService, private quizService: QuizService) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.auth.refreshUser();
+    this.auth.refreshUser().toPromise();
   }
 
 }

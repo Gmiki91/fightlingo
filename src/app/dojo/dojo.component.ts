@@ -20,7 +20,6 @@ export class DojoComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    
     this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
       if (user) {
         this.hasCharacter = user.currentCharacter != null;

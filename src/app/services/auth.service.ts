@@ -42,7 +42,7 @@ export class AuthService {
 
     selectCurrentCharacter(charId: string) {
         this.http.patch(this.BACKEND_URL + 'selectCurrentCharacter', { charId: charId }).subscribe(() => {
-            this.refreshUser();
+            this.refreshUser().toPromise();
         });
     }
 
