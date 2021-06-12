@@ -87,8 +87,8 @@ router.patch('/selectCurrentCharacter', authCheck, (req, res, next) => {
         });
 })
 
-router.get('/findById/:id', (req, res, next) => {
-    User.findOne({ _id: new ObjectId(req.params.id) })
+router.get('/refreshUser', authCheck, (req, res, next) => {
+    User.findOne({ _id: new ObjectId(req.userData.id) })
         .then((user) => {
             return res.status(200).send({ user: user })
         })

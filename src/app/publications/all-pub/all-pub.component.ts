@@ -24,7 +24,7 @@ export class AllPubComponent implements OnInit {
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
-
+  charId:string;
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Publication>();
   @ViewChild(MatSort, { static: false }) set contentSort(sort: MatSort) {
@@ -42,6 +42,7 @@ export class AllPubComponent implements OnInit {
     this.pubService.deleteOverduePublications();
 
     this.readyToTeach$ = this.characterService.character$.pipe(map(char => {
+      this.charId= char._id;
       this.minutesUntilReady = (new Date().getTime() - new Date(char.lastLecture).getTime()) / 1000 / 60;
       this.minutesUntilReady = Math.round(60 - this.minutesUntilReady);
       this.teachButtonOn = this.minutesUntilReady <= 0;
@@ -67,7 +68,7 @@ export class AllPubComponent implements OnInit {
 
   onRowClicked(pub: Publication) {
     const button = pub.reviewed ? 'Teach' : 'Add question';
-    const ownPub = pub.characterId == localStorage.getItem('userId') ? true : false;
+    const ownPub = pub.characterId == this.charId ? true : false;
     Swal.fire({
       title: pub.title,
       text: pub.text,

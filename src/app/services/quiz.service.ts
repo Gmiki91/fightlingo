@@ -6,29 +6,29 @@ import { Sentence } from '../models/sentence.model';
 import { Progress } from '../models/progress.model';
 import { environment } from 'src/environments/environment';
 
-const BACKEND_URL = environment.apiUrl + '/sentences/';
 
 @Injectable()
 export class QuizService {
+    private readonly BACKEND_URL = environment.apiUrl + '/sentences/';
     private overdueList = new BehaviorSubject<Sentence[]>(null);
 
     constructor(private http: HttpClient) {
     }
 
     getFightSentences() {
-        return this.http.get<Sentence[]>(BACKEND_URL+'fight');
+        return this.http.get<Sentence[]>(this.BACKEND_URL+'fight');
     }
 
     getPracticableSentences(id: string) {
-        return this.http.get<Sentence[]>(BACKEND_URL+'practice/' + id);
+        return this.http.get<Sentence[]>(this.BACKEND_URL+'practice/' + id);
     }
 
     getLearnableSentences() {
-        return this.http.get<Sentence[]>(BACKEND_URL+'learn');
+        return this.http.get<Sentence[]>(this.BACKEND_URL+'learn');
     }
 
     getOverdueSentences() {
-        return this.http.get(BACKEND_URL+'overdue/')
+        return this.http.get(this.BACKEND_URL+'overdue/')
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));

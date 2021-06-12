@@ -27,9 +27,9 @@ router.post('/create', authCheck, (req, res, next) => {
         userId: req.userData.id,
         name: "jani",
         pic: "szorny1",
-        level: 1,
+        level: 0,
         language: "russian",
-        rank: 1,
+        rank: 0,
         strength: 1,
         hitpoint: 1,
         money: 3,
@@ -39,20 +39,20 @@ router.post('/create', authCheck, (req, res, next) => {
         lastLecture: new Date(new Date().getTime() - 1000 * 86400),
         confirmed: false,
         isReadyForExam: false
-    
+
     });
     character.save()
         .then(initProgressFirst("russian", 0))//(req.body.language, req.body.rank))
         .then(() => {
             const token = getToken(character);
-            
+
             return res.json({
                 char: character,
                 token: token
             });
         })
         .catch(err => {
-           return res.status(500).json({ error: err });
+            return res.status(500).json({ error: err });
         })
 });
 
@@ -64,10 +64,14 @@ router.get('/findByUserId/:id', (req, res, next) => {
 })
 
 router.get('/currentCharacter', authCheck, (req, res, next) => {
-    Character.findOne({ _id: new ObjectId(req.userData.characterId) })
+    Character.findOne({ _id: new ObjectId(req.userData.characterId) },)
         .then((char) => {
             const token = getToken(char);
-            return res.status(200).send({char:char, token:token}) })
+            return res.status(200).send({ char: char, token: token })
+        })
+        .catch(err => {
+            return res.status(500).json({ error: err });
+        })
 })
 
 router.get('/finishedAt', authCheck, (req, res, next) => {
@@ -119,7 +123,7 @@ router.patch('/readyForExam', authCheck, (req, res, next) => {
         { $set: { "isReadyForExam": true } },
         { new: true },
         (err, user) => {
-            return res.status(200).send( user );
+            return res.status(200).send(user);
         });
 })
 
@@ -153,25 +157,25 @@ function initProgress(language, rank) {
         language: language,
         number: rank
     }, '_id')
-        .then(id => 
+        .then(id =>
             Sentence.find({ "scroll_id": id._id })
-            .then(documents => {
-                for (let document of documents) {
-                    const prog = new Progress({
-                        sentenceId: document._id,
-                        characterId: character._id,
-                        learned: false,
-                        learningProgress: 4,
-                        consecutiveCorrectAnswers: 0,
-                        interval: 1,
-                        difficulty: 2.5,
-                        nextReviewDate: null
-                    });
-                    prog.save();
-                }
-            })
+                .then(documents => {
+                    for (let document of documents) {
+                        const prog = new Progress({
+                            sentenceId: document._id,
+                            characterId: character._id,
+                            learned: false,
+                            learningProgress: 4,
+                            consecutiveCorrectAnswers: 0,
+                            interval: 1,
+                            difficulty: 2.5,
+                            nextReviewDate: null
+                        });
+                        prog.save();
+                    }
+                })
         )
-            
+
 }
 
 function initProgressFirst(language, rank) {
@@ -199,8 +203,8 @@ function initProgressFirst(language, rank) {
         )
 }
 
-function getToken(character){
-   return jwt.sign(
+function getToken(character) {
+    return jwt.sign(
         {
             userId: character.userId,
             characterId: character._id,

@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
 
     constructor(private router: Router, private authService: AuthService, private charachterService: CharacterService) { };
     canActivate(): boolean {
-        if (localStorage.getItem("loggedIn")) {
+        if (localStorage.getItem("token")) {
             if (this.charachterService.currentCharConfirmed)
                 return true;
             else if (!this.charachterService.currentCharConfirmed) {

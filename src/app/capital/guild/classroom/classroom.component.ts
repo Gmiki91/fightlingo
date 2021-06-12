@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicationService } from 'src/app/services/publication.service';
 import { Question } from 'src/app/models/question.enum';
@@ -7,13 +7,15 @@ import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';
 import { first } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character.service';
+import { Character } from 'src/app/models/character.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-classroom',
   templateUrl: './classroom.component.html',
   styleUrls: ['./classroom.component.css']
 })
-export class ClassroomComponent implements OnInit {
+export class ClassroomComponent implements OnInit, OnDestroy {
 
   readonly authorMoney: number = 30;
   readonly baseQuestionMoney: number = 1;
@@ -21,6 +23,8 @@ export class ClassroomComponent implements OnInit {
   questions: Question[];
   currentQuestion: Question;
   publication: Publication;
+  char:Character;
+  sub:Subscription = Subscription.EMPTY;
   showQuestionTemplate: boolean;
   alreadyVoted: boolean;
   constructor(private router: Router, private pubService: PublicationService, private authService: AuthService, private characterService:CharacterService) {
@@ -30,6 +34,9 @@ export class ClassroomComponent implements OnInit {
   ngOnInit(): void {
     this.init();
 
+    this.sub = this.characterService.character$.subscribe(char=>{
+      this.char=char;
+    })
     /*  this.questions$ =this.pubService.getQuestions().pipe(map(questions => {
         return questions;
       }));
@@ -39,6 +46,10 @@ export class ClassroomComponent implements OnInit {
         this.questions = qs
       ));*/
     this.pubService.pushQuestions(this.publicationId);
+  }
+
+  ngOnDestroy():void{
+    this.sub?.unsubscribe();
   }
 
   init() {
@@ -59,7 +70,7 @@ export class ClassroomComponent implements OnInit {
       this.onEndLecture();
     } else {
       this.currentQuestion = this.questions[Math.floor(Math.random() * (this.questions.length))];
-      this.alreadyVoted = this.currentQuestion.votedBy.includes(localStorage.getItem('userId'));
+      this.alreadyVoted = this.currentQuestion.votedBy.includes(this.char._id);
     }
   }
 
@@ -67,7 +78,7 @@ export class ClassroomComponent implements OnInit {
   like(value: number): void {
     console.log(value, typeof value);
     this.pubService.likeQuestion(value, this.currentQuestion._id);
-    this.currentQuestion.votedBy.push(localStorage.getItem('userId'));
+    this.currentQuestion.votedBy.push(this.char._id);
     this.alreadyVoted = true;
   }
 
@@ -76,7 +87,7 @@ export class ClassroomComponent implements OnInit {
     if (this.currentQuestion.answers.includes(answer)) {
       this.questions.splice(this.questions.indexOf(this.currentQuestion), 1);
       console.log("talált");
-      if (this.currentQuestion.userId !== localStorage.getItem('userId')) {
+      if (this.currentQuestion.userId !== this.char._id) {
         this.characterService.giveMoney(this.currentQuestion.userId, this.baseQuestionMoney * answer.length).toPromise();
         this.characterService.updateMoney(this.baseQuestionMoney * answer.length).toPromise();
       }
@@ -87,7 +98,7 @@ export class ClassroomComponent implements OnInit {
   }
 
   onEndLecture(): void {
-    if(this.publication.characterId != localStorage.getItem('userId')){
+    if(this.publication.characterId != this.char._id){
     swal("would you like to add one question?", {
       buttons: {
         yes: {
@@ -113,7 +124,7 @@ export class ClassroomComponent implements OnInit {
 
   quit(event: boolean): void {
     if (event) {
-      if (this.publication.characterId != localStorage.getItem('userId')) {
+      if (this.publication.characterId != this.char._id) {
         this.characterService.giveMoney(this.publication.characterId, this.authorMoney).toPromise();
       }
       this.characterService.gaveLecture().toPromise();

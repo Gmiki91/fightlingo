@@ -9,19 +9,12 @@ export class HeaderGuard implements CanActivate {
 
     constructor(private router: Router, private authService: AuthService) { };
     canActivate(): boolean {
-        if (!localStorage.getItem("loggedIn")) {
+        if (!localStorage.getItem("token")) {
             return true;
         }
         else {
             this.router.navigate(['/']);
             return false;
         }
-        /*
-        if (!localStorage.getItem('userId')) {
-            return true;
-        } else {
-            this.router.navigate(['/']);
-            return false;
-        }*/
     }
 }

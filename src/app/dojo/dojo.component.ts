@@ -20,21 +20,17 @@ export class DojoComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.charService.getCurrentCharacter();
+    
     this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
       if (user) {
         this.hasCharacter = user.currentCharacter != null;
         if (this.hasCharacter) {
           this.sub = this.charService.character$.subscribe(char => {
-            if (char) {
-              if (char.confirmed) {
-                localStorage.setItem("confirmed", "true");
-              } else {
-                localStorage.setItem("confirmed", "false");
+              if (char && !char.confirmed) {
                 this.router.navigate(["/intro"])
-              }
             }
           })
+          this.charService.getCurrentCharacter();
         }
         return user ? true : false;
       }
@@ -52,7 +48,6 @@ export class DojoComponent implements OnInit, OnDestroy {
   }
 
   toTheCapital(): void {
-    localStorage.setItem("hasTicket", 'true');
     this.router.navigate(['/guild']);
   }
   /*

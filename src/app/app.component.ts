@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   constructor(private auth: AuthService, private quizService: QuizService) {}
 
   ngOnInit(): void {
-    this.auth.autoAuthUser();
+    this.auth.refreshUser();
   }
 
 }
