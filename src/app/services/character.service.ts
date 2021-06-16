@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
+import { Language } from "../language.enum";
 import { Character } from "../models/character.model";
 
 
@@ -19,9 +20,9 @@ export class CharacterService {
         return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId/' + userId);
     }
 
-    createCharacter() {
-        return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', null).pipe(map(result => {
-            this.getCurrentCharacter();
+    createCharacter(name:string, avatar:string, language:Language) {
+        return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', {name:name, avatar:avatar, language:language}).pipe(map(result => {
+            localStorage.setItem(environment.JWT_TOKEN, result.token);
             return result.char._id;
         }))
     }

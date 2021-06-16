@@ -3,10 +3,10 @@
 
 
     <div *ngIf="createCharacterClicked">
-        <form (submit)="onSignUp(signupForm)" #signupForm="ngForm" class="example-form">
+        <form (submit)="finishCharacter(signupForm)" #signupForm="ngForm" class="example-form">
             <mat-card-content>
                 <mat-form-field class="example-full-width">
-                    <input ngModel name="fightername" #fighternameInput="ngModel" matInput placeholder="Creature name">
+                    <input ngModel name="characterName" #fighternameInput="ngModel" matInput placeholder="Creature name">
                 </mat-form-field>
                 <div class="image-selector">
                     <button type="button" (click)="previousPic()"> << </button>
@@ -18,6 +18,7 @@
                     </mat-radio-button>
                 </mat-radio-group>
             </mat-card-content>
+            <button mat-stroked-button color="accent" class= "btn-block">Create</button>
         </form>
     </div>
 

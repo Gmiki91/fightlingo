@@ -25,10 +25,10 @@ router.post('/create', authCheck, (req, res, next) => {
 
     character = new Character({
         userId: req.userData.id,
-        name: "jani",
-        pic: "szorny1",
+        name: req.body.name,
+        pic: req.body.avatar,
         level: 0,
-        language: "russian",
+        language: req.body.language,
         rank: 0,
         strength: 1,
         hitpoint: 1,
@@ -42,7 +42,7 @@ router.post('/create', authCheck, (req, res, next) => {
 
     });
     character.save()
-        .then(initProgressFirst("russian", 0))//(req.body.language, req.body.rank))
+        .then(initProgressFirst(req.body.language, 0))
         .then(() => {
             const token = getToken(character);
 

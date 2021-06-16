@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Language } from '../language.enum';
+import { SignupForm } from '../models/signupform.model';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
@@ -56,7 +58,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.auth.selectCurrentCharacter(result);
       })*/
   }
-  
+  finishCharacter(form: NgForm): void {
+    this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).subscribe(result => {
+      this.auth.selectCurrentCharacter(result);
+    })
+  }
+
   previousPic() {
     this.imagePathIndex--;
     if (this.imagePathIndex < 0)
