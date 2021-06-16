@@ -17,8 +17,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuizService } from './services/quiz.service';
-import { DojoComponent } from './dojo/dojo.component';
-import { LibraryComponent } from './dojo/library/library.component';
+import { HomeComponent } from './home/home.component';
+import { LibraryComponent } from './home/library/library.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
@@ -53,7 +53,7 @@ import { CharacterService } from './services/character.service';
   declarations: [
     AppComponent,
     QuizComponent,
-    DojoComponent,
+    HomeComponent,
     LibraryComponent,
     LoginComponent,
     SignUpComponent,

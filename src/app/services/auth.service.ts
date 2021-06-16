@@ -25,11 +25,12 @@ export class AuthService {
         return this.http.post(this.BACKEND_URL + 'signup', user);
     }
 
-    login(name: string, password: string) {
-        const authData: AuthData = { name, password };
+    login(email: string, password: string) {
+        const authData: AuthData = { email, password };
         return this.http.post<{ token: string, user: User }>(this.BACKEND_URL + 'login', authData)
             .pipe(map(response => {
                 localStorage.setItem(environment.JWT_TOKEN, response.token);
+                this.refreshUser().toPromise();
             }));
     }
 

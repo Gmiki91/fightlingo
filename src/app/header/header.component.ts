@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
-  charSub:Subscription =Subscription.EMPTY;
+  charSub: Subscription = Subscription.EMPTY;
   user: User;
   char: Character;
 
@@ -60,16 +60,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToUser(): void {
-
     if (this.userSub)
       this.userSub.unsubscribe();
-
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
       if (user) {
         this.user = user;
         this.loggedIn = true;
         if (user.currentCharacter) {
-         this.charSub= this.charService.character$.subscribe((char: Character) => {
+          this.charSub = this.charService.character$.subscribe((char: Character) => {
             this.char = char;
             if (char) {
               this.quizService.getOverdueSentences().toPromise();

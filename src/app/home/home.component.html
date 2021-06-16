@@ -1,0 +1,37 @@
+<div class="container">
+    <img src="assets/background.png">
+
+
+    <div *ngIf="createCharacterClicked">
+        <form (submit)="onSignUp(signupForm)" #signupForm="ngForm" class="example-form">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input ngModel name="fightername" #fighternameInput="ngModel" matInput placeholder="Creature name">
+                </mat-form-field>
+                <div class="image-selector">
+                    <button type="button" (click)="previousPic()"> << </button>
+                    <img class="monster-pic" src='../../assets/{{imagePath}}.jpg'>
+                    <button type="button" (click)="nextPic()"> >> </button>
+                </div>
+                <mat-radio-group [(ngModel)]="language" name="mi">
+                    <mat-radio-button *ngFor="let language of languages" [value]="language">{{language}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </mat-card-content>
+        </form>
+    </div>
+
+    <div *ngIf="loggedIn$ | async">
+        <div *ngIf="!hasCharacter">
+            <p>No characters found</p>
+            <button (click)="onCreate()">Create</button>
+        </div>
+        <div *ngIf="hasCharacter">
+            <a class="library_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
+                routerLink="/library">Library</a>
+            <button mattButton class="city_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
+                routerLink="/city">City</button>
+            <button (click)="toTheCapital()">Capital</button>
+        </div>
+    </div>
+</div>

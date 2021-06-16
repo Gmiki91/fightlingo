@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { AuthService } from './services/auth.service';
 
 
@@ -9,10 +10,11 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'fightlingo';
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.auth.refreshUser().toPromise();
+    if (localStorage.getItem(environment.JWT_TOKEN))
+      this.auth.refreshUser().toPromise();
   }
 
 }

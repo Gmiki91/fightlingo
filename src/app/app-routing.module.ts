@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { CityComponent } from './city/city.component';
-import { DojoComponent } from './dojo/dojo.component';
-import { LibraryComponent } from './dojo/library/library.component';
+import { HomeComponent } from './home/home.component';
+import { LibraryComponent } from './home/library/library.component';
 import { AuthGuard } from './guards/auth.guard';
 import { GuildComponent } from './capital/guild/guild.component';
 import { ClassroomComponent } from './capital/guild/classroom/classroom.component';
@@ -16,7 +16,7 @@ import { AllPubComponent } from './publications/all-pub/all-pub.component';
 
 
 const routes: Routes = [
-  { path: '', component: DojoComponent },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent, canActivate: [HeaderGuard] },
   { path: 'signup', component: SignUpComponent, canActivate: [HeaderGuard] },
   { path: 'city', component: CityComponent, canActivate: [AuthGuard] },

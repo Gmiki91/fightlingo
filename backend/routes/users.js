@@ -44,7 +44,7 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
     let userData;
-    User.findOne({ email: req.body.name })
+    User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
                 return res.status(404).json({

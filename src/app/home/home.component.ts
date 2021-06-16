@@ -2,18 +2,30 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Language } from '../language.enum';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
 @Component({
-  selector: 'app-dojo',
-  templateUrl: './dojo.component.html',
-  styleUrls: ['./dojo.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class DojoComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  createCharacterClicked: boolean;
+  languages = [Language.FRENCH, Language.RUSSIAN, Language.SERBIAN];
+  language: Language;
+  imagePaths = ['szorny1',
+    'szorny2',
+    'szorny3',
+    'szorny4'];
+  imagePathIndex: number = 0;
+  imagePath: string;
 
   loggedIn$: Observable<boolean>;
   hasCharacter: boolean;
+
   sub: Subscription = Subscription.EMPTY;
 
   constructor(private auth: AuthService, private charService: CharacterService, private router: Router) { }
@@ -25,8 +37,8 @@ export class DojoComponent implements OnInit, OnDestroy {
         this.hasCharacter = user.currentCharacter != null;
         if (this.hasCharacter) {
           this.sub = this.charService.character$.subscribe(char => {
-              if (char && !char.confirmed) {
-                this.router.navigate(["/intro"])
+            if (char && !char.confirmed) {
+              this.router.navigate(["/intro"])
             }
           })
           this.charService.getCurrentCharacter();
@@ -37,9 +49,26 @@ export class DojoComponent implements OnInit, OnDestroy {
   }
 
   onCreate(): void {
-    this.charService.createCharacter().subscribe(result => {
-      this.auth.selectCurrentCharacter(result);
-    })
+    this.createCharacterClicked = true;
+    this.imagePathIndex = 0;
+    this.imagePath = this.imagePaths[this.imagePathIndex];
+    /*  this.charService.createCharacter().subscribe(result => {
+        this.auth.selectCurrentCharacter(result);
+      })*/
+  }
+  
+  previousPic() {
+    this.imagePathIndex--;
+    if (this.imagePathIndex < 0)
+      this.imagePathIndex = this.imagePaths.length - 1;
+    this.imagePath = this.imagePaths[this.imagePathIndex];
+  }
+
+  nextPic() {
+    this.imagePathIndex++;
+    if (this.imagePathIndex > this.imagePaths.length - 1)
+      this.imagePathIndex = 0
+    this.imagePath = this.imagePaths[this.imagePathIndex];
   }
 
   ngOnDestroy(): void {
