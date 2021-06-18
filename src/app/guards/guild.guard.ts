@@ -1,15 +1,22 @@
 import { Injectable } from "@angular/core";
-import { CanActivate } from "@angular/router";
+import { CanActivate, Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class GuildGuard implements CanActivate {
 
-    constructor() { };
+    constructor(private router:Router) { };
     canActivate(): boolean {
       
+        if (localStorage.getItem(environment.JWT_TOKEN)) {
             return true;
+        }
+        else {
+            this.router.navigate(['/']);
+            return false;
+        }
       
     }
 }

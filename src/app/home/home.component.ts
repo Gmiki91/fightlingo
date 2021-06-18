@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Language } from '../language.enum';
-import { SignupForm } from '../models/signupform.model';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
@@ -14,16 +11,6 @@ import { CharacterService } from '../services/character.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
-  createCharacterClicked: boolean;
-  languages = [Language.FRENCH, Language.RUSSIAN, Language.SERBIAN];
-  language: Language;
-  imagePaths = ['szorny1',
-    'szorny2',
-    'szorny3',
-    'szorny4'];
-  imagePathIndex: number = 0;
-  imagePath: string;
 
   loggedIn$: Observable<boolean>;
   hasCharacter: boolean;
@@ -37,6 +24,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
       if (user) {
         this.hasCharacter = user.currentCharacter != null;
+        console.log(this.hasCharacter);
+        if (!this.hasCharacter){
+          this.router.navigate(["/character-selector"])
+        }
+          /*
         if (this.hasCharacter) {
           this.sub = this.charService.character$.subscribe(char => {
             if (char && !char.confirmed) {
@@ -44,39 +36,15 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
           })
           this.charService.getCurrentCharacter();
-        }
+        }else{
+          this.router.navigate(["/character-selector"])
+        }*/
         return user ? true : false;
       }
     }));
   }
 
-  onCreate(): void {
-    this.createCharacterClicked = true;
-    this.imagePathIndex = 0;
-    this.imagePath = this.imagePaths[this.imagePathIndex];
-    /*  this.charService.createCharacter().subscribe(result => {
-        this.auth.selectCurrentCharacter(result);
-      })*/
-  }
-  finishCharacter(form: NgForm): void {
-    this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).subscribe(result => {
-      this.auth.selectCurrentCharacter(result);
-    })
-  }
 
-  previousPic() {
-    this.imagePathIndex--;
-    if (this.imagePathIndex < 0)
-      this.imagePathIndex = this.imagePaths.length - 1;
-    this.imagePath = this.imagePaths[this.imagePathIndex];
-  }
-
-  nextPic() {
-    this.imagePathIndex++;
-    if (this.imagePathIndex > this.imagePaths.length - 1)
-      this.imagePathIndex = 0
-    this.imagePath = this.imagePaths[this.imagePathIndex];
-  }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

@@ -56,8 +56,8 @@ router.post('/create', authCheck, (req, res, next) => {
         })
 });
 
-router.get('/findByUserId/:id', (req, res, next) => {
-    Character.find({ userId: new ObjectId(req.params.id) })
+router.get('/findByUserId',authCheck, (req, res, next) => {
+    Character.find({ userId: new ObjectId(req.userData.id) })
         .then((result) => {
             return res.json(result);
         })

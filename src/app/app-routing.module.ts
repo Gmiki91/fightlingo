@@ -13,6 +13,7 @@ import { HeaderGuard } from './guards/header.guard';
 import { IntroComponent } from './auth/intro/intro.component';
 import { IntroGuard } from './guards/intro.guard';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
+import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [HeaderGuard] },
   { path: 'signup', component: SignUpComponent, canActivate: [HeaderGuard] },
   { path: 'city', component: CityComponent, canActivate: [AuthGuard] },
+  { path: 'character-selector', component: CharacterSelectorComponent, canActivate: [GuildGuard] },
   { path: 'library', component: LibraryComponent, canActivate: [AuthGuard] },
   { path: 'guild', component: GuildComponent, canActivate: [AuthGuard] },
   { path: 'classroom', component: ClassroomComponent, canActivate: [AuthGuard] },

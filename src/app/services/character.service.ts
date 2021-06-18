@@ -12,12 +12,16 @@ export class CharacterService {
     private readonly BACKEND_URL = environment.apiUrl + '/characters/';
 
     private updatedCharacter = new BehaviorSubject<Character>(null);
+    private updatedCharacterList = new BehaviorSubject<Character[]>(null);
     public character$: Observable<Character> = this.updatedCharacter.asObservable();
+    public characterList$: Observable<Character[]>=this.updatedCharacterList.asObservable();
     public currentCharConfirmed:boolean;
     constructor(private http: HttpClient) { }
 
-    getCharactersByUserId(userId: string) {
-        return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId/' + userId);
+    getCharactersByUserId() {
+        return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId').subscribe(list=>{
+            this.updatedCharacterList.next(list);
+        })
     }
 
     createCharacter(name:string, avatar:string, language:Language) {

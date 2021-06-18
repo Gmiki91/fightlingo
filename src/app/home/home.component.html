@@ -1,32 +1,6 @@
 <div class="container">
     <img src="assets/background.png">
-
-
-    <div *ngIf="createCharacterClicked">
-        <form (submit)="finishCharacter(signupForm)" #signupForm="ngForm" class="example-form">
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input ngModel name="characterName" #fighternameInput="ngModel" matInput placeholder="Creature name">
-                </mat-form-field>
-                <div class="image-selector">
-                    <button type="button" (click)="previousPic()"> << </button>
-                    <img class="monster-pic" src='../../assets/{{imagePath}}.jpg'>
-                    <button type="button" (click)="nextPic()"> >> </button>
-                </div>
-                <mat-radio-group [(ngModel)]="language" name="mi">
-                    <mat-radio-button *ngFor="let language of languages" [value]="language">{{language}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </mat-card-content>
-            <button mat-stroked-button color="accent" class= "btn-block">Create</button>
-        </form>
-    </div>
-
     <div *ngIf="loggedIn$ | async">
-        <div *ngIf="!hasCharacter">
-            <p>No characters found</p>
-            <button (click)="onCreate()">Create</button>
-        </div>
         <div *ngIf="hasCharacter">
             <a class="library_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
                 routerLink="/library">Library</a>

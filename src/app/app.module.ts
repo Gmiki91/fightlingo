@@ -47,6 +47,7 @@ import { MoneyPipe } from './publications/pipes/money.pipe copy';
 import { TimeLeftPipe } from './publications/pipes/time-left.pipe';
 import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
 import { CharacterService } from './services/character.service';
+import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { CharacterService } from './services/character.service';
     DateAgoPipe,
     MoneyPipe,
     TimeLeftPipe,
-    TimeLeftTitlePipe
+    TimeLeftTitlePipe,
+    CharacterSelectorComponent
   ],
   imports: [
     FormsModule,

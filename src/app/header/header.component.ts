@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { EventHandler } from '../services/event-handler.service';
 import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
-import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
@@ -24,7 +23,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
   charSub: Subscription = Subscription.EMPTY;
-  user: User;
   char: Character;
 
   constructor(
@@ -59,12 +57,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+
   private subscribeToUser(): void {
-    if (this.userSub)
-      this.userSub.unsubscribe();
+      this.userSub?.unsubscribe();
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
       if (user) {
-        this.user = user;
+
         this.loggedIn = true;
         if (user.currentCharacter) {
           this.charSub = this.charService.character$.subscribe((char: Character) => {
