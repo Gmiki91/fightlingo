@@ -27,6 +27,7 @@ export class CharacterService {
     createCharacter(name:string, avatar:string, language:Language) {
         return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', {name:name, avatar:avatar, language:language}).pipe(map(result => {
             localStorage.setItem(environment.JWT_TOKEN, result.token);
+            this.getCharactersByUserId();
             return result.char._id;
         }))
     }

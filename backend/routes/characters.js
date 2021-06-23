@@ -10,7 +10,7 @@ let Sentence;
 let character;
 
 router.post('/create', authCheck, (req, res, next) => {
-    let language = 'russian'; // req.body.language;
+    let language = req.body.language;
     switch (language) {
         case 'russian':
             Sentence = require(`../models/sentence`).russian;

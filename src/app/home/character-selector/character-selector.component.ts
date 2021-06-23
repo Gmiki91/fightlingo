@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Language } from 'src/app/language.enum';
 import { Character } from 'src/app/models/character.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CharacterService } from 'src/app/services/character.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-character-selector',
@@ -15,7 +16,7 @@ import { CharacterService } from 'src/app/services/character.service';
 })
 export class CharacterSelectorComponent implements OnInit {
 
-  user$:Observable<User>;
+  user$: Observable<User>;
   charList$: Observable<Character[]>;
   createCharacterClicked: boolean;
   languages = [Language.FRENCH, Language.RUSSIAN, Language.SERBIAN];
@@ -27,12 +28,12 @@ export class CharacterSelectorComponent implements OnInit {
   imagePathIndex: number = 0;
   imagePath: string;
 
-  constructor(private charService:CharacterService, private auth:AuthService) { }
+  constructor(private charService: CharacterService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.charList$= this.charService.characterList$;
     this.charService.getCharactersByUserId();
-    this.user$=this.auth.getUpdatedUser().pipe(map((user:User)=>{
+    this.charList$ = this.charService.characterList$;
+    this.user$ = this.auth.getUpdatedUser().pipe(map((user: User) => {
       return user
     }));
   }
@@ -43,14 +44,26 @@ export class CharacterSelectorComponent implements OnInit {
     this.imagePath = this.imagePaths[this.imagePathIndex];
   }
 
-  onSelectChar(charId:string):void{
+  onSelectChar(charId: string): void {
     this.auth.selectCurrentCharacter(charId);
   }
 
   finishCharacter(form: NgForm): void {
-    this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).subscribe(result => {
-      this.auth.selectCurrentCharacter(result);
-      this.createCharacterClicked = false;
+    let languageTaken = false;
+    this.charList$.pipe(first()).subscribe(list => {
+      for (const char of list) {
+        if (char.language === this.language) {
+          Swal.fire("You can only have one character per language");
+          languageTaken = true;
+          break;
+        }
+      }
+      if (!languageTaken) {
+        this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).pipe(first()).subscribe(result => {
+          this.auth.selectCurrentCharacter(result);
+          this.createCharacterClicked = false;
+        })
+      }
     })
   }
 
