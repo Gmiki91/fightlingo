@@ -32,7 +32,7 @@ export class CharacterService {
     }
 
     getCurrentCharacter() {
-        this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter').subscribe(result => {
+        this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter' ).subscribe(result => {
             localStorage.setItem(environment.JWT_TOKEN, result.token);
             this.updatedCharacter.next(result.char);
             this.currentCharConfirmed=result.char.confirmed;

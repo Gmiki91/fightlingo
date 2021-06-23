@@ -5,16 +5,18 @@ import { environment } from "src/environments/environment";
 @Injectable({
     providedIn: 'root'
 })
-export class HeaderGuard implements CanActivate {
+export class LoggedInGuard implements CanActivate {
 
-    constructor(private router: Router) { };
+    constructor(private router:Router) { };
     canActivate(): boolean {
-        if (!localStorage.getItem(environment.JWT_TOKEN)) {
+      
+        if (localStorage.getItem(environment.JWT_TOKEN)) {
             return true;
         }
         else {
             this.router.navigate(['/']);
             return false;
         }
+      
     }
 }

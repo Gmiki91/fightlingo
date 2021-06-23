@@ -13,6 +13,7 @@ import { CharacterService } from './character.service';
 export class AuthService {
     private readonly BACKEND_URL = environment.apiUrl + '/users/';
     private updatedUser = new BehaviorSubject<User>(null);
+    public hasCharacter: boolean;
 
     constructor(private http: HttpClient, private charService: CharacterService) { }
 
@@ -29,14 +30,17 @@ export class AuthService {
         const authData: AuthData = { email, password };
         return this.http.post<{ token: string, user: User }>(this.BACKEND_URL + 'login', authData)
             .pipe(map(response => {
+                this.hasCharacter = response.user.currentCharacter!=null;
                 localStorage.setItem(environment.JWT_TOKEN, response.token);
-                this.refreshUser().toPromise();
+                this.updateCurrentCharacter(response.user);
             }));
     }
 
     refreshUser() {
-        return this.http.get<{ user: User }>(this.BACKEND_URL + 'refreshUser')
+        return this.http.get<{ token: string, user: User }>(this.BACKEND_URL + 'refreshUser')
             .pipe(map(response => {
+                this.hasCharacter = response.user.currentCharacter!=null;
+                localStorage.setItem(environment.JWT_TOKEN, response.token);
                 this.updateCurrentCharacter(response.user);
             }))
     }

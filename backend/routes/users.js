@@ -60,15 +60,9 @@ router.post('/login', (req, res, next) => {
                     message: "Auth failed"
                 });
             }
-            const token = jwt.sign(
-                {userId: userData._id,
-                    characterId: userData.currentCharacter},
-                process.env.JWT_KEY,
-                { expiresIn: '1h' }
-                
-            );
+            const token = getToken(userData);
             res.setHeader('Authorization', 'Bearer ' + token);
-            res.status(200).json({user: userData, token:token});
+            res.status(200).json({ user: userData, token: token });
         })
         .catch(err => {
             return res.status(401).json({
@@ -90,9 +84,21 @@ router.patch('/selectCurrentCharacter', authCheck, (req, res, next) => {
 router.get('/refreshUser', authCheck, (req, res, next) => {
     User.findOne({ _id: new ObjectId(req.userData.id) })
         .then((user) => {
-            return res.status(200).send({ user: user })
+            const token = getToken(user);
+            return res.status(200).send({ user: user, token: token })
         })
 })
 
+function getToken(user) {
+    return jwt.sign(
+        {
+            userId: user._id,
+            characterId: user.currentCharacter
+        },
+        process.env.JWT_KEY,
+        { expiresIn: '1h' }
+
+    );
+}
 
 module.exports = router;

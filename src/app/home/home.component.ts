@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
@@ -10,7 +11,7 @@ import { CharacterService } from '../services/character.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   loggedIn$: Observable<boolean>;
   hasCharacter: boolean;
@@ -23,31 +24,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
       if (user) {
-        this.hasCharacter = user.currentCharacter != null;
-        console.log(this.hasCharacter);
+        this.hasCharacter = this.auth.hasCharacter;
         if (!this.hasCharacter){
+          Swal.fire("Create a character!");
           this.router.navigate(["/character-selector"])
         }
-          /*
-        if (this.hasCharacter) {
-          this.sub = this.charService.character$.subscribe(char => {
-            if (char && !char.confirmed) {
-              this.router.navigate(["/intro"])
-            }
-          })
-          this.charService.getCurrentCharacter();
-        }else{
-          this.router.navigate(["/character-selector"])
-        }*/
         return user ? true : false;
       }
     }));
-  }
-
-
-
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
   }
 
   toTheCapital(): void {

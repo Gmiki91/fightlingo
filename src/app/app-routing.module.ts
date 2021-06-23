@@ -4,29 +4,29 @@ import { LoginComponent } from './auth/login/login.component';
 import { CityComponent } from './city/city.component';
 import { HomeComponent } from './home/home.component';
 import { LibraryComponent } from './home/library/library.component';
-import { AuthGuard } from './guards/auth.guard';
+import { ConfirmedGuard } from './guards/confirmed.guard';
 import { GuildComponent } from './capital/guild/guild.component';
 import { ClassroomComponent } from './capital/guild/classroom/classroom.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import { GuildGuard } from './guards/guild.guard';
-import { HeaderGuard } from './guards/header.guard';
+import { LoggedInGuard } from './guards/logged-in.guard';
+import { LoggedOutGuard } from './guards/logged-out.guard';
 import { IntroComponent } from './auth/intro/intro.component';
-import { IntroGuard } from './guards/intro.guard';
+import { NotConfirmedGuard } from './guards/not-confirmed.guard';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent, canActivate: [HeaderGuard] },
-  { path: 'signup', component: SignUpComponent, canActivate: [HeaderGuard] },
-  { path: 'city', component: CityComponent, canActivate: [AuthGuard] },
-  { path: 'character-selector', component: CharacterSelectorComponent, canActivate: [GuildGuard] },
-  { path: 'library', component: LibraryComponent, canActivate: [AuthGuard] },
-  { path: 'guild', component: GuildComponent, canActivate: [AuthGuard] },
-  { path: 'classroom', component: ClassroomComponent, canActivate: [AuthGuard] },
-  { path: 'intro', component: IntroComponent, canActivate: [IntroGuard] },
-  { path: 'publication', component: AllPubComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [LoggedOutGuard] },
+  { path: 'signup', component: SignUpComponent, canActivate: [LoggedOutGuard] },
+  { path: 'city', component: CityComponent, canActivate: [ConfirmedGuard] },
+  { path: 'character-selector', component: CharacterSelectorComponent, canActivate: [LoggedInGuard] },
+  { path: 'library', component: LibraryComponent, canActivate: [ConfirmedGuard] },
+  { path: 'guild', component: GuildComponent, canActivate: [ConfirmedGuard] },
+  { path: 'classroom', component: ClassroomComponent, canActivate: [ConfirmedGuard] },
+  { path: 'intro', component: IntroComponent, canActivate: [NotConfirmedGuard] },
+  { path: 'publication', component: AllPubComponent, canActivate: [ConfirmedGuard] },
   //  {path:'*', component: NotFoundComponent}
 
 ];
