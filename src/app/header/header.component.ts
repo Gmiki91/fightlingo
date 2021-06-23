@@ -59,10 +59,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   private subscribeToUser(): void {
-      this.userSub?.unsubscribe();
+    this.userSub?.unsubscribe();
     this.userSub = this.auth.getUpdatedUser().subscribe(user => {
       if (user) {
-
         this.loggedIn = true;
         if (user.currentCharacter) {
           this.charSub = this.charService.character$.subscribe((char: Character) => {

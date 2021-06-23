@@ -17,10 +17,11 @@ import { CharacterService } from 'src/app/services/character.service';
   templateUrl: './all-pub.component.html',
   styleUrls: ['./all-pub.component.css']
 })
-export class AllPubComponent implements OnInit {
+export class AllPubComponent implements OnInit, OnDestroy {
   radioBtnSelected: string;
   newQ: boolean;
   currentPub: Publication;
+  sub:Subscription =  Subscription.EMPTY;
   readyToTeach$: Observable<boolean>;
   minutesUntilReady: number;
   teachButtonOn: boolean;
@@ -37,8 +38,12 @@ export class AllPubComponent implements OnInit {
   constructor(private pubService: PublicationService, private router: Router, private authService: AuthService, private characterService:CharacterService) { }
 
 
+  ngOnDestroy():void{
+    this.sub?.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.pubService.publications$.subscribe(result => this.dataSource.data = result);
+    this.sub = this.pubService.publications$.subscribe(result => this.dataSource.data = result);
     this.pubService.deleteOverduePublications();
 
     this.readyToTeach$ = this.characterService.character$.pipe(map(char => {

@@ -13,13 +13,6 @@ export class ScrollService {
     return this.http.get<Scroll[]>(this.BACKEND_URL+'all');
   }
 
-  /* getScrolls(levelSelected: number) {
-     return this.http.get<Scroll[]>('http://localhost:3300/api/scrolls/oflevel/' + this.authService.user.language + '/' + levelSelected);
-       .subscribe(response => {
-      console.log(response);
-      this.lessons.next(response);
-       });
-   }*/
    getOneScroll(number: number) {
      return this.http.get<Scroll>(this.BACKEND_URL+'one/' + number);
    }
