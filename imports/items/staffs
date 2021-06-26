@@ -4,9 +4,10 @@
     "price":7,
     "pic":"url",
     "pwr":8,
-    'level':1,
+    "level":1,
     "style":"earth",
-    "rarity":"common"
+    "rarity":"common",
+    "equippable":true
 }
 
 {
@@ -14,8 +15,9 @@
      "name":"Szú rágta pálca",
     "price":8,
     "pic":"url",
-    'level':1,
+    "level":1,
     "pwr":9,
     "style":"water",
-    "rarity":"common"
+    "rarity":"common",
+    "equippable":true
 }

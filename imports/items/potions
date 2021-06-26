@@ -3,7 +3,8 @@
     "name":"Small potion",
     "price":5,
     "pic":"url",
-    "hpModifier":10
+    "hpModifier":10,
+    "equippable":false
 }
 
 {
@@ -11,7 +12,8 @@
     "name":"Medium potion",
     "price":15,
     "pic":"url",
-    "hpModifier":30
+    "hpModifier":30,
+    "equippable":false
 }
 
 {
@@ -19,5 +21,6 @@
     "name":"Large potion",
     "price":45,
     "pic":"url",
-    "hpModifier":90
+    "hpModifier":90,
+    "equippable":false
 }

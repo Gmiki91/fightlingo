@@ -4,5 +4,7 @@
   <label>Robe: {{char.equippedRobe?.name}}</label>
   <div *ngFor="let item of char.items">
     <p>{{item.name}} : {{item.qty}}</p>
+    <button *ngIf="item.equippable && char.equippedRobe!=item && char.equippedStaff!=item" (click)="onEquip(item)">Equip</button>
+    <p *ngIf="item.equippable && char.equippedRobe==item || char.equippedStaff==item">Equipped</p>
   </div>
 </div>

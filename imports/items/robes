@@ -4,7 +4,8 @@
     "price":70,
     "pic":"url",
     "level":1,
-    "capacity":1
+    "capacity":1,
+    "equippable":true
 }
 
 {
@@ -13,5 +14,6 @@
     "price":15,
     "pic":"url",
     "level":0,
-    "capacity":0
+    "capacity":0,
+    "equippable":true
 }

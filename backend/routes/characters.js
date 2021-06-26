@@ -140,6 +140,24 @@ router.patch('/gaveLecture', authCheck, (req, res, next) => {
         });
 })
 
+router.patch('/equipStaff', authCheck, (req, res, next) => {
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
+        { $set: { "equippedStaff": req.body.item } },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send(user);
+        });
+})
+
+router.patch('/equipRobe', authCheck, (req, res, next) => {
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
+        { $set: { "equippedRobe": req.body.item } },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send(user);
+        });
+})
+
 router.patch('/updateMoney', authCheck, (req, res, next) => {
     Character.updateOne({ _id: req.userData.characterId },
         { $inc: { money: req.body.amount } })
