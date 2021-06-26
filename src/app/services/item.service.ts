@@ -4,7 +4,7 @@ import { environment } from "src/environments/environment";
 import { Item } from "../models/items/item.model";
 
 @Injectable()
-export class ShopService{
+export class ItemService{
     private readonly BACKEND_URL = environment.apiUrl + '/items/';
     constructor(private http:HttpClient){}
 

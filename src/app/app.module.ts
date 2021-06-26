@@ -48,7 +48,7 @@ import { TimeLeftPipe } from './publications/pipes/time-left.pipe';
 import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
 import { CharacterService } from './services/character.service';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
-import { ShopService } from './services/shop.service';
+import { ItemService } from './services/item.service';
 import { ShopComponent } from './city/shop/shop.component';
 
 
@@ -106,7 +106,7 @@ import { ShopComponent } from './city/shop/shop.component';
     EventHandler,
     PublicationService,
     CharacterService,
-    ShopService,
+    ItemService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
     {provide: 'SocialAuthServiceConfig',
     useValue: {

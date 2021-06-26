@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShopService } from 'src/app/services/shop.service';
+import { ItemService } from 'src/app/services/item.service';
 import { Item } from 'src/app/models/items/item.model'
 
 @Component({
@@ -9,10 +9,10 @@ import { Item } from 'src/app/models/items/item.model'
 })
 export class ShopComponent implements OnInit {
 
-  constructor(private shopService:ShopService) { }
+  constructor(private itemService:ItemService) { }
 
   ngOnInit() {
-    this.shopService.getItems().subscribe(items=>{
+    this.itemService.getItems().subscribe(items=>{
       items.forEach((item:Item)=>{
         console.log(item.name)
       })
