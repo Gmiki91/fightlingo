@@ -50,6 +50,7 @@ import { CharacterService } from './services/character.service';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
 import { ItemService } from './services/item.service';
 import { ShopComponent } from './city/shop/shop.component';
+import { CharacterDetailsComponent } from './home/character-details/character-details.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { ShopComponent } from './city/shop/shop.component';
     ClassroomComponent,
     QuestionTemplateComponent,
     CharacterSelectorComponent,
+    CharacterDetailsComponent,
     ShopComponent,
     DateAgoPipe,
     MoneyPipe,

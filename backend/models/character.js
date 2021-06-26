@@ -13,7 +13,7 @@ const characterSchema = mongoose.Schema({
     hitpoint:Number,
     equippedStaff:String,
     equippedRobe:String,
-    items:[Object],
+    items:[String],
     brokens:[String],
     confirmed:Boolean,
     isReadyForExam:Boolean,

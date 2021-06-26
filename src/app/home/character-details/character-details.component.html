@@ -1,0 +1,8 @@
+<div *ngIf="(char$ | async) as char">
+  <label>Staff: {{char.equippedStaff?.name}}</label>
+  <br>
+  <label>Robe: {{char.equippedRobe?.name}}</label>
+  <div *ngFor="let item of char.items">
+    <p>{{item.name}} : {{item.qty}}</p>
+  </div>
+</div>

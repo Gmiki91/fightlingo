@@ -35,8 +35,8 @@ router.post('/create', authCheck, (req, res, next) => {
         money: 3,
         equippedStaff: null,
         equippedRobe: "robe00",
-        items: null,
-        brokens: null,
+        items: [],
+        brokens: [],
         hasShipTicket: false,
         lastLoggedIn: new Date(),
         scrollFinished: new Date(),
@@ -71,7 +71,7 @@ router.get('/currentCharacter', authCheck, (req, res, next) => {
     Character.findOne({ _id: new ObjectId(req.userData.characterId) },)
         .then((char) => {
             const token = getToken(char);
-            return res.status(200).send({ char: char, token: token })
+            return res.status(200).send({ char: char, token: token, items:char.items })
         })
         .catch(err => {
             return res.status(500).json({ error: err });
@@ -149,10 +149,21 @@ router.patch('/updateMoney', authCheck, (req, res, next) => {
 })
 
 router.patch('/giveMoney', (req, res, next) => {
-    Character.updateOne({ _id: req.body.currentCharacter },
+    Character.updateOne({ _id: req.body.id },
         { $inc: { money: req.body.amount } })
         .then(() => {
             return res.status(200).send({ message: "money sent" });
+        });
+})
+
+router.patch('/buy', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.characterId },
+        {
+            $push: { items: req.body.item._id },
+            $inc: { money: -req.body.item.price }
+        })
+        .then(() => {
+            return res.status(200).send({ message: "item added" });
         });
 })
 

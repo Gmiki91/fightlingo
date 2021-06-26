@@ -1,7 +1,7 @@
 import { Item } from "./item.model";
 
 export class Potion implements Item{    
-    constructor(public pic:string, public name: string, public price:number){
+    constructor(public pic:string, public name: string, public price:number, public qty:number){
     }
   
 }

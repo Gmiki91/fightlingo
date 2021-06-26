@@ -3,7 +3,7 @@ const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 const Item = require("../models/item");
 
-router.get('/', authCheck, (req,res,next)=>{
+router.get('/all', authCheck, (req,res,next)=>{
     Item.find({$or:
         [
         {level: { $lte:req.userData.level}},
@@ -12,6 +12,11 @@ router.get('/', authCheck, (req,res,next)=>{
     .then(result =>{
         return res.json(result);
     })
+})
+
+router.get('/',authCheck,(req,res,next)=>{
+    Item.find({_id:{$in:req.query.items}})
+    .then(result=>{return res.json(result)})
 })
 
 module.exports = router;

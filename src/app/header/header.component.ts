@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   warning: boolean;
   loggedIn: boolean;
+  
   overdueSub: Subscription = Subscription.EMPTY;
   userSub: Subscription = Subscription.EMPTY;
   charSub: Subscription = Subscription.EMPTY;

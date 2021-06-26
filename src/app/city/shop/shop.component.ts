@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemService } from 'src/app/services/item.service';
 import { Item } from 'src/app/models/items/item.model'
+import { Observable } from 'rxjs';
+import { CharacterService } from 'src/app/services/character.service';
 
 @Component({
   selector: 'app-shop',
@@ -9,14 +11,16 @@ import { Item } from 'src/app/models/items/item.model'
 })
 export class ShopComponent implements OnInit {
 
-  constructor(private itemService:ItemService) { }
+  items$: Observable<Item[]>
+  constructor(private itemService:ItemService, private charService:CharacterService) { }
 
   ngOnInit() {
-    this.itemService.getItems().subscribe(items=>{
-      items.forEach((item:Item)=>{
-        console.log(item.name)
-      })
-    })
+    this.items$=this.itemService.getAllItems();
+  }
+
+  onBuy(item:Item):void{
+    console.log(item.name);
+    this.charService.buy(item);
   }
 
 }

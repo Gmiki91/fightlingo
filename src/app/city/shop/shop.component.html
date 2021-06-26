@@ -1,1 +1,6 @@
 <a routerLink="/city">Back to the city</a>
+
+<div *ngFor="let item of items$ | async">
+  <label>{{item.name}}</label>
+  <button (click)="onBuy(item)">Buy</button>
+</div>

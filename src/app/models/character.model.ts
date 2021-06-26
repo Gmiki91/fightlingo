@@ -1,5 +1,7 @@
 import { Language } from '../language.enum';
-import { ItemBox } from './items/itembox.model';
+import { Item } from './items/item.model';
+import { Robe } from './items/robe.model';
+import { Staff } from './items/staff.model';
 
 export interface Character{
     _id?:string;
@@ -12,9 +14,9 @@ export interface Character{
     strength:number;
     hitpoint:number;
     money:number;
-    equippedStaff:string,
-    equippedRobe:string,
-    items:ItemBox[],
+    equippedStaff:Staff,
+    equippedRobe:Robe,
+    items:Item[],
     brokens:string[],
     confirmed:boolean;
     hasShipTicket:boolean;

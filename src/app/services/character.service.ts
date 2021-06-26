@@ -1,10 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { first, flatMap, map, switchMap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Language } from "../language.enum";
 import { Character } from "../models/character.model";
+import { Item } from "../models/items/item.model";
+import { ItemService } from "./item.service";
 
 
 @Injectable()
@@ -14,18 +16,18 @@ export class CharacterService {
     private updatedCharacter = new BehaviorSubject<Character>(null);
     private updatedCharacterList = new BehaviorSubject<Character[]>(null);
     public character$: Observable<Character> = this.updatedCharacter.asObservable();
-    public characterList$: Observable<Character[]>=this.updatedCharacterList.asObservable();
-    public currentCharConfirmed:boolean;
-    constructor(private http: HttpClient) { }
+    public characterList$: Observable<Character[]> = this.updatedCharacterList.asObservable();
+    public currentCharConfirmed: boolean;
+    constructor(private http: HttpClient, private itemService: ItemService) { }
 
     getCharactersByUserId() {
-        return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId').subscribe(list=>{
+        return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId').subscribe(list => {
             this.updatedCharacterList.next(list);
         })
     }
 
-    createCharacter(name:string, avatar:string, language:Language) {
-        return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', {name:name, avatar:avatar, language:language}).pipe(map(result => {
+    createCharacter(name: string, avatar: string, language: Language) {
+        return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', { name: name, avatar: avatar, language: language }).pipe(map(result => {
             localStorage.setItem(environment.JWT_TOKEN, result.token);
             this.getCharactersByUserId();
             return result.char._id;
@@ -33,11 +35,18 @@ export class CharacterService {
     }
 
     getCurrentCharacter() {
-        this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter' ).subscribe(result => {
-            localStorage.setItem(environment.JWT_TOKEN, result.token);
-            this.updatedCharacter.next(result.char);
-            this.currentCharConfirmed=result.char.confirmed;
-        })
+        this.http.get<{ char: Character, token: string, items:string[] }>(this.BACKEND_URL + 'currentCharacter')
+            .subscribe(result => {
+                if (result.char.items.length > 0) {
+                    return this.itemService.getItems(result.items).pipe(first()).subscribe(pas => {
+                        result.char.items = pas;
+                        this.refreshCharacter(result);
+                    })
+                } else {
+                    this.refreshCharacter(result);
+                }
+
+            })
     }
 
     confirmCharacter() {
@@ -88,5 +97,17 @@ export class CharacterService {
             .pipe(map(() => {
                 this.getCurrentCharacter();
             }));
+    }
+
+    buy(item: Item) {
+        this.http.patch(this.BACKEND_URL + 'buy', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
+    private refreshCharacter(result: { char: Character, token: string }): void {
+        localStorage.setItem(environment.JWT_TOKEN, result.token);
+        this.updatedCharacter.next(result.char);
+        this.currentCharConfirmed = result.char.confirmed;
     }
 }
