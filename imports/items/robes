@@ -1,0 +1,17 @@
+{
+    "_id":"robe01",
+    "name":"Acolyte robe",
+    "price":70,
+    "pic":"url",
+    "level":1,
+    "capacity":1
+}
+
+{
+    "_id":"robe00",
+    "name":"Novice robe",
+    "price":15,
+    "pic":"url",
+    "level":0,
+    "capacity":0
+}

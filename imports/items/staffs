@@ -1,0 +1,21 @@
+{
+    "_id":"staff0101",
+     "name":"Kutyabot",
+    "price":7,
+    "pic":"url",
+    "pwr":8,
+    'level':1,
+    "style":"earth",
+    "rarity":"common"
+}
+
+{
+    "_id":"staff0102",
+     "name":"Szú rágta pálca",
+    "price":8,
+    "pic":"url",
+    'level':1,
+    "pwr":9,
+    "style":"water",
+    "rarity":"common"
+}

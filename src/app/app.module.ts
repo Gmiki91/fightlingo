@@ -48,6 +48,8 @@ import { TimeLeftPipe } from './publications/pipes/time-left.pipe';
 import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
 import { CharacterService } from './services/character.service';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
+import { ShopService } from './services/shop.service';
+import { ShopComponent } from './city/shop/shop.component';
 
 
 @NgModule({
@@ -68,11 +70,12 @@ import { CharacterSelectorComponent } from './home/character-selector/character-
     AllPubComponent,
     ClassroomComponent,
     QuestionTemplateComponent,
+    CharacterSelectorComponent,
+    ShopComponent,
     DateAgoPipe,
     MoneyPipe,
     TimeLeftPipe,
     TimeLeftTitlePipe,
-    CharacterSelectorComponent
   ],
   imports: [
     FormsModule,
@@ -103,6 +106,7 @@ import { CharacterSelectorComponent } from './home/character-selector/character-
     EventHandler,
     PublicationService,
     CharacterService,
+    ShopService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
     {provide: 'SocialAuthServiceConfig',
     useValue: {

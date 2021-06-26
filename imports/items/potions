@@ -1,0 +1,23 @@
+{
+    "_id":"potion1",
+    "name":"Small potion",
+    "price":5,
+    "pic":"url",
+    "hpModifier":10
+}
+
+{
+    "_id":"potion2",
+    "name":"Medium potion",
+    "price":15,
+    "pic":"url",
+    "hpModifier":30
+}
+
+{
+    "_id":"potion3",
+    "name":"Large potion",
+    "price":45,
+    "pic":"url",
+    "hpModifier":90
+}

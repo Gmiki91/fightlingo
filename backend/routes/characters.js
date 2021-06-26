@@ -33,6 +33,10 @@ router.post('/create', authCheck, (req, res, next) => {
         strength: 1,
         hitpoint: 1,
         money: 3,
+        equippedStaff: null,
+        equippedRobe: "robe00",
+        items: null,
+        brokens: null,
         hasShipTicket: false,
         lastLoggedIn: new Date(),
         scrollFinished: new Date(),
@@ -56,7 +60,7 @@ router.post('/create', authCheck, (req, res, next) => {
         })
 });
 
-router.get('/findByUserId',authCheck, (req, res, next) => {
+router.get('/findByUserId', authCheck, (req, res, next) => {
     Character.find({ userId: new ObjectId(req.userData.id) })
         .then((result) => {
             return res.json(result);

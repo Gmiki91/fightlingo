@@ -14,6 +14,7 @@ import { IntroComponent } from './auth/intro/intro.component';
 import { NotConfirmedGuard } from './guards/not-confirmed.guard';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
+import { ShopComponent } from './city/shop/shop.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoggedOutGuard] },
   { path: 'signup', component: SignUpComponent, canActivate: [LoggedOutGuard] },
   { path: 'city', component: CityComponent, canActivate: [ConfirmedGuard] },
+  { path: 'shop', component: ShopComponent, canActivate: [ConfirmedGuard] },
   { path: 'character-selector', component: CharacterSelectorComponent, canActivate: [LoggedInGuard] },
   { path: 'library', component: LibraryComponent, canActivate: [ConfirmedGuard] },
   { path: 'guild', component: GuildComponent, canActivate: [ConfirmedGuard] },

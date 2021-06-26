@@ -1,6 +1,8 @@
-//mongoexport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/funlingo --collection sentences --out sajt
-//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection russian_sentences --file imports/languages/russian
-//mongoimport --uri mongodb+srv://miki:FwhXUcInB4tqWK8L@cluster0.hakyf.mongodb.net/fightlingo --collection scrolls --file imports/scrolls
+//mongoexport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/funlingo --collection sentences --out sajt
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection russian_sentences --file imports/languages/russian
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection items --file imports/items/potions
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection items --file imports/items/staffs
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection items --file imports/items/robes
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,6 +14,7 @@ const progressRoutes = require('./routes/progress');
 const scrollsRoute=require('./routes/scrolls');
 const publicationsRoute=require('./routes/publications');
 const charactersRoute = require('./routes/characters');
+const itemsRoute = require('./routes/items');
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -45,4 +48,5 @@ app.use("/api/progress",progressRoutes);
 app.use("/api/scrolls",scrollsRoute);
 app.use("/api/publications", publicationsRoute);
 app.use("/api/characters", charactersRoute);
+app.use("/api/items", itemsRoute);
 module.exports=app;

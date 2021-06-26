@@ -1,4 +1,5 @@
 import { Language } from '../language.enum';
+import { ItemBox } from './items/itembox.model';
 
 export interface Character{
     _id?:string;
@@ -11,6 +12,10 @@ export interface Character{
     strength:number;
     hitpoint:number;
     money:number;
+    equippedStaff:string,
+    equippedRobe:string,
+    items:ItemBox[],
+    brokens:string[],
     confirmed:boolean;
     hasShipTicket:boolean;
     isReadyForExam:boolean;
