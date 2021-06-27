@@ -1,4 +1,5 @@
 import { Item } from "./item.model";
+import { ItemType } from "./itemType.model";
 import { Rarity } from "./rarity.enum";
 import { Style } from "./style.enum";
 
@@ -13,6 +14,6 @@ export class Staff implements Item {
         public style: Style,
         public rarity: Rarity,
         public qty:number,
-        public equippable:boolean,
+        public type:ItemType,
     ) {}
 }

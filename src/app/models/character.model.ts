@@ -16,7 +16,7 @@ export interface Character{
     money:number;
     equippedStaff:Staff,
     equippedRobe:Robe,
-    items:Item[],
+    items:string[],
     brokens:string[],
     confirmed:boolean;
     hasShipTicket:boolean;

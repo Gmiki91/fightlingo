@@ -37,19 +37,11 @@ export class CharacterService {
     }
 
     getCurrentCharacter() {
-        this.http.get<{ char: Character, token: string, items: string[] }>(this.BACKEND_URL + 'currentCharacter')
-            .subscribe(result => {
-                if (result.char.items.length > 0) {
-                    return this.itemService.getItems(result.items).pipe(first()).subscribe(items => {
-                        result.char.items = items;
-                        this.checkEquippedStuff(result.char);
-                        this.refreshCharacter(result);
-                    })
-                } else {
-                    this.refreshCharacter(result);
-                }
-
-            })
+        this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter' ).subscribe(result => {
+            localStorage.setItem(environment.JWT_TOKEN, result.token);
+            this.updatedCharacter.next(result.char);
+            this.currentCharConfirmed=result.char.confirmed;
+        })
     }
 
     confirmCharacter() {
@@ -108,36 +100,16 @@ export class CharacterService {
         })
     }
 
-    equipRobe(item: Item) {
+    equipRobe(item: Robe) {
         this.http.patch(this.BACKEND_URL + 'equipRobe', { item: item }).subscribe(() => {
             this.getCurrentCharacter();
         })
     }
-
+  
     equipStaff(item: Item) {
         this.http.patch(this.BACKEND_URL + 'equipStaff', { item: item }).subscribe(() => {
             this.getCurrentCharacter();
         })
     }
 
-    private refreshCharacter(result: { char: Character, token: string }): void {
-        localStorage.setItem(environment.JWT_TOKEN, result.token);
-        this.updatedCharacter.next(result.char);
-        this.currentCharConfirmed = result.char.confirmed;
-    }
-
-    private checkEquippedStuff(char: Character) {
-        if (char.equippedRobe) {
-            char.items.forEach(item => {
-                if (item._id === char.equippedRobe.toString())
-                    char.equippedRobe = item as Robe;
-            })
-        }
-        if (char.equippedStaff) {
-            char.items.forEach(item => {
-                if (item._id === char.equippedStaff.toString())
-                    char.equippedStaff = item as Staff;
-            })
-        }
-    }
 }

@@ -71,7 +71,7 @@ router.get('/currentCharacter', authCheck, (req, res, next) => {
     Character.findOne({ _id: new ObjectId(req.userData.characterId) },)
         .then((char) => {
             const token = getToken(char);
-            return res.status(200).send({ char: char, token: token, items:char.items })
+            return res.status(200).send({ char: char, token: token})
         })
         .catch(err => {
             return res.status(500).json({ error: err });
@@ -157,6 +157,7 @@ router.patch('/equipRobe', authCheck, (req, res, next) => {
             return res.status(200).send(user);
         });
 })
+
 
 router.patch('/updateMoney', authCheck, (req, res, next) => {
     Character.updateOne({ _id: req.userData.characterId },

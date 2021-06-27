@@ -5,11 +5,7 @@ const itemSchema = mongoose.Schema({
     pic:String,
     price:Number,
     name:String,
-    level:Number,
-    capacity:Number,
-    pwr:Number,
-    Style:String,
-    Rarity:String
+    level:Number
 })
 
 module.exports=mongoose.model("Item",itemSchema);

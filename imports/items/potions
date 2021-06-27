@@ -4,7 +4,8 @@
     "price":5,
     "pic":"url",
     "hpModifier":10,
-    "equippable":false
+    "weight":3,
+    "type":"potion"
 }
 
 {
@@ -13,7 +14,8 @@
     "price":15,
     "pic":"url",
     "hpModifier":30,
-    "equippable":false
+    "weight":5,
+    "type":"potion"
 }
 
 {
@@ -22,5 +24,6 @@
     "price":45,
     "pic":"url",
     "hpModifier":90,
-    "equippable":false
+    "weight":15,
+    "type":"potion"
 }

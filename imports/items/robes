@@ -4,8 +4,9 @@
     "price":70,
     "pic":"url",
     "level":1,
-    "capacity":1,
-    "equippable":true
+    "currentCapacity":0,
+    "maxCapacity":10,
+     "type":"robe"
 }
 
 {
@@ -14,6 +15,7 @@
     "price":15,
     "pic":"url",
     "level":0,
-    "capacity":0,
-    "equippable":true
+    "currentCapacity":0,
+    "maxCapacity":0,
+     "type":"robe"
 }

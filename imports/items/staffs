@@ -7,7 +7,7 @@
     "level":1,
     "style":"earth",
     "rarity":"common",
-    "equippable":true
+    "type":"staff"
 }
 
 {
@@ -19,5 +19,5 @@
     "pwr":9,
     "style":"water",
     "rarity":"common",
-    "equippable":true
+    "type":"staff"
 }
