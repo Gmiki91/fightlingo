@@ -8,6 +8,7 @@ export class Potion implements Item {
         public price: number,
         public qty: number,
         public weight: number,
+        public hpModifier:number,
         public type: ItemType) {
     }
 

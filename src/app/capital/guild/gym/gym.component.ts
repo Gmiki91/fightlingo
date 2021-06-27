@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { Character } from 'src/app/models/character.model';
+import { Item } from 'src/app/models/items/item.model';
+import { Potion } from 'src/app/models/items/potion.model';
 import { Style } from 'src/app/models/items/style.enum';
 import { OnlineUser } from 'src/app/models/online-user.model';
-import { User } from 'src/app/models/user.model';
+import { CharacterService } from 'src/app/services/character.service';
 
 @Component({
   selector: 'app-gym',
@@ -15,8 +17,8 @@ export class GymComponent implements OnInit, AfterViewInit {
   @Output() fightFinishedEmitter: EventEmitter<boolean> = new EventEmitter();
   @Input() socket: any;
   @Input() enemy: OnlineUser;
-  @Input() user: Character;
-  @Input() isExam:boolean;
+  @Input() char: Character;
+  @Input() isExam: boolean;
 
   selectedButton;
   readyToAttack: boolean;
@@ -27,10 +29,11 @@ export class GymComponent implements OnInit, AfterViewInit {
   cooldown: number = 5;
   subscription: Subscription;
   path: string;
+  removableItems:Item[]=[];
   //temporary
   count: number = 0;
 
-  constructor() { }
+  constructor(private charService: CharacterService) { }
 
   ngOnInit(): void {
     this.path = "../../assets/duel.png";
@@ -41,7 +44,7 @@ export class GymComponent implements OnInit, AfterViewInit {
       this.socket.on("attack", spell => {
         this.takeAHit(spell);
       });
-      this.socket.on("win",()=>{
+      this.socket.on("win", () => {
         this.youWon();
       })
     }
@@ -75,17 +78,27 @@ export class GymComponent implements OnInit, AfterViewInit {
     }
   }
 
+  heal(poti: Potion): void {
+    this.char.hitpoint += poti.hpModifier;
+    const index = this.char.pocket.indexOf(poti);
+    this.char.pocket.splice(index, 1);
+    this.removableItems.push(poti);
+  //  this.charService.removeItem(poti as Item);
+    this.readyToAttack = false;
+    this.nextTurn();
+  }
+
   attack(): void {
     this.playAttackSound();
     this.path = "../../assets/fromleft.gif";
-    if (this.socket && !this.isExam){
+    if (this.socket && !this.isExam) {
       this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
     }
     this.readyToAttack = false;
     setTimeout(() => {
       this.path = "../../assets/duel.png";
       this.count++;
-      if ( this.count === 3 && (!this.socket || this.isExam))
+      if (this.count === 3 && (!this.socket || this.isExam))
         this.fightFinishedEmitter.emit(true);
       this.nextTurn();
     }, 1000);
@@ -95,20 +108,23 @@ export class GymComponent implements OnInit, AfterViewInit {
     this.playAttackSound();
     this.path = "../../assets/fromright.gif";
     let damage = this.amountOfDamage(spell);
-    this.user.hitpoint = this.user.hitpoint - damage;
+    this.char.hitpoint = this.char.hitpoint - damage;
+    console.log("damage", damage);
+    console.log(this.char.hitpoint);
     setTimeout(() => {
       this.path = "../../assets/duel.png";
     }, 1000);
 
-    if (this.user.hitpoint < 1) {
-      this.socket.emit("win", {  channel: this.enemy.socketId });
+    if (this.char.hitpoint < 1) {
+      this.socket.emit("win", { channel: this.enemy.socketId });
+      this.charService.removeItems(this.removableItems);
       this.fightFinishedEmitter.emit(false);
     }
   };
 
   private nextTurn(): void {
     this.quizType = null;
-   
+
     this.spellType = null;
     this.selectedButton = null;
     this.miss = false;
@@ -124,7 +140,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     audio.play();
   }
 
-  private youWon():void{
+  private youWon(): void {
+    this.charService.removeItems(this.removableItems);
     this.fightFinishedEmitter.emit(true);
   }
 

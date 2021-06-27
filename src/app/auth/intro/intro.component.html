@@ -1,4 +1,4 @@
-<app-gym *ngIf="showGym" [user]="user" (fightFinishedEmitter)="fightFinished($event)"></app-gym>
+<app-gym *ngIf="showGym" [char]="user" (fightFinishedEmitter)="fightFinished($event)"></app-gym>
 <div *ngIf="!showGym">
     <button *ngIf="isBeginner" (click)="onNotes()">Check notes</button>
     <button *ngIf="!isBeginner || notesChecked" (click)="onTakeExam()">Take exam</button>

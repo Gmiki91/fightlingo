@@ -186,6 +186,17 @@ router.patch('/buy', authCheck, (req, res, next) => {
         });
 })
 
+router.patch('/removeItems', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.characterId },
+        {
+            $pullAll: { pocket: req.body.items },
+        })
+        .then(() => {
+            return res.status(200).send({ message: "item removed from pocket" });
+        });
+})
+
+
 router.patch('/putInPocket', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char=>{
         const index = char.items.findIndex(element => element === req.body.item._id);

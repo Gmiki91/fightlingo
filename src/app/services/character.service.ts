@@ -1,14 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { first, map } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { Language } from "../language.enum";
 import { Character } from "../models/character.model";
 import { Item } from "../models/items/item.model";
 import { Robe } from "../models/items/robe.model";
-import { Staff } from "../models/items/staff.model";
-import { ItemService } from "./item.service";
 
 
 @Injectable()
@@ -20,7 +18,7 @@ export class CharacterService {
     public character$: Observable<Character> = this.updatedCharacter.asObservable();
     public characterList$: Observable<Character[]> = this.updatedCharacterList.asObservable();
     public currentCharConfirmed: boolean;
-    constructor(private http: HttpClient, private itemService: ItemService) { }
+    constructor(private http: HttpClient) { }
 
     getCharactersByUserId() {
         return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId').subscribe(list => {
@@ -96,6 +94,12 @@ export class CharacterService {
 
     buyItem(item: Item) {
         this.http.patch(this.BACKEND_URL + 'buy', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
+    removeItems(items:Item[]){
+        this.http.patch(this.BACKEND_URL + 'removeItems', { items: items }).subscribe(() => {
             this.getCurrentCharacter();
         })
     }
