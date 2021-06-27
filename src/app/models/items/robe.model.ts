@@ -7,9 +7,7 @@ export class Robe implements Item {
         public name: string,
         public price: number,
         public level: number,
-        public currentCapacity: number,
-        public maxCapacity: number,
-        public pocket:Item[],
+        public capacity: number,
         public qty: number,
         public type:ItemType) {
     }

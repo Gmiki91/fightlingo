@@ -19,8 +19,7 @@ export class ShopComponent implements OnInit {
   }
 
   onBuy(item:Item):void{
-    console.log(item.name);
-    this.charService.buy(item);
+    this.charService.buyItem(item);
   }
 
 }

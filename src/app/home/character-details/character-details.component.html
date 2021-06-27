@@ -3,14 +3,16 @@
   <button *ngIf="char.equippedStaff" (click)="onEquipStaff(null)">Unequip</button>
   <br>
   <label>Robe: {{char.equippedRobe?.name}}</label>
- <!--  <p>Capacity: {{char.equippedRobe?.currentCapacity}} / {{char.equippedRobe?.maxCapacity}}</p>  -->
+  <p>Capacity: {{pocketweight}} / {{char.equippedRobe?.maxCapacity}}</p> 
+  <div *ngFor="let item of char.pocket">{{item.name}}
+    <button (click)="removeFromPocket(item)">Remove</button>
+
+  </div>
   <button *ngIf="char.equippedRobe" (click)="onEquipRobe(null)">Unequip</button>
   <div *ngFor="let item of items$ | async">
     <p>{{item.name}} : {{item.qty}}</p>
     <button *ngIf="item.type ==='robe' && char.equippedRobe?._id!=item._id " (click)="onEquipRobe(item)">Equip</button>
     <button *ngIf="item.type ==='staff' && char.equippedStaff?._id!=item._id " (click)="onEquipStaff(item)">Equip</button>
-     <!-- <button *ngIf="item.type ==='potion' && item.weight + char.equippedRobe?.currentCapacity <= char.equippedRobe?.maxCapacity" (click)="addToPocket(item,char.equippedRobe )">Put in pocket</button>
-  <button *ngIf="item.equippable && char.equippedRobe!=item && char.equippedStaff!=item" (click)="onEquip(item)">Equip</button>
-    <p *ngIf="item.equippable && char.equippedRobe==item || char.equippedStaff==item">Equipped</p> -->
+    <button *ngIf="item.type ==='potion' && pocketweight+item.weight<=char.equippedRobe?.maxCapacity" (click)="addToPocket(item)">Put in pocket</button>
   </div>
 </div>

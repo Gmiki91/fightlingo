@@ -94,12 +94,23 @@ export class CharacterService {
             }));
     }
 
-    buy(item: Item) {
+    buyItem(item: Item) {
         this.http.patch(this.BACKEND_URL + 'buy', { item: item }).subscribe(() => {
             this.getCurrentCharacter();
         })
     }
 
+    putInPocket(item:Item){
+        this.http.patch(this.BACKEND_URL + 'putInPocket', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
+    removeFromPocket(item:Item){
+        this.http.patch(this.BACKEND_URL + 'removeFromPocket', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
     equipRobe(item: Robe) {
         this.http.patch(this.BACKEND_URL + 'equipRobe', { item: item }).subscribe(() => {
             this.getCurrentCharacter();

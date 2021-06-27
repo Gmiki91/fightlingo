@@ -1,5 +1,5 @@
 import { Language } from '../language.enum';
-import { Item } from './items/item.model';
+import { Potion } from './items/potion.model';
 import { Robe } from './items/robe.model';
 import { Staff } from './items/staff.model';
 
@@ -16,6 +16,7 @@ export interface Character{
     money:number;
     equippedStaff:Staff,
     equippedRobe:Robe,
+    pocket:Potion[],
     items:string[],
     brokens:string[],
     confirmed:boolean;

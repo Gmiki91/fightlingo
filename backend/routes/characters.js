@@ -71,7 +71,7 @@ router.get('/currentCharacter', authCheck, (req, res, next) => {
     Character.findOne({ _id: new ObjectId(req.userData.characterId) },)
         .then((char) => {
             const token = getToken(char);
-            return res.status(200).send({ char: char, token: token})
+            return res.status(200).send({ char: char, token: token })
         })
         .catch(err => {
             return res.status(500).json({ error: err });
@@ -183,6 +183,29 @@ router.patch('/buy', authCheck, (req, res, next) => {
         })
         .then(() => {
             return res.status(200).send({ message: "item added" });
+        });
+})
+
+router.patch('/putInPocket', authCheck, (req, res, next) => {
+    Character.findOne({ _id: req.userData.characterId }).then(char=>{
+        const index = char.items.findIndex(element => element === req.body.item._id);
+        char.items.splice(index,1);
+        char.pocket.push(req.body.item);
+        char.save().then(() => {
+            return res.status(200).send({ message: "item put in pocket" });
+        })
+    });
+
+})
+
+router.patch('/removeFromPocket', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.characterId },
+        {
+            $pull: { pocket: req.body.item },
+            $push: { items: req.body.item._id }
+        })
+        .then(() => {
+            return res.status(200).send({ message: "item removed from pocket" });
         });
 })
 

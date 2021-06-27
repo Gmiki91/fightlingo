@@ -16,24 +16,42 @@ import { ItemService } from 'src/app/services/item.service';
 })
 export class CharacterDetailsComponent implements OnInit {
 
-  char$:Observable<Character>;
-  items$:Observable<Item[]>;
-  constructor(private charService:CharacterService, private itemService:ItemService) { }
+  char$: Observable<Character>;
+  items$: Observable<Item[]>;
+  pocketweight:number;
+  constructor(private charService: CharacterService, private itemService: ItemService) { }
 
   ngOnInit() {
-   this.char$= this.charService.character$.pipe(map(char=>{
-     this.items$=this.itemService.getItems(char.items);
-     return char;
-   }));
+    this.char$ = this.charService.character$.pipe(map(char => {
+      this.items$ = this.itemService.getItems(char.items);
+      this.pocketweight = this.getPocketWeight(char.pocket);
+      return char;
+    }));
   }
 
-  onEquipStaff(item:Staff){
-      this.charService.equipStaff(item);
-    
+  getPocketWeight(items:Potion[]):number{
+    let weight =0;
+    items.forEach(item=>{
+      weight+= item.weight;
+    })
+    return weight;
   }
-  onEquipRobe(item:Robe){
-    item.pocket.push()
+
+  onEquipStaff(item: Staff) {
+    this.charService.equipStaff(item);
+  }
+
+  onEquipRobe(item: Robe) {
     this.charService.equipRobe(item);
   }
+
+  addToPocket(item: Item) {
+      this.charService.putInPocket(item);
+  }
+
+  removeFromPocket(item: Item) {
+    this.charService.removeFromPocket(item)
+  }
+
 
 }

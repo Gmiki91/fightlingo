@@ -15,6 +15,7 @@ const characterSchema = mongoose.Schema({
     equippedRobe:Object,
     items:[String],
     brokens:[String],
+    pocket:[Object],
     confirmed:Boolean,
     isReadyForExam:Boolean,
     hasShipTicket:Boolean,
