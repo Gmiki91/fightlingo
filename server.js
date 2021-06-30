@@ -56,7 +56,7 @@ const onlineUsers = {};
 io.on("connection", socket => {
 
   socket.on("attack", adat => {
-    io.to(adat.enemy).emit("attack", adat.spell);
+    io.to(adat.enemy).emit("attack", adat);
   });
 
   socket.on("win", (adat)=>{

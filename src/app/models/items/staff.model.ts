@@ -11,6 +11,7 @@ export class Staff implements Item {
         public price: number,
         public level:number,
         public pwr: number,
+        public criticalHit:number,
         public style: Style,
         public rarity: Rarity,
         public qty:number,

@@ -29,7 +29,8 @@ export class GymComponent implements OnInit, AfterViewInit {
   cooldown: number = 5;
   subscription: Subscription;
   path: string;
-  removableItems:Item[]=[];
+  removableItems: Item[] = [];
+  staffBroke: boolean = false;
   //temporary
   count: number = 0;
 
@@ -41,8 +42,8 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.socket && !this.isExam) {
-      this.socket.on("attack", spell => {
-        this.takeAHit(spell);
+      this.socket.on("attack", data => {
+        this.takeAHit(data);
       });
       this.socket.on("win", () => {
         this.youWon();
@@ -83,7 +84,6 @@ export class GymComponent implements OnInit, AfterViewInit {
     const index = this.char.pocket.indexOf(poti);
     this.char.pocket.splice(index, 1);
     this.removableItems.push(poti);
-  //  this.charService.removeItem(poti as Item);
     this.readyToAttack = false;
     this.nextTurn();
   }
@@ -92,7 +92,9 @@ export class GymComponent implements OnInit, AfterViewInit {
     this.playAttackSound();
     this.path = "../../assets/fromleft.gif";
     if (this.socket && !this.isExam) {
-      this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId });
+      const pwr = this.char.equippedStaff ? this.char.equippedStaff.pwr : this.char.strength;
+      const criticalHit = this.char.equippedStaff ? this.char.equippedStaff.criticalHit : -1;
+      this.socket.emit("attack", { spell: this.spellType, enemy: this.enemy.socketId, pwr: pwr, ch: criticalHit });
     }
     this.readyToAttack = false;
     setTimeout(() => {
@@ -104,13 +106,19 @@ export class GymComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
 
-  private takeAHit(spell: string): void {
+  private takeAHit(data): void {
+    console.log(data);
     this.playAttackSound();
     this.path = "../../assets/fromright.gif";
-    let damage = this.amountOfDamage(spell);
-    this.char.hitpoint = this.char.hitpoint - damage;
-    console.log("damage", damage);
-    console.log(this.char.hitpoint);
+    let damage = this.amountOfDamage(data);
+    if (damage < 0) {
+      //staff breaks
+      this.char.equippedStaff = null;
+      this.staffBroke = true;
+    } else {
+      console.log("dmg ", damage);
+      this.char.hitpoint = this.char.hitpoint - damage;
+    }
     setTimeout(() => {
       this.path = "../../assets/duel.png";
     }, 1000);
@@ -118,6 +126,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     if (this.char.hitpoint < 1) {
       this.socket.emit("win", { channel: this.enemy.socketId });
       this.charService.removeItems(this.removableItems);
+      if (this.staffBroke)
+        this.charService.staffBroke();
       this.fightFinishedEmitter.emit(false);
     }
   };
@@ -142,43 +152,58 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   private youWon(): void {
     this.charService.removeItems(this.removableItems);
+    if (this.staffBroke)
+      this.charService.staffBroke();
     this.fightFinishedEmitter.emit(true);
   }
 
-  private amountOfDamage(enemySpell: string): number {
+  private amountOfDamage(data): number {
+    const enemySpell = data.spell;
+    const rdm = (100 - (Math.random() * 20 - 10)) / 100;
+    console.log(rdm);
+    const ch = data.ch > Math.random() ? 1.5 : 1;
+    if (ch === 1.5) {
+      console.log("critical hit!");
+    }
+    const pwr = data.pwr * rdm * ch;
+
     if (!this.spellType) {
-      return 4;
+      return 1.5 * pwr;
     };
 
     if (enemySpell === Style.Earth) {
       switch (this.spellType) {
         case Style.Earth:
-          return 2;
+          return pwr;
         case Style.Fire:
-          return 1;
+          return 0.5 * pwr;
         case Style.Water:
-          return 3;
+          return this.doBreak() ? -1 : 1.5 * pwr;
       }
     }
     if (enemySpell === Style.Fire) {
       switch (this.spellType) {
         case Style.Earth:
-          return 1;
+          return this.doBreak() ? -1 : 1.5 * pwr;
         case Style.Fire:
-          return 2;
+          return pwr;
         case Style.Water:
-          return 3;
+          return 0.5 * pwr;
       }
     }
     if (enemySpell === Style.Water) {
       switch (this.spellType) {
         case Style.Earth:
-          return 1;
+          return 0.5 * pwr;
         case Style.Fire:
-          return 3;
+          return this.doBreak() ? -1 : 1.5 * pwr;
         case Style.Water:
-          return 1;
+          return pwr;
       }
     }
+  }
+
+  private doBreak(): boolean {
+    return Math.random() < 0.2;
   }
 }
