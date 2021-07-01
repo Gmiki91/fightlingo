@@ -100,8 +100,20 @@ export class CharacterService {
         })
     }
 
+    sellItem(item: Item) {
+        this.http.patch(this.BACKEND_URL + 'sell', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
     removeItems(items:Item[]){
         this.http.patch(this.BACKEND_URL + 'removeItems', { items: items }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
+    repairItem(item:Item){
+        this.http.patch(this.BACKEND_URL + 'repairItem', { item: item }).subscribe(() => {
             this.getCurrentCharacter();
         })
     }

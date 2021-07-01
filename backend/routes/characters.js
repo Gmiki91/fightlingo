@@ -140,13 +140,34 @@ router.patch('/gaveLecture', authCheck, (req, res, next) => {
         });
 })
 
-router.patch('/equipStaff', authCheck, (req, res, next) => {
-    Character.findOneAndUpdate({ _id: req.userData.characterId },
-        { $set: { "equippedStaff": req.body.item } },
-        { new: true },
-        (err, user) => {
-            return res.status(200).send(user);
+router.patch('/equipRobe', authCheck, (req, res, next) => {
+    Character.findOne({ _id: req.userData.characterId }).then(char => {
+        if(req.body.item == null){
+            char.items.push(char.equippedRobe._id);
+        }else{
+            const index = char.items.findIndex(element => element === req.body.item._id);
+            char.items.splice(index, 1);
+        }
+        char.equippedRobe = req.body.item;
+        char.save().then((char) => {
+            return res.status(200).send(char);
         });
+    });
+})
+
+router.patch('/equipStaff', authCheck, (req, res, next) => {
+    Character.findOne({ _id: req.userData.characterId }).then(char => {
+        if(req.body.item == null){
+            char.items.push(char.equippedStaff._id);
+        }else{
+            const index = char.items.findIndex(element => element === req.body.item._id);
+            char.items.splice(index, 1);
+        }
+        char.equippedStaff = req.body.item;
+        char.save().then((char) => {
+            return res.status(200).send(char);
+        });
+    });
 })
 
 router.patch('/brokeCommonStaff', authCheck, (req, res, next) => {
@@ -174,9 +195,13 @@ router.patch('/brokeRareStaff', authCheck, (req, res, next) => {
         });
 })
 
-router.patch('/equipRobe', authCheck, (req, res, next) => {
+router.patch('/repairItem', authCheck, (req, res, next) => {
     Character.findOneAndUpdate({ _id: req.userData.characterId },
-        { $set: { "equippedRobe": req.body.item } },
+        {
+            $push: { items: req.body.item },
+            $pull: { brokens: req.body.item },
+            $inc: { money: -req.body.item.price * 0.66 }
+        },
         { new: true },
         (err, user) => {
             return res.status(200).send(user);
@@ -209,6 +234,17 @@ router.patch('/buy', authCheck, (req, res, next) => {
         .then(() => {
             return res.status(200).send({ message: "item added" });
         });
+})
+
+router.patch('/sell', authCheck, (req, res, next) => {
+    Character.findOne({ _id: req.userData.characterId }).then(char => {
+        const index = char.items.findIndex(element => element === req.body.item._id);
+        char.items.splice(index, 1);
+        char.money += req.body.item.price / 3;
+        char.save().then(() => {
+            return res.status(200).send({ message: "item sold" });
+        })
+    });
 })
 
 router.patch('/removeItems', authCheck, (req, res, next) => {

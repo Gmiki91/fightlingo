@@ -1,6 +1,30 @@
-<a routerLink="/city">Back to the city</a>
-
-<div *ngFor="let item of items$ | async">
-  <label>{{item.name}}</label>
-  <button (click)="onBuy(item)">Buy</button>
+<div>
+  <button (click)="onMatterOfBusiness('buy')">Buy</button>
+  <button (click)="onMatterOfBusiness('sell')">Sell</button>
+  <button (click)="onMatterOfBusiness('repair')">Repair</button>
 </div>
+
+<div *ngIf="matter === 'buy'">
+  <h3>What would you like to buy?</h3>
+  <div *ngFor="let item of items$ | async">
+    <label>{{item.name}}</label>
+    <button (click)="onBuy(item)">Buy</button>
+  </div>
+</div>
+
+<div *ngIf="matter === 'sell'">
+  <h3>What would you like to sell?</h3>
+  <div *ngFor="let item of charItems$ | async">
+    <label>{{item.name}} ({{item.qty}})</label>
+    <button (click)="onSell(item)">Sell</button>
+  </div>
+</div>
+
+<div *ngIf="matter === 'repair'">
+  <h3>What would you like to repair?</h3>
+  <div *ngFor="let item of brokens$ | async">
+    <label>{{item.name}}</label>
+    <button (click)="onRepair(item)">Repair</button>
+  </div>
+</div>
+<a routerLink="/city">Back to the city</a>
