@@ -1,6 +1,6 @@
 <div class="container">
     <img src="assets/background.png">
-    <div *ngIf="loggedIn$ | async">
+    <div *ngIf="loggedIn">
         <div *ngIf="hasCharacter">
             <a class="library_btn" mat-flat-button color=primary routerLinkActive="mat-accent"
                 routerLink="/library">Library</a>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
@@ -13,7 +14,7 @@ import { CharacterService } from '../services/character.service';
 })
 export class HomeComponent implements OnInit {
 
-  loggedIn$: Observable<boolean>;
+  loggedIn: boolean;
   hasCharacter: boolean;
 
   sub: Subscription = Subscription.EMPTY;
@@ -22,16 +23,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loggedIn$ = this.auth.getUpdatedUser().pipe(map(user => {
-      if (user) {
-        this.hasCharacter = this.auth.hasCharacter;
-        if (!this.hasCharacter){
-          Swal.fire("Create a character!");
-          this.router.navigate(["/character-selector"])
-        }
-        return user ? true : false;
-      }
-    }));
+    this.loggedIn = localStorage.getItem(environment.JWT_TOKEN) ? true:false;
   }
 
   toTheCapital(): void {

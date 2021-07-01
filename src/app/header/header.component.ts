@@ -10,6 +10,7 @@ import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
 import { Character } from '../models/character.model';
 import { CharacterService } from '../services/character.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   
   overdueSub: Subscription = Subscription.EMPTY;
-  userSub: Subscription = Subscription.EMPTY;
   charSub: Subscription = Subscription.EMPTY;
   char: Character;
 
@@ -41,7 +41,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.overdueSub?.unsubscribe();
     this.charSub?.unsubscribe();
-    this.userSub?.unsubscribe();
   }
 
   logout(): void {
@@ -60,22 +59,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   private subscribeToUser(): void {
-    this.userSub?.unsubscribe();
-    this.userSub = this.auth.getUpdatedUser().subscribe(user => {
-      if (user) {
-        this.loggedIn = true;
-        if (user.currentCharacter) {
-          this.charSub = this.charService.character$.subscribe((char: Character) => {
-            this.char = char;
-            if (char) {
-              this.quizService.getOverdueSentences().toPromise();
-            }
-          })
-        }
-      } else {
-        this.loggedIn = false;
+    this.loggedIn = localStorage.getItem(environment.JWT_TOKEN) ? true:false;
+    this.charSub = this.charService.character$.subscribe((char: Character) => {
+      this.char = char;
+      if (char) {
+        this.quizService.getOverdueSentences().toPromise();
       }
-    });
+    })
   }
 
   private subscribeToOverdue(): void {
