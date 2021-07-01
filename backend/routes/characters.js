@@ -142,9 +142,10 @@ router.patch('/gaveLecture', authCheck, (req, res, next) => {
 
 router.patch('/equipRobe', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char => {
-        if(req.body.item == null){
+        if(req.body.item == null || char.equippedRobe!=null){
             char.items.push(char.equippedRobe._id);
-        }else{
+        }
+        if(req.body.item != null){
             const index = char.items.findIndex(element => element === req.body.item._id);
             char.items.splice(index, 1);
         }
@@ -157,12 +158,13 @@ router.patch('/equipRobe', authCheck, (req, res, next) => {
 
 router.patch('/equipStaff', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char => {
-        if(req.body.item == null){
+        if(req.body.item == null || char.equippedStaff!=null){
             char.items.push(char.equippedStaff._id);
-        }else{
+        }if(req.body.item != null){
             const index = char.items.findIndex(element => element === req.body.item._id);
             char.items.splice(index, 1);
         }
+        
         char.equippedStaff = req.body.item;
         char.save().then((char) => {
             return res.status(200).send(char);
