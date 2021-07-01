@@ -4,6 +4,7 @@ import { Sentence } from '../models/sentence.model';
 import swal from 'sweetalert';
 import { EventEmitter } from '@angular/core';
 import { Scroll } from '../models/scroll.model';
+import { CharacterService } from '../services/character.service';
 
 @Component({
   selector: 'app-quiz',
@@ -27,7 +28,7 @@ export class QuizComponent implements OnInit, OnChanges {
   fightInProgress: boolean;
   flashCardsInProgress: boolean;
 
-  constructor(private quizService: QuizService) { }
+  constructor(private quizService: QuizService, private charService: CharacterService) { }
 
   ngOnInit(): void {
     if (this.overdueSentences)
@@ -39,7 +40,7 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.quizType === 'fight'){
+    if (this.quizType === 'fight') {
       this.fight();
     }
   }
@@ -64,6 +65,8 @@ export class QuizComponent implements OnInit, OnChanges {
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
       this.quizService.updateSentence(this.sentence._id, 5);
+      if (this.overdueSentences)
+        this.charService.updateMoney(1);
     } else {
       console.log("elbasztad");
       this.quizService.updateSentence(this.sentence._id, 0);
@@ -163,18 +166,18 @@ export class QuizComponent implements OnInit, OnChanges {
 
   private fight() {
     this.fightInProgress = true;
-    if (typeof this.sentences === 'undefined'){
+    if (typeof this.sentences === 'undefined') {
       this.quizService.getFightSentences().toPromise().then((result) => {
         this.sentences = result;
         this.displayFightSentence();
       });
-    }else{
+    } else {
       this.displayFightSentence();
     }
 
   }
 
-  private displayFightSentence(){
+  private displayFightSentence() {
     this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length)];
     this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
   }

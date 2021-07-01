@@ -108,7 +108,6 @@ export class GymComponent implements OnInit, AfterViewInit {
   }
 
   private takeAHit(data): void {
-    console.log(data);
     this.playAttackSound();
     this.path = "../../assets/fromright.gif";
     let damage = this.amountOfDamage(data);
@@ -117,7 +116,6 @@ export class GymComponent implements OnInit, AfterViewInit {
       this.brokenStaff = this.char.equippedStaff;
       this.char.equippedStaff = null;
     } else {
-      console.log("dmg ", damage);
       this.char.hitpoint = this.char.hitpoint - damage;
     }
     setTimeout(() => {
@@ -161,7 +159,6 @@ export class GymComponent implements OnInit, AfterViewInit {
   private amountOfDamage(data): number {
     const enemySpell = data.spell;
     const rdm = (100 - (Math.random() * 20 - 10)) / 100;
-    console.log(rdm);
     const ch = data.ch > Math.random() ? 1.5 : 1;
     if (ch === 1.5) {
       console.log("critical hit!");

@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { map, take } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import swal from 'sweetalert';
-import { AuthService } from "../services/auth.service";
 import { CharacterService } from "../services/character.service";
 
 @Injectable({
@@ -10,29 +11,34 @@ import { CharacterService } from "../services/character.service";
 })
 export class ConfirmedGuard implements CanActivate {
 
-    constructor(private router: Router, private charachterService: CharacterService, private authService: AuthService) { };
-    canActivate(): boolean {
+    constructor(private router: Router, private charachterService: CharacterService) { };
+    canActivate(): Observable<boolean> {
         if (localStorage.getItem(environment.JWT_TOKEN)) {
-            if (this.authService.hasCharacter) {
-                if (this.charachterService.currentCharConfirmed) {
-                    return true;
-                } else if (!this.charachterService.currentCharConfirmed) {
-                    swal("You still have to take your final exam").then(() => {
-                        this.router.navigate(['/intro']);
-                        return false;
-                    })
-                }
-            } else {
-                swal("You have to register at least one character!").then(() => {
-                    this.router.navigate(["/character-selector"]);
-                    return false;
-                })
-            }
+            return this.charachterService.character$
+                .pipe(
+                    take(1),
+                    map((char => {
+                        if (char) {
+                            if (char.confirmed) {
+                                return true;
+                            } else {
+                                swal("You still have to take your final exam").then(() => {
+                                    this.router.navigate(['/intro']);
+                                    return false;
+                                })
+                            }
+                        } else {
+                            this.router.navigate(['/']);
+                            return false;
+                        }
+
+                    })))
         } else {
             swal("You are not logged in!").then(() => {
                 this.router.navigate(['/']);
                 return false;
             })
         }
+
     }
 }

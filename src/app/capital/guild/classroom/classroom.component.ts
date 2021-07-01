@@ -76,7 +76,6 @@ export class ClassroomComponent implements OnInit, OnDestroy {
 
 
   like(value: number): void {
-    console.log(value, typeof value);
     this.pubService.likeQuestion(value, this.currentQuestion._id);
     this.currentQuestion.votedBy.push(this.char._id);
     this.alreadyVoted = true;
