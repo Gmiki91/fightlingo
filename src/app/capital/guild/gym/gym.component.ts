@@ -3,6 +3,7 @@ import { Subscription, timer } from 'rxjs';
 import { Character } from 'src/app/models/character.model';
 import { Item } from 'src/app/models/items/item.model';
 import { Potion } from 'src/app/models/items/potion.model';
+import { Staff } from 'src/app/models/items/staff.model';
 import { Style } from 'src/app/models/items/style.enum';
 import { OnlineUser } from 'src/app/models/online-user.model';
 import { CharacterService } from 'src/app/services/character.service';
@@ -30,7 +31,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   subscription: Subscription;
   path: string;
   removableItems: Item[] = [];
-  staffBroke: boolean = false;
+  brokenStaff: Staff;
   //temporary
   count: number = 0;
 
@@ -113,8 +114,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     let damage = this.amountOfDamage(data);
     if (damage < 0) {
       //staff breaks
+      this.brokenStaff = this.char.equippedStaff;
       this.char.equippedStaff = null;
-      this.staffBroke = true;
     } else {
       console.log("dmg ", damage);
       this.char.hitpoint = this.char.hitpoint - damage;
@@ -126,8 +127,8 @@ export class GymComponent implements OnInit, AfterViewInit {
     if (this.char.hitpoint < 1) {
       this.socket.emit("win", { channel: this.enemy.socketId });
       this.charService.removeItems(this.removableItems);
-      if (this.staffBroke)
-        this.charService.staffBroke();
+      if (this.brokenStaff)
+        this.charService.staffBroke(this.brokenStaff);
       this.fightFinishedEmitter.emit(false);
     }
   };
@@ -152,8 +153,8 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   private youWon(): void {
     this.charService.removeItems(this.removableItems);
-    if (this.staffBroke)
-      this.charService.staffBroke();
+    if (this.brokenStaff)
+      this.charService.staffBroke(this.brokenStaff);
     this.fightFinishedEmitter.emit(true);
   }
 

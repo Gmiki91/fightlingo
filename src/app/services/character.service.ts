@@ -6,7 +6,9 @@ import { environment } from "src/environments/environment";
 import { Language } from "../language.enum";
 import { Character } from "../models/character.model";
 import { Item } from "../models/items/item.model";
+import { Rarity } from "../models/items/rarity.enum";
 import { Robe } from "../models/items/robe.model";
+import { Staff } from "../models/items/staff.model";
 
 
 @Injectable()
@@ -127,7 +129,16 @@ export class CharacterService {
         })
     }
 
-    staffBroke(){
+    staffBroke(staff:Staff){
+        if(staff.rarity===Rarity.COMMON){
+            this.http.patch(this.BACKEND_URL + 'brokeCommonStaff', { item: staff }).subscribe(() => {
+                this.getCurrentCharacter();
+            })
+        }else{
+            this.http.patch(this.BACKEND_URL + 'brokeRareStaff', { item: staff }).subscribe(() => {
+                this.getCurrentCharacter();
+            })
+        }
         
     }
 

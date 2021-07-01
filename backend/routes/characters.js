@@ -149,6 +149,31 @@ router.patch('/equipStaff', authCheck, (req, res, next) => {
         });
 })
 
+router.patch('/brokeCommonStaff', authCheck, (req, res, next) => {
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
+        {
+            $set: { "equippedStaff": null },
+            $pull: { items: req.body.item }
+        },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send(user);
+        });
+})
+
+router.patch('/brokeRareStaff', authCheck, (req, res, next) => {
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
+        {
+            $set: { "equippedStaff": null },
+            $pull: { items: req.body.item },
+            $push: { brokens: req.body.item }
+        },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send(user);
+        });
+})
+
 router.patch('/equipRobe', authCheck, (req, res, next) => {
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         { $set: { "equippedRobe": req.body.item } },
@@ -198,9 +223,9 @@ router.patch('/removeItems', authCheck, (req, res, next) => {
 
 
 router.patch('/putInPocket', authCheck, (req, res, next) => {
-    Character.findOne({ _id: req.userData.characterId }).then(char=>{
+    Character.findOne({ _id: req.userData.characterId }).then(char => {
         const index = char.items.findIndex(element => element === req.body.item._id);
-        char.items.splice(index,1);
+        char.items.splice(index, 1);
         char.pocket.push(req.body.item);
         char.save().then(() => {
             return res.status(200).send({ message: "item put in pocket" });
