@@ -1,7 +1,8 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EventHandler } from '../services/event-handler.service';
 import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
@@ -10,7 +11,6 @@ import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
 import { Character } from '../models/character.model';
 import { CharacterService } from '../services/character.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -19,14 +19,17 @@ import { environment } from 'src/environments/environment';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  warning: boolean;
-  loggedIn: boolean;
-  
+  warningOverdue: boolean;
+  warningNoChar: boolean;
+  warningCharConfirmed: boolean;
+  loggedIn$: Observable<boolean>;
+
   overdueSub: Subscription = Subscription.EMPTY;
   charSub: Subscription = Subscription.EMPTY;
   char: Character;
 
   constructor(
+    private authService: AuthService,
     private charService: CharacterService,
     private quizService: QuizService,
     private auth: AuthService,
@@ -57,12 +60,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-
   private subscribeToUser(): void {
-    this.loggedIn = localStorage.getItem(environment.JWT_TOKEN) ? true:false;
+    this.loggedIn$ = this.authService.getUpdatedUser().pipe(map(user => {
+      if (user)
+        this.warningNoChar = user.currentCharacter ? false : true;
+      return user ? true : false;
+    }))
     this.charSub = this.charService.character$.subscribe((char: Character) => {
       this.char = char;
-      if (char) {
+      this.warningCharConfirmed = char ? !char.confirmed : null;
+      if (char && char.confirmed) {
         this.quizService.getOverdueSentences().toPromise();
       }
     })
@@ -75,10 +82,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.overdueSub = this.quizService.getOverdueList()
       .subscribe((sentences: Sentence[]) => {
         if (sentences && sentences.length != 0) {
-          this.warning = true;
+          this.warningOverdue = true;
           this.sortEvents(sentences.length);
         } else {
-          this.warning = false;
+          this.warningOverdue = false;
           this.eventHandler.reset();
         }
       });

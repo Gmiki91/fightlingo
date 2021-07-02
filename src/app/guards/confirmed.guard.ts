@@ -18,20 +18,12 @@ export class ConfirmedGuard implements CanActivate {
                 .pipe(
                     take(1),
                     map((char => {
-                        if (char) {
-                            if (char.confirmed) {
-                                return true;
-                            } else {
-                                swal("You still have to take your final exam").then(() => {
-                                    this.router.navigate(['/intro']);
-                                    return false;
-                                })
-                            }
+                        if (char && char.confirmed) {
+                            return true;
                         } else {
                             this.router.navigate(['/']);
                             return false;
                         }
-
                     })))
         } else {
             swal("You are not logged in!").then(() => {

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import { Observable, of, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
@@ -15,20 +13,29 @@ import { CharacterService } from '../services/character.service';
 export class HomeComponent implements OnInit {
 
   loggedIn: boolean;
-  hasCharacter: boolean;
+  hasCharacter$: Observable<boolean>;
 
-  sub: Subscription = Subscription.EMPTY;
 
   constructor(private auth: AuthService, private charService: CharacterService, private router: Router) { }
 
 
   ngOnInit(): void {
-    this.loggedIn = localStorage.getItem(environment.JWT_TOKEN) ? true:false;
-  }
+    this.hasCharacter$ = this.auth.getUpdatedUser().pipe(switchMap((user) => {
+      if (user) {
+        this.loggedIn = true;
+        return this.charService.character$.pipe(map(char => {
+          return char ? true : false;
+        }));
+      } else{
+        this.loggedIn = false;
+        return of(false);
+      }
+    }))
+}
 
-  toTheCapital(): void {
-    this.router.navigate(['/guild']);
-  }
+toTheCapital(): void {
+  this.router.navigate(['/guild']);
+}
   /*
     onMailBox(): void {
       if (this.authService.user.currentStoryLearned && !this.authService.user.currentStorySent) {

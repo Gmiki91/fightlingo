@@ -19,7 +19,6 @@ export class CharacterService {
     private updatedCharacterList = new BehaviorSubject<Character[]>(null);
     public character$: Observable<Character> = this.updatedCharacter.asObservable();
     public characterList$: Observable<Character[]> = this.updatedCharacterList.asObservable();
-    public currentCharConfirmed: boolean;
     constructor(private http: HttpClient) { }
 
     getCharactersByUserId() {
@@ -40,7 +39,6 @@ export class CharacterService {
         this.http.get<{ char: Character, token: string }>(this.BACKEND_URL + 'currentCharacter' ).subscribe(result => {
             localStorage.setItem(environment.JWT_TOKEN, result.token);
             this.updatedCharacter.next(result.char);
-            this.currentCharConfirmed=result.char.confirmed;
         })
     }
 
