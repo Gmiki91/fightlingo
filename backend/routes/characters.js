@@ -82,6 +82,10 @@ router.get('/finishedAt', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }, 'scrollFinished').then((result) => { return res.status(200).send(result.scrollFinished) });
 })
 
+router.delete('/deleteCharacter/:id', authCheck, (req,res,next)=>{
+    Character.deleteOne({ _id: req.params.id }).then(()=>{return res.status(200).json("Character deleted")});
+})
+
 router.patch('/rank', authCheck, (req, res, next) => {
     initProgress(req.userData.language, req.userData.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },

@@ -21,7 +21,7 @@ export class CharacterService {
     public characterList$: Observable<Character[]> = this.updatedCharacterList.asObservable();
     constructor(private http: HttpClient) { }
 
-    getCharactersByUserId() {
+    getCharacters() {
         return this.http.get<Character[]>(this.BACKEND_URL + 'findByUserId').subscribe(list => {
             this.updatedCharacterList.next(list);
         })
@@ -30,9 +30,16 @@ export class CharacterService {
     createCharacter(name: string, avatar: string, language: Language) {
         return this.http.post<{ char: Character, token: string }>(this.BACKEND_URL + 'create', { name: name, avatar: avatar, language: language }).pipe(map(result => {
             localStorage.setItem(environment.JWT_TOKEN, result.token);
-            this.getCharactersByUserId();
+            this.getCharacters();
             return result.char._id;
         }))
+    }
+
+    deleteCharacter(id:string){
+        this.http.delete(`${environment.apiUrl}/progress/` + id).toPromise();
+        this.http.delete(this.BACKEND_URL + 'deleteCharacter/' + id).subscribe(()=>{
+            this.getCharacters();
+        })
     }
 
     getCurrentCharacter() {

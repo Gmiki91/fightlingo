@@ -10,4 +10,10 @@ router.get('/:sentenceId',authCheck,(req,res,next)=>{
         res.status(200).json(progress);})
 });
 
+router.delete('/:charId', authCheck, (req,res,next)=>{
+    Progress.deleteMany({characterId:ObjectId(req.params.charId)}).then(()=>{
+        return res.status(200).json("Progress deleted");
+    })
+})
+
 module.exports= router;

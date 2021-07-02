@@ -1,6 +1,7 @@
 <div *ngFor="let char of charList$ | async ">
   <p>{{char.name}}</p>
   <button *ngIf = "char._id != (user$ | async).currentCharacter" (click)="onSelectChar(char._id)">Select </button>
+  <button *ngIf = "char._id != (user$ | async).currentCharacter" (click)="onDeleteChar(char._id)">Delete </button>
 </div>
 <button *ngIf="!createCharacterClicked" (click)="onCreate()">Create new character</button>
 <div *ngIf="createCharacterClicked">

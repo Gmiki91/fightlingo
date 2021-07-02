@@ -31,7 +31,7 @@ export class CharacterSelectorComponent implements OnInit {
   constructor(private charService: CharacterService, private auth: AuthService) { }
 
   ngOnInit() {
-    this.charService.getCharactersByUserId();
+    this.charService.getCharacters();
     this.charList$ = this.charService.characterList$;
     this.user$ = this.auth.getUpdatedUser().pipe(map((user: User) => {
       return user
@@ -46,6 +46,10 @@ export class CharacterSelectorComponent implements OnInit {
 
   onSelectChar(charId: string): void {
     this.auth.selectCurrentCharacter(charId);
+  }
+
+  onDeleteChar(charId: string): void {
+    this.charService.deleteCharacter(charId);
   }
 
   finishCharacter(form: NgForm): void {
