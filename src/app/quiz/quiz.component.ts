@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { CharacterService } from '../services/character.service';
 import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
-import swal from 'sweetalert';
-import { EventEmitter } from '@angular/core';
 import { Scroll } from '../models/scroll.model';
-import { CharacterService } from '../services/character.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-quiz',
@@ -14,6 +14,7 @@ import { CharacterService } from '../services/character.service';
 export class QuizComponent implements OnInit, OnChanges {
 
   @ViewChild("input") userAnswer;
+  @Input() isExam:boolean;
   @Input() quizType: string;
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
@@ -27,6 +28,7 @@ export class QuizComponent implements OnInit, OnChanges {
   quizInProgress: boolean;
   fightInProgress: boolean;
   flashCardsInProgress: boolean;
+  sentenceIndex = 0;
 
   constructor(private quizService: QuizService, private charService: CharacterService) { }
 
@@ -40,7 +42,7 @@ export class QuizComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.quizType === 'fight') {
+    if (this.quizType === 'fight' || this.quizType === 'test') {
       this.fight();
     }
   }
@@ -54,6 +56,10 @@ export class QuizComponent implements OnInit, OnChanges {
     } else {
       console.log("elbasztad");
       this.fightQuizResult.emit(false);
+    }
+    this.sentenceIndex++;
+    if(this.isExam && this.sentences.length===this.sentenceIndex){
+      this.exitQuizEmitter.emit(true);
     }
     this.fightInProgress = false;
     this.sentence = null;
@@ -132,6 +138,7 @@ export class QuizComponent implements OnInit, OnChanges {
     this.flashCardsInProgress = false;
     this.exitQuizEmitter.emit(false); //to quit from the quiz, didnt make a new emitter for the flashcards
   }
+
   showTranslation(): void {
     this.translation = this.sentence.english[0];
   }
@@ -167,18 +174,23 @@ export class QuizComponent implements OnInit, OnChanges {
   private fight() {
     this.fightInProgress = true;
     if (typeof this.sentences === 'undefined') {
-      this.quizService.getFightSentences().toPromise().then((result) => {
+      let fightSentences;
+      if(this.quizType === 'fight'){
+        fightSentences = this.quizService.getFightSentences();
+      }else if(this.quizType === 'test'){
+        fightSentences = this.quizService.getTestSentences();
+      }
+      fightSentences.toPromise().then((result) => {
         this.sentences = result;
         this.displayFightSentence();
       });
     } else {
       this.displayFightSentence();
     }
-
   }
 
   private displayFightSentence() {
-    this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length)];
+    this.sentence = this.sentences[this.sentenceIndex];
     this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
   }
 

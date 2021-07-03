@@ -4,8 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { Language } from 'src/app/language.enum';
 import { Character } from 'src/app/models/character.model';
 import { Scroll } from 'src/app/models/scroll.model';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { CharacterService } from 'src/app/services/character.service';
 import { ScrollService } from 'src/app/services/scroll.service';
 import swal from 'sweetalert';
@@ -22,12 +20,14 @@ export class IntroComponent implements OnInit, OnDestroy{
   isBeginner:boolean;
   notesChecked:boolean;
   showGym: boolean;
+  char:Character;
   private sub: Subscription;
-  constructor(private authService: AuthService, private characterService:CharacterService, private scrollService: ScrollService, private router: Router) { }
+  constructor(private characterService:CharacterService, private scrollService: ScrollService, private router: Router) { }
   
 
   ngOnInit(): void {
    this.sub= this.characterService.character$.subscribe((char: Character) => {
+     this.char=char;
      this.checkProficiency(char.language);
     });
   }
@@ -54,7 +54,7 @@ export class IntroComponent implements OnInit, OnDestroy{
   }
 
   private startIntro(beginner: boolean) {
-    this.isBeginner = beginner
+    this.isBeginner = beginner;
     const text = beginner ? "You are a beginner! Check your notes!" : "So you think you know shit? Lets do the exam then!";
     const target = document.querySelector('.tw')
     const writer = new Typewriter(target, {
@@ -64,8 +64,7 @@ export class IntroComponent implements OnInit, OnDestroy{
     writer
       .type(text)
       .rest(250)
-      .start()
-
+      .start();
   }
 
   onNotes(): void {

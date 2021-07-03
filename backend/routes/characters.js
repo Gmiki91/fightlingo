@@ -11,17 +11,7 @@ let character;
 
 router.post('/create', authCheck, (req, res, next) => {
     let language = req.body.language;
-    switch (language) {
-        case 'russian':
-            Sentence = require(`../models/sentence`).russian;
-            break;
-        case 'french':
-            Sentence = require(`../models/sentence`).french;
-            break;
-        case 'serbian':
-            Sentence = require(`../models/sentence`).serbian;
-            break;
-    }
+    instantiateSentence(language);
 
     character = new Character({
         userId: req.userData.id,
@@ -288,6 +278,7 @@ router.patch('/removeFromPocket', authCheck, (req, res, next) => {
 })
 
 function initProgress(language, rank) {
+    instantiateSentence(language);
     Scroll.findOne({
         language: language,
         number: rank
@@ -310,10 +301,10 @@ function initProgress(language, rank) {
                     }
                 })
         )
-
 }
 
 function initProgressFirst(language, rank) {
+    instantiateSentence(language);
     Scroll.findOne({
         language: language,
         number: rank
@@ -353,6 +344,20 @@ function getToken(character) {
         { expiresIn: '1h' }
     );
 
+}
+
+function instantiateSentence(language) {
+    switch (language) {
+        case 'russian':
+            Sentence = require(`../models/sentence`).russian;
+            break;
+        case 'french':
+            Sentence = require(`../models/sentence`).french;
+            break;
+        case 'serbian':
+            Sentence = require(`../models/sentence`).serbian;
+            break;
+    };
 }
 
 module.exports = router;

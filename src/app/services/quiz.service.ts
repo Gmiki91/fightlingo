@@ -15,6 +15,10 @@ export class QuizService {
     constructor(private http: HttpClient) {
     }
 
+    getTestSentences(){
+        return this.http.get<Sentence[]>(this.BACKEND_URL+'test');
+    }
+
     getFightSentences() {
         return this.http.get<Sentence[]>(this.BACKEND_URL+'fight');
     }

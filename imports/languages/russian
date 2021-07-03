@@ -1,42 +1,49 @@
  {
    "scroll_id": "ru_0000",
    "level": 0,
+   "rank":0,
    "translation": ["солдат"],
    "english": ["soldier"]
  }
  {
    "scroll_id": "ru_0000",
    "level": 0,
+   "rank":0,
    "translation": ["банан"],
    "english": ["banana"]
  }
  {
    "scroll_id": "ru_0101",
    "level": 1,
+   "rank":1,
    "translation": ["банан1"],
    "english": ["banana1"]
  }
  {
    "scroll_id": "ru_0101",
    "level": 1,
+   "rank":1,
    "translation": ["солдат1"],
    "english": ["солдат1"]
  }
  {
    "scroll_id": "ru_0102",
    "level": 1,
+   "rank":2,
    "translation": ["банан2"],
    "english": ["banana2"]
  }
  {
    "scroll_id": "ru_0102",
    "level": 1,
+   "rank":2,
    "translation": ["солдат2"],
    "english": ["солдат2"]
  }
 {
    "scroll_id": "ru_0201",
    "level": 2,
+   "rank":3,
    "translation": ["level21"],
    "english": ["level21"]
  }
@@ -44,6 +51,7 @@
  {
    "scroll_id": "ru_0201",
    "level": 2,
+   "rank":3,
    "translation": ["level22"],
    "english": ["level22"]
  }

@@ -46,6 +46,22 @@ router.get("/fight", authCheck, (req, res, next) => {
                 })
         })
 });
+// test not beginner language learner
+router.get("/test", authCheck, (req, res, next) => {
+    instantiateSentence(req.userData.language);
+    Sentence.distinct('rank').then(ranks => {
+        Promise.all(ranks.map(rank => {
+            return Sentence
+                .find({ rank: rank })
+                .limit(5)
+        })).then(array => {
+            const result =  array
+            .reduce((a, b) => [...a, ...b], [])
+            .sort((a,b)=> a.rank-b.rank)
+            res.status(200).json(result);
+        })
+    })
+})
 
 //learnable sentences
 router.get("/learn", authCheck, (req, res, next) => {

@@ -4,6 +4,8 @@ const sentenceSchema = mongoose.Schema({
     english: [String],
     translation: [String],
     lessonId: String,
+    level:Number,
+    rank:Number
 });
 
 var russianSentence = mongoose.model('russian_sentence', sentenceSchema);

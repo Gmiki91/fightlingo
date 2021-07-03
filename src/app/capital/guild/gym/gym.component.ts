@@ -20,6 +20,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   @Input() enemy: OnlineUser;
   @Input() char: Character;
   @Input() isExam: boolean;
+  @Input() isTest: boolean;
 
   selectedButton;
   readyToAttack: boolean;
@@ -32,8 +33,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   path: string;
   removableItems: Item[] = [];
   brokenStaff: Staff;
-  //temporary
-  count: number = 0;
+
 
   constructor(private charService: CharacterService) { }
 
@@ -61,7 +61,7 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   sentenceComes(): void {
     this.hideQuiz = false;
-    this.quizType = "fight";
+    this.quizType = this.isTest? "test":"fight";
   }
 
   quizResult(event: boolean): void {
@@ -100,11 +100,14 @@ export class GymComponent implements OnInit, AfterViewInit {
     this.readyToAttack = false;
     setTimeout(() => {
       this.path = "../../assets/duel.png";
-      this.count++;
-      if (this.count === 3 && (!this.socket || this.isExam))
-        this.fightFinishedEmitter.emit(true);
       this.nextTurn();
     }, 1000);
+  }
+
+  testFinished(event){
+    if(event){
+      this.fightFinishedEmitter.emit(true);
+    }
   }
 
   private takeAHit(data): void {

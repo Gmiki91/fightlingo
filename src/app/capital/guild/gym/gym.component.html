@@ -5,7 +5,7 @@
         <mat-radio-button value="water">water</mat-radio-button>
         <mat-radio-button value="earth">earth</mat-radio-button>
     </mat-radio-group>
-    <app-quiz [hidden]="hideQuiz" [quizType]="quizType" (fightQuizResult)="quizResult($event)"></app-quiz>
+    <app-quiz [hidden]="hideQuiz" [quizType]="quizType" [isExam]="isExam" (fightQuizResult)="quizResult($event)" (exitQuizEmitter)="testFinished($event)"></app-quiz>
     <div *ngIf="miss">{{cooldown}}</div>
     <div *ngIf="readyToAttack">
         <button (click)="attack()">Cast!</button>
