@@ -36,7 +36,7 @@ router.post('/create', authCheck, (req, res, next) => {
 
     });
     character.save()
-        .then(initProgressFirst(req.body.language, 0))
+        .then(initProgressByRank(req.body.language, 0))
         .then(() => {
             const token = getToken(character);
 
@@ -72,8 +72,27 @@ router.get('/finishedAt', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }, 'scrollFinished').then((result) => { return res.status(200).send(result.scrollFinished) });
 })
 
-router.delete('/deleteCharacter/:id', authCheck, (req,res,next)=>{
-    Character.deleteOne({ _id: req.params.id }).then(()=>{return res.status(200).json("Character deleted")});
+router.delete('/deleteCharacter/:id', authCheck, (req, res, next) => {
+    Character.deleteOne({ _id: req.params.id }).then(() => { return res.status(200).json("Character deleted") });
+})
+
+router.patch('/setRankAndLevel', authCheck, (req, res, next) => {
+    for (let i = 0; i <= req.body.rank; i++) {
+        initProgressByRank(req.userData.language, i);
+    }
+    initProgress(req.userData.language, req.userData.rank + 1);
+    Character.findOneAndUpdate({ _id: req.userData.characterId },
+        {
+            $set: {
+                "confirmed":true,
+                "rank": req.body.rank,
+                "level": req.body.level,
+            }
+        },
+        { new: true },
+        (err, user) => {
+            return res.status(200).send(user);
+        });
 })
 
 router.patch('/rank', authCheck, (req, res, next) => {
@@ -96,20 +115,12 @@ router.patch('/level', authCheck, (req, res, next) => {
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
+                "confirmed" : true,
                 "level": req.userData.level + 1,
                 "rank": req.userData.rank + 1,
                 "isReadyForExam": false
             }
         },
-        { new: true },
-        (err, user) => {
-            return res.status(200).send(user);
-        });
-})
-
-router.patch('/confirm', authCheck, (req, res, next) => {
-    Character.findOneAndUpdate({ _id: req.userData.characterId },
-        { $set: { "confirmed": true } },
         { new: true },
         (err, user) => {
             return res.status(200).send(user);
@@ -136,10 +147,10 @@ router.patch('/gaveLecture', authCheck, (req, res, next) => {
 
 router.patch('/equipRobe', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char => {
-        if(req.body.item == null || char.equippedRobe!=null){
+        if (req.body.item == null || char.equippedRobe != null) {
             char.items.push(char.equippedRobe._id);
         }
-        if(req.body.item != null){
+        if (req.body.item != null) {
             const index = char.items.findIndex(element => element === req.body.item._id);
             char.items.splice(index, 1);
         }
@@ -152,13 +163,13 @@ router.patch('/equipRobe', authCheck, (req, res, next) => {
 
 router.patch('/equipStaff', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char => {
-        if(req.body.item == null || char.equippedStaff!=null){
+        if (req.body.item == null || char.equippedStaff != null) {
             char.items.push(char.equippedStaff._id);
-        }if(req.body.item != null){
+        } if (req.body.item != null) {
             const index = char.items.findIndex(element => element === req.body.item._id);
             char.items.splice(index, 1);
         }
-        
+
         char.equippedStaff = req.body.item;
         char.save().then((char) => {
             return res.status(200).send(char);
@@ -291,7 +302,7 @@ function initProgress(language, rank) {
                             sentenceId: document._id,
                             characterId: character._id,
                             learned: false,
-                            learningProgress: 4,
+                            learningProgress: 0,
                             consecutiveCorrectAnswers: 0,
                             interval: 1,
                             difficulty: 2.5,
@@ -303,7 +314,7 @@ function initProgress(language, rank) {
         )
 }
 
-function initProgressFirst(language, rank) {
+function initProgressByRank(language, rank) {
     instantiateSentence(language);
     Scroll.findOne({
         language: language,

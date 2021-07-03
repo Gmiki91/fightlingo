@@ -13,6 +13,7 @@ import { CharacterService } from './character.service';
 export class AuthService {
     private readonly BACKEND_URL = environment.apiUrl + '/users/';
     private updatedUser = new BehaviorSubject<User>(null);
+    public user$ = this.updatedUser.asObservable();
 
     constructor(private http: HttpClient, private charService: CharacterService) { }
 
@@ -46,10 +47,6 @@ export class AuthService {
         this.http.patch(this.BACKEND_URL + 'selectCurrentCharacter', { charId: charId }).subscribe(() => {
             this.refreshUser().toPromise();
         });
-    }
-
-    getUpdatedUser() {
-        return this.updatedUser.asObservable();
     }
 
     logout() {

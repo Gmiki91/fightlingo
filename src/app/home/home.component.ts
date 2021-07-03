@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 
@@ -10,27 +10,31 @@ import { CharacterService } from '../services/character.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   loggedIn: boolean;
   hasCharacter$: Observable<boolean>;
-
+  sub:Subscription = Subscription.EMPTY;
 
   constructor(private auth: AuthService, private charService: CharacterService, private router: Router) { }
 
 
   ngOnInit(): void {
-    this.hasCharacter$ = this.auth.getUpdatedUser().pipe(switchMap((user) => {
+    this.sub= this.auth.user$.subscribe(((user) => {
+      console.log(user);
       if (user) {
         this.loggedIn = true;
-        return this.charService.character$.pipe(map(char => {
+        this.hasCharacter$ = this.charService.character$.pipe(map(char => {
           return char ? true : false;
         }));
       } else{
         this.loggedIn = false;
-        return of(false);
       }
     }))
+}
+
+ngOnDestroy():void{
+  this.sub?.unsubscribe();
 }
 
 toTheCapital(): void {

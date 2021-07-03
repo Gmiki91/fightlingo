@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class QuizService {
     private readonly BACKEND_URL = environment.apiUrl + '/sentences/';
     private overdueList = new BehaviorSubject<Sentence[]>(null);
+    public testSentence:Sentence;
 
     constructor(private http: HttpClient) {
     }

@@ -33,6 +33,7 @@ export class GymComponent implements OnInit, AfterViewInit {
   path: string;
   removableItems: Item[] = [];
   brokenStaff: Staff;
+  chances: number = 3;
 
 
   constructor(private charService: CharacterService) { }
@@ -70,6 +71,7 @@ export class GymComponent implements OnInit, AfterViewInit {
       this.readyToAttack = event;
     } else {
       this.miss = true;
+      this.chances--;
       const source = timer(1000, 1000);
       this.subscription = source.subscribe(() => {
         this.cooldown--;
@@ -106,7 +108,7 @@ export class GymComponent implements OnInit, AfterViewInit {
 
   testFinished(event){
     if(event){
-      this.fightFinishedEmitter.emit(true);
+      this.fightFinishedEmitter.emit(event);
     }
   }
 
@@ -135,12 +137,17 @@ export class GymComponent implements OnInit, AfterViewInit {
   };
 
   private nextTurn(): void {
-    this.quizType = null;
 
+
+    this.quizType = null;
     this.spellType = null;
     this.selectedButton = null;
     this.miss = false;
     this.cooldown = 5;
+
+    if(this.chances === 0){
+      this.fightFinishedEmitter.emit(false);
+    }
     if (this.subscription)
       this.subscription.unsubscribe();
   }

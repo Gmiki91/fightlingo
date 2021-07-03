@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToUser(): void {
-    this.loggedIn$ = this.authService.getUpdatedUser().pipe(map(user => {
+    this.loggedIn$ = this.authService.user$.pipe(map(user => {
       if (user)
         this.warningNoChar = user.currentCharacter ? false : true;
       return user ? true : false;

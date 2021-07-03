@@ -5,6 +5,7 @@ import { Language } from 'src/app/language.enum';
 import { Character } from 'src/app/models/character.model';
 import { Scroll } from 'src/app/models/scroll.model';
 import { CharacterService } from 'src/app/services/character.service';
+import { QuizService } from 'src/app/services/quiz.service';
 import { ScrollService } from 'src/app/services/scroll.service';
 import swal from 'sweetalert';
 import Typewriter from 't-writer.js'
@@ -14,26 +15,31 @@ import Typewriter from 't-writer.js'
   templateUrl: './intro.component.html',
   styleUrls: ['./intro.component.css']
 })
-export class IntroComponent implements OnInit, OnDestroy{
+export class IntroComponent implements OnInit, OnDestroy {
 
   scroll$: Observable<Scroll>;
-  isBeginner:boolean;
-  notesChecked:boolean;
+  isBeginner: boolean;
+  notesChecked: boolean;
   showGym: boolean;
-  char:Character;
+  char: Character;
   private sub: Subscription;
-  constructor(private characterService:CharacterService, private scrollService: ScrollService, private router: Router) { }
-  
+  constructor(
+    private characterService: CharacterService,
+    private scrollService: ScrollService,
+    private quizService: QuizService,
+    private router: Router,
+  ) { }
+
 
   ngOnInit(): void {
-   this.sub= this.characterService.character$.subscribe((char: Character) => {
-     this.char=char;
-     this.checkProficiency(char.language);
+    this.sub = this.characterService.character$.subscribe((char: Character) => {
+      this.char = char;
+      this.checkProficiency(char.language);
     });
   }
 
   ngOnDestroy(): void {
-    if(this.sub){
+    if (this.sub) {
       this.sub.unsubscribe();
     }
   }
@@ -76,13 +82,23 @@ export class IntroComponent implements OnInit, OnDestroy{
     this.showGym = true;
   }
 
-  fightFinished() {
+  fightFinished(event: boolean) {
+
     this.sub.unsubscribe();
     this.showGym = false;
-    swal("congrats");
-    this.characterService.levelUp().toPromise();
-    this.characterService.confirmCharacter().toPromise().then(()=>{
+    if (event && this.isBeginner) {
+      swal("congrats");
+      this.characterService.levelUp().toPromise().then(() => {
+        this.router.navigate(['/']);
+      });
+    } else if (!this.isBeginner) {
+      this.characterService.setRankAndLevel(this.quizService.testSentence.level,this.quizService.testSentence.rank).toPromise()
+      .then(() => {
+        this.router.navigate(['/']);
+      });
+    }else if(!event && this.isBeginner){
+      swal("try again");
       this.router.navigate(['/']);
-    });
+    }
   }
 }

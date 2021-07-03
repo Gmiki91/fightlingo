@@ -3,4 +3,6 @@ export interface Sentence{
     english: string[];
     translation: string[];
     lessonId: string;
+    level:number;
+    rank:number;
 }

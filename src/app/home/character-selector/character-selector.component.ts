@@ -33,9 +33,8 @@ export class CharacterSelectorComponent implements OnInit {
   ngOnInit() {
     this.charService.getCharacters();
     this.charList$ = this.charService.characterList$;
-    this.user$ = this.auth.getUpdatedUser().pipe(map((user: User) => {
-      return user
-    }));
+    this.user$ = this.auth.user$;
+    ;
   }
 
   onCreate(): void {

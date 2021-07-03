@@ -49,13 +49,6 @@ export class CharacterService {
         })
     }
 
-    confirmCharacter() {
-        return this.http.patch<Character>(this.BACKEND_URL + 'confirm', null)
-            .pipe(map((char) => {
-                this.updatedCharacter.next(char);
-            }));
-    }
-
     updateRank() {
         return this.http.patch(this.BACKEND_URL + 'rank', null)
             .pipe(map(() => {
@@ -65,6 +58,13 @@ export class CharacterService {
 
     levelUp() {
         return this.http.patch(this.BACKEND_URL + 'level', null)
+            .pipe(map(() => {
+                this.getCurrentCharacter();
+            }));
+    }
+
+    setRankAndLevel(level:number, rank:number){
+        return this.http.patch(this.BACKEND_URL + 'setRankAndLevel', {level:level, rank:rank})
             .pipe(map(() => {
                 this.getCurrentCharacter();
             }));

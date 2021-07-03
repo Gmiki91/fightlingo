@@ -14,7 +14,7 @@ import swal from 'sweetalert';
 export class QuizComponent implements OnInit, OnChanges {
 
   @ViewChild("input") userAnswer;
-  @Input() isExam:boolean;
+  @Input() isExam: boolean;
   @Input() quizType: string;
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
@@ -53,14 +53,16 @@ export class QuizComponent implements OnInit, OnChanges {
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
       this.fightQuizResult.emit(true);
+      if (this.isExam && this.sentences.length === this.sentenceIndex) {
+        this.exitQuizEmitter.emit(true);
+      }
     } else {
       console.log("elbasztad");
       this.fightQuizResult.emit(false);
     }
+    this.quizService.testSentence = this.sentence;
     this.sentenceIndex++;
-    if(this.isExam && this.sentences.length===this.sentenceIndex){
-      this.exitQuizEmitter.emit(true);
-    }
+
     this.fightInProgress = false;
     this.sentence = null;
   }
@@ -174,23 +176,34 @@ export class QuizComponent implements OnInit, OnChanges {
   private fight() {
     this.fightInProgress = true;
     if (typeof this.sentences === 'undefined') {
-      let fightSentences;
-      if(this.quizType === 'fight'){
-        fightSentences = this.quizService.getFightSentences();
-      }else if(this.quizType === 'test'){
-        fightSentences = this.quizService.getTestSentences();
+      if (this.quizType === 'fight') {
+        this.quizService.getFightSentences().toPromise()
+          .then((result) => {
+            this.sentences = result;
+            this.displayFightSentence();
+          });
+      } else if (this.quizType === 'test') {
+        this.quizService.getTestSentences().toPromise()
+          .then((result) => {
+            this.sentences = result;
+            this.displayExamSentence();
+          });
       }
-      fightSentences.toPromise().then((result) => {
-        this.sentences = result;
-        this.displayFightSentence();
-      });
     } else {
-      this.displayFightSentence();
+      if (this.quizType === 'fight')
+        this.displayFightSentence();
+      if (this.quizType === 'test')
+        this.displayExamSentence();
     }
   }
 
-  private displayFightSentence() {
+  private displayExamSentence() {
     this.sentence = this.sentences[this.sentenceIndex];
+    this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
+  }
+
+  private displayFightSentence() {
+    this.sentence = this.sentences[Math.floor(Math.random() * this.sentences.length)];
     this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))];
   }
 
