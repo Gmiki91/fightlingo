@@ -53,16 +53,18 @@ export class QuizComponent implements OnInit, OnChanges {
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
       this.fightQuizResult.emit(true);
-      if (this.isExam && this.sentences.length === this.sentenceIndex) {
-        this.exitQuizEmitter.emit(true);
-      }
+
     } else {
       console.log("elbasztad");
       this.fightQuizResult.emit(false);
     }
-    this.quizService.testSentence = this.sentence;
     this.sentenceIndex++;
-
+    if (this.isExam && this.sentences.length === this.sentenceIndex) {
+      this.exitQuizEmitter.emit(true);
+    }
+    if (this.quizService.testSentence ==null || this.quizService.testSentence?.level < this.sentence.level) { 
+      this.quizService.testSentence = this.sentence;
+    }
     this.fightInProgress = false;
     this.sentence = null;
   }

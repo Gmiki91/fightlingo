@@ -77,10 +77,10 @@ router.delete('/deleteCharacter/:id', authCheck, (req, res, next) => {
 })
 
 router.patch('/setRankAndLevel', authCheck, (req, res, next) => {
-    for (let i = 0; i <= req.body.rank; i++) {
+    for (let i = 1; i <= req.body.rank; i++) { //starts at 1 bc rank 0 is initialized at character creation
         initProgressByRank(req.userData.language, i);
     }
-    initProgress(req.userData.language, req.userData.rank + 1);
+    initNextProgress(req.userData.language, req.body.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -96,7 +96,7 @@ router.patch('/setRankAndLevel', authCheck, (req, res, next) => {
 })
 
 router.patch('/rank', authCheck, (req, res, next) => {
-    initProgress(req.userData.language, req.userData.rank + 1);
+    initNextProgress(req.userData.language, req.userData.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -111,7 +111,7 @@ router.patch('/rank', authCheck, (req, res, next) => {
 })
 
 router.patch('/level', authCheck, (req, res, next) => {
-    initProgress(req.userData.language, req.userData.rank + 1);
+    initNextProgress(req.userData.language, req.userData.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -288,7 +288,7 @@ router.patch('/removeFromPocket', authCheck, (req, res, next) => {
         });
 })
 
-function initProgress(language, rank) {
+function initNextProgress(language, rank) {
     instantiateSentence(language);
     Scroll.findOne({
         language: language,
@@ -320,7 +320,7 @@ function initProgressByRank(language, rank) {
         language: language,
         number: rank
     }, '_id')
-        .then(id =>
+        .then(id =>{
             Sentence.find({ "scroll_id": id._id })
                 .then(documents => {
                     for (let document of documents) {
@@ -337,7 +337,7 @@ function initProgressByRank(language, rank) {
                         prog.save();
                     }
                 })
-        )
+            })
 }
 
 function getToken(character) {
