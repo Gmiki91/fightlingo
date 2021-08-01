@@ -11,6 +11,8 @@ export class EventHandler {
         level: 1,
         overdue: 0,
         maxOverdue: 50,
+        background:null,
+        dialouge
         district: District.OUTSIDE,
         pollyComments: ["Baby Grog is on the loose!"]
     };
@@ -112,20 +114,6 @@ export class EventHandler {
 
     getDialogForEvent(id: string): string {
         return this.allEvents.find(event => event.id == id).name
-    }
-
-    checkGrogsLocation(id: string): void {
-        const event: Event = this.allEvents.find(event => event.id == id);
-        if (event.overdue < 11)
-            event.district = District.OUTSIDE;
-        else if (event.overdue < 21)
-            event.district = District.WALL;
-        else if (event.overdue < 31)
-            event.district = District.SUBURB;
-        else if (event.overdue < 41)
-            event.district = District.DOWNTOWN;
-        else
-            event.district = District.PALACE
     }
 
     reset(): void {

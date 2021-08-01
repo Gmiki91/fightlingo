@@ -7,7 +7,6 @@ import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { District } from './district.enum';
 import Typewriter from 't-writer.js'
-import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-city',
@@ -23,7 +22,7 @@ export class CityComponent implements OnInit {
   events: Event[] = [];
   background: string = "townmap";
 
-  constructor(private eventHandler: EventHandler, private quizService: QuizService, private dialogService: DialogService) { }
+  constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
 
   ngOnInit(): void {
 
@@ -79,8 +78,6 @@ export class CityComponent implements OnInit {
     if (this.events.length > 0) {
       //van event
       this.startEvent(this.events[0]);
-    } else if(this.district){
-      this.writeRandomText(this.district);
     }
   }
 
@@ -101,18 +98,5 @@ export class CityComponent implements OnInit {
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(
         map(sentences => { return sentences.slice(0, amount) }))
-  }
-
-  private writeRandomText(district: District) {
-    const text = this.dialogService.getRandomDistrictText(district);
-    
-    const writer = new Typewriter(document.querySelector('.tw'), {
-      loop: false,
-      typeColor: 'blue'
-    });
-    writer
-      .type(text)
-      .rest(250)
-      .start();
   }
 }
