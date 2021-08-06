@@ -3,10 +3,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
-import { EventHandler } from '../services/event-handler.service';
+import { EventHandler } from '../events/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { District } from './district.enum';
 import Typewriter from 't-writer.js'
+import { Place } from '../models/place.enum';
 
 @Component({
   selector: 'app-city',
@@ -15,7 +16,7 @@ import Typewriter from 't-writer.js'
 })
 export class CityComponent implements OnInit {
 
-  district: District;
+  district: Place;
   overdueSentences$: Observable<Sentence[]>;
   startQuiz: boolean;
   returnAvailable: boolean;
@@ -31,27 +32,27 @@ export class CityComponent implements OnInit {
   setDistrict(district: string) {
     switch (district) {
       case "outside":
-        this.district = District.OUTSIDE;
+        this.district = Place.GUILD_HALL;
         this.background = "outside";
         break;
       case "wall":
-        this.district = District.WALL;
+        this.district = Place.GUILD_HALL;
         this.background = "wall";
         break;
       case "suburb":
-        this.district = District.SUBURB;
+        this.district = Place.GUILD_HALL;
         this.background = "suburb";
         break;
       case "downtown":
-        this.district = District.DOWNTOWN;
+        this.district = Place.GUILD_HALL;
         this.background = "downtown";
         break;
       case "palace":
-        this.district = District.PALACE;
+        this.district = Place.GUILD_HALL;
         this.background = "palace";
         break;
       case "docks":
-        this.district = District.DOCKS;
+        this.district = Place.GUILD_HALL;
         this.background = "docks";
         break;
       default:
@@ -62,9 +63,6 @@ export class CityComponent implements OnInit {
     this.init();
   }
 
-  onCapital(){
-    
-  }
 
   quizFinished(event:boolean){
     this.setDistrict(null);
@@ -74,7 +72,7 @@ export class CityComponent implements OnInit {
     this.returnAvailable = this.district ? true : false;
     document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
-    this.events = this.eventHandler.getActiveEvents().filter(event => { return event.district === this.district });
+    this.events = this.eventHandler.getActiveEvents().filter(event => { return event.place === this.district });
     if (this.events.length > 0) {
       //van event
       this.startEvent(this.events[0]);
@@ -83,7 +81,7 @@ export class CityComponent implements OnInit {
 
   private startEvent(event: Event): void {
 
-    const amount = event.overdue;
+   // const amount = event.overdue;
     const text = this.eventHandler.getDialogForEvent(event.id);
     const writer = new Typewriter(document.querySelector('.tw'), {
       loop: false,
@@ -97,6 +95,6 @@ export class CityComponent implements OnInit {
     this.startQuiz = true;
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(
-        map(sentences => { return sentences.slice(0, amount) }))
+        map(sentences => { return sentences.slice(0, 1) }))
   }
 }

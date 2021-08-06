@@ -1,0 +1,23 @@
+[
+    {
+    "id":"e0101",
+    "name":"Baby Grog",
+    "group":1,
+    "place": "meadow",
+    "from":"John"
+    },
+    {
+    "id":"e0301",
+    "name":"Kóbor kutyák elzavarása",
+    "group":1,
+    "place":"village",
+    "from":"Joe"
+    },
+    {
+    "id":"e0102",
+    "name":"Gyerek Grog",
+    "group":2,
+    "place":"meadow",
+    "from":"John"
+    }
+]

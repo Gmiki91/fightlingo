@@ -1,13 +1,10 @@
-import { District } from "src/app/city/district.enum";
+import { Place } from "./place.enum";
 
 export interface Event{
     id: string;
     name:string;
-    eventGroup:number;
-    level:number;
+    group:number;
     overdue:number;
-    maxOverdue:number;
-    district:District;
-    pollyComments:string[];
-
+    place:Place;
+    from:string;
 }

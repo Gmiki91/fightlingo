@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EventHandler } from '../services/event-handler.service';
+import { EventHandler } from '../events/event-handler.service';
 import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
 import { AuthService } from '../services/auth.service';
@@ -11,6 +11,7 @@ import { QuizService } from '../services/quiz.service';
 import swal from 'sweetalert';
 import { Character } from '../models/character.model';
 import { CharacterService } from '../services/character.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,6 @@ import { CharacterService } from '../services/character.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
   warningOverdue: boolean;
   warningNoChar: boolean;
   warningCharConfirmed: boolean;
@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onPollyClicked(): void {
     let text;
     if (this.eventHandler.getActiveEvents()[0]) {
-      text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
+     // text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
       swal(text);
     }
   }
@@ -76,6 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToOverdue(): void {
+    this.eventHandler.getEventsByLevel(1);
     if (this.overdueSub)
       this.overdueSub.unsubscribe();
 
@@ -104,12 +105,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private addToRandomEvent(amount: number, events: Event[]): number {
     let randomIndex = Math.floor(Math.random() * (events.length));
+    const randomEvent = events[randomIndex];
     const tooMuchOverdue = events.length * 10 < amount;  // maxOverdue does not apply in case of too much overdue
-    if (events[randomIndex].maxOverdue >= events[randomIndex].overdue + amount || tooMuchOverdue ) {
-      events[randomIndex].overdue += amount;
+    if (environment.MAX_OVERDUE >= randomEvent.overdue + amount || tooMuchOverdue ) {
+      randomEvent.overdue += amount;
       return amount;
-    } else {
-      events.splice(events.indexOf(events[randomIndex]),1);
+    } else { 
+      events.splice(events.indexOf(randomEvent),1);
       this.addToRandomEvent(amount, events);
     }
   }

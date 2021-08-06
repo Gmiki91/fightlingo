@@ -102,6 +102,7 @@ export class QuizComponent implements OnInit, OnChanges {
             });
 
           } else { //overdue
+            // check if event host is already introduced, if not, introduce 
             this.quizService.getOverdueSentences().toPromise();
             this.exitQuizEmitter.emit(false);
           }

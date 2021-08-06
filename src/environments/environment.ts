@@ -9,7 +9,8 @@ export const environment = {
   //apiUrl: http://localhost:8080    //Spring
   PUSHER_API_KEY: '22c8d45dd4c3c860bf17', 
   PUSHER_API_CLUSTER: 'eu',
-  JWT_TOKEN:'JWT_TOKEN'
+  JWT_TOKEN:'JWT_TOKEN',
+  MAX_OVERDUE:25
 };
 
 /*
