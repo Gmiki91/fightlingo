@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Publication } from '../models/publication.model';
-import { Question } from '../models/question.enum';
+import { Question } from '../models/question.model';
 import { environment } from 'src/environments/environment';
 
 

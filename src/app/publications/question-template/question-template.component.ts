@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Question } from 'src/app/models/question.enum';
+import { Question } from 'src/app/models/question.model';
 import { PublicationService } from 'src/app/services/publication.service';
 import swal from 'sweetalert';
 @Component({

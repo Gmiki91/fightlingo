@@ -2,8 +2,8 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { EventHandler } from '../events/event-handler.service';
+import { map, first } from 'rxjs/operators';
+import { EventHandler } from '../services/event-handler.service';
 import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
 import { AuthService } from '../services/auth.service';
@@ -76,7 +76,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToOverdue(): void {
-    this.eventHandler.getEventsByLevel(1);
     if (this.overdueSub)
       this.overdueSub.unsubscribe();
 
@@ -95,11 +94,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private sortEvents(overdues: number) {
     this.eventHandler.reset();
     let count = overdues;
-    const events: Event[] = this.eventHandler.getEventsByLevel(this.char.level);
+    this.eventHandler.getEventsByLevel().pipe(first()).subscribe(events => {
     while (count > 0) {
       let amount = count > 5 ? 5 : count;
       count -= this.addToRandomEvent(amount, events);
     }
+  })
     console.log(this.eventHandler.getActiveEvents());
   }
 
@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const randomEvent = events[randomIndex];
     const tooMuchOverdue = events.length * 10 < amount;  // maxOverdue does not apply in case of too much overdue
     if (environment.MAX_OVERDUE >= randomEvent.overdue + amount || tooMuchOverdue ) {
-      randomEvent.overdue += amount;
+      this.eventHandler.addOverdue(randomEvent, amount);
       return amount;
     } else { 
       events.splice(events.indexOf(randomEvent),1);

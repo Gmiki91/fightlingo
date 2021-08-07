@@ -1,0 +1,10 @@
+    {
+    "id":"e0101",
+    "language":"english",
+    "introduction":"Howdy fella, my name is John",
+    "start_text": "Thank you for coming! The little beast is right over there, eating my carrots. Please hush him away!",
+    "positive":["Oy, that must have hurt", "That will teach him!", "Nice!", "He looks angry."],
+    "negative":["Are you sure you know what you're doing?", "I don't think you got his attention with that.", "Is that a spell?", "That wasn't very effective now, was it?"],
+    "ending":["He is running away! Hurray!"]
+    }
+    

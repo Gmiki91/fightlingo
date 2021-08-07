@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicationService } from 'src/app/services/publication.service';
-import { Question } from 'src/app/models/question.enum';
+import { Question } from 'src/app/models/question.model';
 import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';

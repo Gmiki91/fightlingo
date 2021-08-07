@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
-import { EventHandler } from '../events/event-handler.service';
+import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { District } from './district.enum';
 import Typewriter from 't-writer.js'
