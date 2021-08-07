@@ -99,14 +99,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       let amount = count > 5 ? 5 : count;
       count -= this.addToRandomEvent(amount, events);
     }
-  })
     console.log(this.eventHandler.getActiveEvents());
+  })
+    
   }
 
   private addToRandomEvent(amount: number, events: Event[]): number {
     let randomIndex = Math.floor(Math.random() * (events.length));
     const randomEvent = events[randomIndex];
     const tooMuchOverdue = events.length * 10 < amount;  // maxOverdue does not apply in case of too much overdue
+    if(randomEvent.overdue ==null){
+      randomEvent.overdue = 0;
+    }
+
     if (environment.MAX_OVERDUE >= randomEvent.overdue + amount || tooMuchOverdue ) {
       this.eventHandler.addOverdue(randomEvent, amount);
       return amount;

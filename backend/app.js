@@ -14,6 +14,7 @@ const scrollsRoute=require('./routes/scrolls');
 const publicationsRoute=require('./routes/publications');
 const charactersRoute = require('./routes/characters');
 const itemsRoute = require('./routes/items');
+const eventRoute = require('./routes/events');
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -48,4 +49,5 @@ app.use("/api/scrolls",scrollsRoute);
 app.use("/api/publications", publicationsRoute);
 app.use("/api/characters", charactersRoute);
 app.use("/api/items", itemsRoute);
+app.use("/api/events", eventRoute);
 module.exports=app;

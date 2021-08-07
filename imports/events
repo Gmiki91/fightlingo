@@ -1,6 +1,6 @@
 
     {
-    "id":"e0101",
+    "_id":"e0101",
     "name":"Baby Grog",
     "group":1,
     "place": "meadow",
@@ -8,14 +8,14 @@
     }
     
     {
-    "id":"e0301",
+    "_id":"e0301",
     "name":"Kóbor kutyák elzavarása",
     "group":1,
     "place":"village",
     "from":"Joe"
     }
     {
-    "id":"e0102",
+    "_id":"e0102",
     "name":"Gyerek Grog",
     "group":2,
     "place":"meadow",
