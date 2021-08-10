@@ -2,6 +2,7 @@ const express = require('express');
 const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 const Event = require("../models/event");
+const Script = require("../models/script");
 
 const allEvents = [
     "e0101", "e0201", "e0301", "e0401", "e0501", "e0601", "e0701", "e0801", "e0901", "e1001", "e1101",
@@ -70,6 +71,14 @@ router.get('/',authCheck,(req,res,next)=>{
         return res.send(result);
     }
     );
+})
+
+router.get('/script/:eventId',authCheck,(req,res,next)=>{
+    Script.findOne({
+        eventId:req.params.eventId,
+        language:req.userData.language
+    }).then(script=>{
+        res.send(script)});
 })
 
 module.exports=router;

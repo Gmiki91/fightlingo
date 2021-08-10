@@ -53,11 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onPollyClicked(): void {
-    let text;
-    if (this.eventHandler.getActiveEvents()[0]) {
-     // text = this.eventHandler.getActiveEvents()[0].pollyComments[0];
-      swal(text);
-    }
+    
   }
 
   private subscribeToUser(): void {
@@ -99,7 +95,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       let amount = count > 5 ? 5 : count;
       count -= this.addToRandomEvent(amount, events);
     }
-    console.log(this.eventHandler.getActiveEvents());
   })
     
   }

@@ -1,14 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Event } from "../models/event.model";
+import { Script } from "../models/script.model";
 
 
 @Injectable()
 export class EventHandler {
     private readonly BACKEND_URL = environment.apiUrl + '/events/';
 
-    private activeEvents: Event[] = [];
+    public activeEvents: Event[] = [];
     constructor(private http: HttpClient) { }
 
     getEventsByLevel() {
@@ -23,14 +25,11 @@ export class EventHandler {
             event.overdue += amount;
             this.activeEvents.push(event)
         }
+        console.log(this.activeEvents);
     }
 
-    getActiveEvents(): Event[] {
-        return this.activeEvents.filter(event => event.overdue > 0);
-    }
-
-    getDialogForEvent(id: string): string {
-        return //this.allEvents.find(event => event.id == id).name
+    getScript(id: string): Observable<Script> {
+        return this.http.get<Script>(this.BACKEND_URL + '/script/' + id);
     }
 
     reset(): void {

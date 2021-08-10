@@ -16,6 +16,7 @@ export class QuizComponent implements OnInit, OnChanges {
   @ViewChild("input") userAnswer;
   @Input() isExam: boolean;
   @Input() quizType: string;
+  @Input() eventId: string;
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
   @Output() exitQuizEmitter: EventEmitter<boolean> = new EventEmitter();
@@ -75,11 +76,16 @@ export class QuizComponent implements OnInit, OnChanges {
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
       this.quizService.updateSentence(this.sentence._id, 5);
-      if (this.overdueSentences)
+      if (this.overdueSentences){
         this.charService.updateMoney(1);
+        // check for positive text with this.eventId
+      }
     } else {
       console.log("elbasztad");
       this.quizService.updateSentence(this.sentence._id, 0);
+      if (this.overdueSentences){
+          // check for negative text with this.eventId
+      }
     }
 
     this.numberOfSentences--;
@@ -103,6 +109,7 @@ export class QuizComponent implements OnInit, OnChanges {
 
           } else { //overdue
             // check if event host is already introduced, if not, introduce 
+             // check for ending text with this.eventId
             this.quizService.getOverdueSentences().toPromise();
             this.exitQuizEmitter.emit(false);
           }

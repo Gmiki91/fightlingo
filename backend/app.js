@@ -2,6 +2,8 @@
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection items --file imports/items/potions
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection items --file imports/items/staffs
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection events --file imports/events
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection scripts --file imports/scripts
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');

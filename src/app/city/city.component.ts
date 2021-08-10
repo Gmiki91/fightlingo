@@ -5,9 +5,8 @@ import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
 import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
-import { District } from './district.enum';
-import Typewriter from 't-writer.js'
 import { Place } from '../models/place.enum';
+import { Script } from '../models/script.model';
 
 @Component({
   selector: 'app-city',
@@ -18,9 +17,11 @@ export class CityComponent implements OnInit {
 
   district: Place;
   overdueSentences$: Observable<Sentence[]>;
+  script$: Observable<Script>;
   startQuiz: boolean;
   returnAvailable: boolean;
-  events: Event[] = [];
+  event: Event;
+  eventId: string;
   background: string = "townmap";
 
   constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
@@ -29,14 +30,26 @@ export class CityComponent implements OnInit {
 
   }
 
+  showQuest(place:Place){
+    for(let event of this.eventHandler.activeEvents){
+      if(event.place === place){
+        this.event = event;
+        break;
+      }
+    }
+    if (this.event) {
+      this.openRequest(this.event);
+    }
+  }
+
   setDistrict(district: string) {
     switch (district) {
       case "outside":
         this.district = Place.GUILD_HALL;
         this.background = "outside";
         break;
-      case "wall":
-        this.district = Place.GUILD_HALL;
+      case "meadow":
+        this.district = Place.MEADOW;
         this.background = "wall";
         break;
       case "suburb":
@@ -64,7 +77,17 @@ export class CityComponent implements OnInit {
   }
 
 
-  quizFinished(event:boolean){
+  quizFinished(event: boolean) {
+    this.setDistrict(null);
+  }
+
+  onAccept() {
+    this.script$ = null;
+    this.setDistrict(this.event.place);
+  }
+
+  onDecline() {
+    this.script$ = null;
     this.setDistrict(null);
   }
 
@@ -72,17 +95,19 @@ export class CityComponent implements OnInit {
     this.returnAvailable = this.district ? true : false;
     document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
-    this.events = this.eventHandler.getActiveEvents().filter(event => { return event.place === this.district });
-    if (this.events.length > 0) {
-      //van event
-      this.startEvent(this.events[0]);
-    }
+    this.startEvent();
   }
 
-  private startEvent(event: Event): void {
+  private openRequest(event: Event): void {
+    this.script$ = this.eventHandler.getScript(event._id);
+  }
 
-   // const amount = event.overdue;
-    const text = this.eventHandler.getDialogForEvent(event.id);
+
+  private startEvent(): void {
+    this.eventId = this.event._id;
+
+    // get start text
+  /*  const text = this.eventHandler.getDialogForEvent(event.id);
     const writer = new Typewriter(document.querySelector('.tw'), {
       loop: false,
       typeColor: 'blue'
@@ -91,7 +116,7 @@ export class CityComponent implements OnInit {
       .type(text)
       .rest(250)
       .start();
-
+*/
     this.startQuiz = true;
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(
