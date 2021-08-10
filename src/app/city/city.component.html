@@ -12,10 +12,10 @@
 </div>
 <br>
 <button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
-<div *ngIf="(script$ | async) as script">
+<div *ngIf="script && showQuestDialouge">
     <p>{{script.eventText}}</p>
     <button (click)="onAccept()">Accept</button>
-    <button (click)="onDecline()">Decline</button>
+    <button (click)="clearData()">Decline</button>
 </div>
 <div class="tw"></div>
-<app-quiz *ngIf="startQuiz" (exitQuizEmitter)="quizFinished($event)" [eventId]=eventId [overdueSentences]="overdueSentences$ | async"></app-quiz>
+<app-quiz *ngIf="startQuiz" (exitQuizEmitter)="clearData()" [script]="script" [overdueSentences]="overdueSentences$ | async"></app-quiz>

@@ -5,6 +5,7 @@ import { QuizService } from '../services/quiz.service';
 import { Sentence } from '../models/sentence.model';
 import { Scroll } from '../models/scroll.model';
 import swal from 'sweetalert';
+import { Script } from '../models/script.model';
 
 @Component({
   selector: 'app-quiz',
@@ -16,7 +17,7 @@ export class QuizComponent implements OnInit, OnChanges {
   @ViewChild("input") userAnswer;
   @Input() isExam: boolean;
   @Input() quizType: string;
-  @Input() eventId: string;
+  @Input() script: Script;
   @Input() scroll: Scroll;
   @Input() overdueSentences: Sentence[];
   @Output() exitQuizEmitter: EventEmitter<boolean> = new EventEmitter();
@@ -78,13 +79,14 @@ export class QuizComponent implements OnInit, OnChanges {
       this.quizService.updateSentence(this.sentence._id, 5);
       if (this.overdueSentences){
         this.charService.updateMoney(1);
-        // check for positive text with this.eventId
+        console.log(this.script.positive[0]);
+        // check for positive text with this.script
       }
     } else {
       console.log("elbasztad");
       this.quizService.updateSentence(this.sentence._id, 0);
       if (this.overdueSentences){
-          // check for negative text with this.eventId
+          // check for negative text with this.script
       }
     }
 
@@ -109,7 +111,7 @@ export class QuizComponent implements OnInit, OnChanges {
 
           } else { //overdue
             // check if event host is already introduced, if not, introduce 
-             // check for ending text with this.eventId
+             // check for ending text with this.script
             this.quizService.getOverdueSentences().toPromise();
             this.exitQuizEmitter.emit(false);
           }

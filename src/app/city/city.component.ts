@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
 import { EventHandler } from '../services/event-handler.service';
@@ -17,8 +17,9 @@ export class CityComponent implements OnInit {
 
   district: Place;
   overdueSentences$: Observable<Sentence[]>;
-  script$: Observable<Script>;
+  script: Script;
   startQuiz: boolean;
+  showQuestDialouge:boolean;
   returnAvailable: boolean;
   event: Event;
   eventId: string;
@@ -27,7 +28,7 @@ export class CityComponent implements OnInit {
   constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
 
   ngOnInit(): void {
-
+    this.returnAvailable = this.district ? true : false;
   }
 
   showQuest(place:Place){
@@ -38,6 +39,7 @@ export class CityComponent implements OnInit {
       }
     }
     if (this.event) {
+      this.showQuestDialouge=true;
       this.openRequest(this.event);
     }
   }
@@ -72,34 +74,33 @@ export class CityComponent implements OnInit {
         this.district = null;
         this.background = "townmap";
     }
-
-    this.init();
   }
 
 
-  quizFinished(event: boolean) {
+  clearData() {
     this.setDistrict(null);
+    this.showQuestDialouge = false;
+    this.script = null;
+    this.event=null;
   }
 
   onAccept() {
-    this.script$ = null;
-    this.setDistrict(this.event.place);
-  }
-
-  onDecline() {
-    this.script$ = null;
-    this.setDistrict(null);
+    this.showQuestDialouge = false;
+    this.init();
   }
 
   private init() {
-    this.returnAvailable = this.district ? true : false;
+    this.setDistrict(this.event.place);
+    
     document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
     this.startEvent();
   }
 
   private openRequest(event: Event): void {
-    this.script$ = this.eventHandler.getScript(event._id);
+    this.eventHandler.getScript(event._id).pipe(first()).subscribe(script=>{
+      this.script = script;
+    });
   }
 
 
