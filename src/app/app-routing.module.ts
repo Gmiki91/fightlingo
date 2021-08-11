@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
-import { CityComponent } from './city/city.component';
+import { WorldmapComponent } from './worldmap/worldmap.component';
 import { HomeComponent } from './home/home.component';
 import { LibraryComponent } from './home/library/library.component';
 import { ConfirmedGuard } from './guards/confirmed.guard';
@@ -14,7 +14,7 @@ import { IntroComponent } from './auth/intro/intro.component';
 import { NotConfirmedGuard } from './guards/not-confirmed.guard';
 import { AllPubComponent } from './publications/all-pub/all-pub.component';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
-import { ShopComponent } from './city/shop/shop.component';
+import { ShopComponent } from './worldmap/shop/shop.component';
 import { CharacterDetailsComponent } from './home/character-details/character-details.component';
 
 
@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent, canActivate: [LoggedOutGuard] },
   { path: 'signup', component: SignUpComponent, canActivate: [LoggedOutGuard] },
-  { path: 'city', component: CityComponent, canActivate: [ConfirmedGuard] },
+  { path: 'worldmap', component: WorldmapComponent, canActivate: [ConfirmedGuard] },
   { path: 'shop', component: ShopComponent, canActivate: [ConfirmedGuard] },
   { path: 'character-selector', component: CharacterSelectorComponent, canActivate: [LoggedInGuard] },
   { path: 'character-details', component: CharacterDetailsComponent, canActivate: [LoggedInGuard] },

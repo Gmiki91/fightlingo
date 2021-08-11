@@ -24,7 +24,7 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { ScrollService } from './services/scroll.service';
-import { CityComponent } from './city/city.component';
+import { WorldmapComponent } from './worldmap/worldmap.component';
 import { HeaderComponent } from './header/header.component';
 import { CapitalComponent } from './capital/capital.component';
 import { GuildComponent } from './capital/guild/guild.component';
@@ -48,7 +48,7 @@ import { TimeLeftTitlePipe } from './publications/pipes/time-left-title.pipe';
 import { CharacterService } from './services/character.service';
 import { CharacterSelectorComponent } from './home/character-selector/character-selector.component';
 import { ItemService } from './services/item.service';
-import { ShopComponent } from './city/shop/shop.component';
+import { ShopComponent } from './worldmap/shop/shop.component';
 import { CharacterDetailsComponent } from './home/character-details/character-details.component';
 
 
@@ -60,7 +60,7 @@ import { CharacterDetailsComponent } from './home/character-details/character-de
     LibraryComponent,
     LoginComponent,
     SignUpComponent,
-    CityComponent,
+    WorldmapComponent,
     HeaderComponent,
     CapitalComponent,
     GuildComponent,

@@ -1,6 +1,6 @@
 <img src='../../assets/town/{{background}}.JPG'>
 <br>
-<div  *ngIf="!returnAvailable">
+<div  *ngIf="!showQuestDialouge && !script">
     <button (click)="showQuest('suburb')">Suburbs</button>
     <button (click)="showQuest('downtown')">Downtown</button>
     <button (click)="showQuest('meadow')">Meadow</button>

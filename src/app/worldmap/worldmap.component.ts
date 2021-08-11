@@ -7,16 +7,19 @@ import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { Place } from '../models/place.enum';
 import { Script } from '../models/script.model';
+import { Character } from '../models/character.model';
+import { CharacterService } from '../services/character.service';
 
 @Component({
-  selector: 'app-city',
-  templateUrl: './city.component.html',
-  styleUrls: ['./city.component.css']
+  selector: 'app-worldmap',
+  templateUrl: './worldmap.component.html',
+  styleUrls: ['./worldmap.component.css']
 })
-export class CityComponent implements OnInit {
+export class WorldmapComponent implements OnInit {
 
   district: Place;
   overdueSentences$: Observable<Sentence[]>;
+  char$ : Observable<Character>;
   script: Script;
   startQuiz: boolean;
   showQuestDialouge:boolean;
@@ -25,9 +28,10 @@ export class CityComponent implements OnInit {
   eventId: string;
   background: string = "townmap";
 
-  constructor(private eventHandler: EventHandler, private quizService: QuizService) { }
+  constructor(private eventHandler: EventHandler, private quizService: QuizService, private characterService:CharacterService) { }
 
   ngOnInit(): void {
+    this.char$ = this.characterService.character$;
     this.returnAvailable = this.district ? true : false;
   }
 
