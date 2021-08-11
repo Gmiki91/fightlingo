@@ -7,7 +7,6 @@ import { EventHandler } from '../services/event-handler.service';
 import { QuizService } from '../services/quiz.service';
 import { Place } from '../models/place.enum';
 import { Script } from '../models/script.model';
-import { Character } from '../models/character.model';
 import { CharacterService } from '../services/character.service';
 
 @Component({
@@ -17,22 +16,21 @@ import { CharacterService } from '../services/character.service';
 })
 export class WorldmapComponent implements OnInit {
 
-  district: Place;
   overdueSentences$: Observable<Sentence[]>;
-  char$ : Observable<Character>;
+  place: Place;
+  places :Place[];
   script: Script;
   startQuiz: boolean;
-  showQuestDialouge:boolean;
-  returnAvailable: boolean;
+  onWorldMap: boolean;
   event: Event;
   eventId: string;
-  background: string = "townmap";
+  background: string = "worldmap";
 
   constructor(private eventHandler: EventHandler, private quizService: QuizService, private characterService:CharacterService) { }
 
   ngOnInit(): void {
-    this.char$ = this.characterService.character$;
-    this.returnAvailable = this.district ? true : false;
+    this.onWorldMap = true;
+    this.places = this.characterService.availablePlaces();
   }
 
   showQuest(place:Place){
@@ -43,59 +41,31 @@ export class WorldmapComponent implements OnInit {
       }
     }
     if (this.event) {
-      this.showQuestDialouge=true;
       this.openRequest(this.event);
+    }else{
+      this.setDistrict(place);
     }
   }
 
-  setDistrict(district: string) {
-    switch (district) {
-      case "outside":
-        this.district = Place.GUILD_HALL;
-        this.background = "outside";
-        break;
-      case "meadow":
-        this.district = Place.MEADOW;
-        this.background = "wall";
-        break;
-      case "suburb":
-        this.district = Place.GUILD_HALL;
-        this.background = "suburb";
-        break;
-      case "downtown":
-        this.district = Place.GUILD_HALL;
-        this.background = "downtown";
-        break;
-      case "palace":
-        this.district = Place.GUILD_HALL;
-        this.background = "palace";
-        break;
-      case "docks":
-        this.district = Place.GUILD_HALL;
-        this.background = "docks";
-        break;
-      default:
-        this.district = null;
-        this.background = "townmap";
-    }
+  setDistrict(place: Place) {
+    this.background = place ? place : "worldmap";
+    this.place=place;
+    this.onWorldMap = this.place ? false : true ;
   }
 
 
   clearData() {
     this.setDistrict(null);
-    this.showQuestDialouge = false;
     this.script = null;
     this.event=null;
   }
 
   onAccept() {
-    this.showQuestDialouge = false;
     this.init();
   }
 
   private init() {
     this.setDistrict(this.event.place);
-    
     document.querySelector('.tw').innerHTML = "";
     this.startQuiz = false;
     this.startEvent();

@@ -1,18 +1,15 @@
-<img src='../../assets/town/{{background}}.JPG'>
+<img src='../../assets/places/{{background}}.png'>
 <br>
-<div  *ngIf="!showQuestDialouge && !script">
-    <button (click)="showQuest('suburb')">Suburbs</button>
-    <button (click)="showQuest('downtown')">Downtown</button>
-    <button (click)="showQuest('meadow')">Meadow</button>
-    <button (click)="showQuest('outside')">Outside</button>
-    <button (click)="showQuest('palace')">Palace</button>
-    <button (click)="showQuest('docks')">Docks</button>
+<div  *ngIf="onWorldMap">
+    <div *ngFor = "let place of places">
+        <button (click)="showQuest(place)">{{place}}</button>
+    </div>
     <a routerLink="/shop">Shop</a>
     <a routerLink="/">Return</a>
 </div>
 <br>
-<button *ngIf="returnAvailable" (click)="setDistrict('whatever')">Return</button>
-<div *ngIf="script && showQuestDialouge">
+<button *ngIf="!onWorldMap" (click)="setDistrict()">Return</button>
+<div *ngIf="script">
     <p>{{script.eventText}}</p>
     <button (click)="onAccept()">Accept</button>
     <button (click)="clearData()">Decline</button>
