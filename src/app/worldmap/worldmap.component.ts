@@ -21,9 +21,9 @@ export class WorldmapComponent implements OnInit {
   places :Place[];
   script: Script;
   startQuiz: boolean;
+  showRequest:boolean;
   onWorldMap: boolean;
   event: Event;
-  eventId: string;
   background: string = "worldmap";
 
   constructor(private eventHandler: EventHandler, private quizService: QuizService, private characterService:CharacterService) { }
@@ -58,40 +58,25 @@ export class WorldmapComponent implements OnInit {
     this.setDistrict(null);
     this.script = null;
     this.event=null;
+    this.startQuiz = false;
   }
 
   onAccept() {
-    this.init();
-  }
-
-  private init() {
+    this.showRequest = false;
     this.setDistrict(this.event.place);
     document.querySelector('.tw').innerHTML = "";
-    this.startQuiz = false;
     this.startEvent();
   }
 
   private openRequest(event: Event): void {
     this.eventHandler.getScript(event._id).pipe(first()).subscribe(script=>{
       this.script = script;
+      this.showRequest = true;
     });
   }
 
 
   private startEvent(): void {
-    this.eventId = this.event._id;
-
-    // get start text
-  /*  const text = this.eventHandler.getDialogForEvent(event.id);
-    const writer = new Typewriter(document.querySelector('.tw'), {
-      loop: false,
-      typeColor: 'blue'
-    });
-    writer
-      .type(text)
-      .rest(250)
-      .start();
-*/
     this.startQuiz = true;
     this.overdueSentences$ = this.quizService.getOverdueList()
       .pipe(

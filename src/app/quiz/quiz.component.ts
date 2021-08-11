@@ -35,8 +35,10 @@ export class QuizComponent implements OnInit, OnChanges {
   constructor(private quizService: QuizService, private charService: CharacterService) { }
 
   ngOnInit(): void {
-    if (this.overdueSentences)
+    if (this.overdueSentences){
+      console.log(this.script.startText);
       this.startQuiz(this.overdueSentences);
+    }
     if (this.quizType === 'learn')
       this.subscribeToLearn();
     else if (this.quizType === 'practice')
@@ -79,14 +81,13 @@ export class QuizComponent implements OnInit, OnChanges {
       this.quizService.updateSentence(this.sentence._id, 5);
       if (this.overdueSentences){
         this.charService.updateMoney(1);
-        console.log(this.script.positive[0]);
-        // check for positive text with this.script
+        console.log(this.script.positive[Math.floor(Math.random() * (this.script.positive.length))]);
       }
     } else {
       console.log("elbasztad");
       this.quizService.updateSentence(this.sentence._id, 0);
       if (this.overdueSentences){
-          // check for negative text with this.script
+        console.log(this.script.negative[Math.floor(Math.random() * (this.script.negative.length))])
       }
     }
 
@@ -110,8 +111,7 @@ export class QuizComponent implements OnInit, OnChanges {
             });
 
           } else { //overdue
-            // check if event host is already introduced, if not, introduce 
-             // check for ending text with this.script
+            console.log(this.script.ending[Math.floor(Math.random() * (this.script.ending.length))]);
             this.quizService.getOverdueSentences().toPromise();
             this.exitQuizEmitter.emit(false);
           }

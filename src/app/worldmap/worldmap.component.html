@@ -9,7 +9,7 @@
 </div>
 <br>
 <button *ngIf="!onWorldMap" (click)="setDistrict()">Return</button>
-<div *ngIf="script">
+<div *ngIf="showRequest">
     <p>{{script.eventText}}</p>
     <button (click)="onAccept()">Accept</button>
     <button (click)="clearData()">Decline</button>
