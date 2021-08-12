@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Language } from 'src/app/language.enum';
 import { Character } from 'src/app/models/character.model';
 import { User } from 'src/app/models/user.model';
@@ -53,7 +53,7 @@ export class CharacterSelectorComponent implements OnInit {
 
   finishCharacter(form: NgForm): void {
     let languageTaken = false;
-    this.charList$.pipe(first()).subscribe(list => {
+    this.charList$.pipe(take(1)).subscribe(list => {
       for (const char of list) {
         if (char.language === this.language) {
           Swal.fire("You can only have one character per language");
@@ -62,7 +62,7 @@ export class CharacterSelectorComponent implements OnInit {
         }
       }
       if (!languageTaken) {
-        this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).pipe(first()).subscribe(result => {
+        this.charService.createCharacter(form.value.characterName, this.imagePath, this.language).pipe(take(1)).subscribe(result => {
           this.auth.selectCurrentCharacter(result);
           this.createCharacterClicked = false;
         })

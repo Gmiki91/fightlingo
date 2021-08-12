@@ -2,13 +2,12 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { EventHandler } from '../services/event-handler.service';
 import { Event } from '../models/event.model';
 import { Sentence } from '../models/sentence.model';
 import { AuthService } from '../services/auth.service';
 import { QuizService } from '../services/quiz.service';
-import swal from 'sweetalert';
 import { Character } from '../models/character.model';
 import { CharacterService } from '../services/character.service';
 import { environment } from 'src/environments/environment';
@@ -90,7 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private sortEvents(overdues: number) {
     this.eventHandler.reset();
     let count = overdues;
-    this.eventHandler.getEventsByLevel().pipe(first()).subscribe(events => {
+    this.eventHandler.getEventsByLevel().pipe(take(1)).subscribe(events => {
     while (count > 0) {
       let amount = count > 5 ? 5 : count;
       count -= this.addToRandomEvent(amount, events);

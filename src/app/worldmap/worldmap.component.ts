@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { first, map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
 import { EventHandler } from '../services/event-handler.service';
@@ -86,7 +86,7 @@ export class WorldmapComponent implements OnInit {
   }
 
   private openRequest(event: Event): void {
-    this.eventHandler.getScript(event._id).pipe(first()).subscribe(script=>{
+    this.eventHandler.getScript(event._id).pipe(take(1)).subscribe(script=>{
       this.script = script;
       this.showRequest = true;
     });

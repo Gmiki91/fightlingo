@@ -5,7 +5,7 @@ import { Question } from 'src/app/models/question.model';
 import { Publication } from 'src/app/models/publication.model';
 import { AuthService } from 'src/app/services/auth.service';
 import swal from 'sweetalert';
-import { first } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character.service';
 import { Character } from 'src/app/models/character.model';
 import { Subscription } from 'rxjs';
@@ -53,7 +53,7 @@ export class ClassroomComponent implements OnInit, OnDestroy {
   }
 
   init() {
-    this.pubService.questions$.pipe(first()).subscribe(response => {
+    this.pubService.questions$.pipe(take(1)).subscribe(response => {
       this.questions = response;
       this.questions.sort((a, b) => b.popularity - a.popularity);
     });
