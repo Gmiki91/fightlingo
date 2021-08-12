@@ -15,4 +15,4 @@
     <button (click)="clearData()">Decline</button>
 </div>
 <div class="tw"></div>
-<app-quiz *ngIf="startQuiz" (exitQuizEmitter)="clearData()" [script]="script" [overdueSentences]="overdueSentences$ | async"></app-quiz>
+<app-quiz *ngIf="startQuiz" (exitQuizEmitter)="quizFinished()" [script]="script" [overdueSentences]="overdueSentences$ | async"></app-quiz>

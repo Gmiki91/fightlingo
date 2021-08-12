@@ -14,6 +14,11 @@ export class ItemService {
     getAllItems(): Observable<Item[]> {
         return this.http.get<Item[]>(this.BACKEND_URL + 'all');
     }
+    getRareItem(): Observable<Item> {
+        return this.http.get<Item[]>(this.BACKEND_URL + 'rare').pipe(map(items=>{
+            return items[Math.floor(Math.random()*items.length)];
+        }));
+    }
 
     getItems(items: string[]): Observable<Item[]> {
         let hashmap = new Map<string, number>();

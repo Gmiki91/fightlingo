@@ -243,6 +243,16 @@ router.patch('/buy', authCheck, (req, res, next) => {
         });
 })
 
+router.patch('/receiveItem', authCheck, (req, res, next) => {
+    Character.updateOne({ _id: req.userData.characterId },
+        {
+            $push: { items: req.body.item._id }
+        })
+        .then(() => {
+            return res.status(200).send({ message: "item received" });
+        });
+})
+
 router.patch('/sell', authCheck, (req, res, next) => {
     Character.findOne({ _id: req.userData.characterId }).then(char => {
         const index = char.items.findIndex(element => element === req.body.item._id);

@@ -107,6 +107,12 @@ export class CharacterService {
         })
     }
 
+    receiveItem(item: Item) {
+        this.http.patch(this.BACKEND_URL + 'receiveItem', { item: item }).subscribe(() => {
+            this.getCurrentCharacter();
+        })
+    }
+
     sellItem(item: Item) {
         this.http.patch(this.BACKEND_URL + 'sell', { item: item }).subscribe(() => {
             this.getCurrentCharacter();

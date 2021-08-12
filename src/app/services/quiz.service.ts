@@ -11,29 +11,30 @@ import { environment } from 'src/environments/environment';
 export class QuizService {
     private readonly BACKEND_URL = environment.apiUrl + '/sentences/';
     private overdueList = new BehaviorSubject<Sentence[]>(null);
-    public testSentence:Sentence;
+    private chanceOfRareItem = 0;
+    public testSentence: Sentence;
 
     constructor(private http: HttpClient) {
     }
 
-    getTestSentences(){
-        return this.http.get<Sentence[]>(this.BACKEND_URL+'test');
+    getTestSentences() {
+        return this.http.get<Sentence[]>(this.BACKEND_URL + 'test');
     }
 
     getFightSentences() {
-        return this.http.get<Sentence[]>(this.BACKEND_URL+'fight');
+        return this.http.get<Sentence[]>(this.BACKEND_URL + 'fight');
     }
 
     getPracticableSentences(id: string) {
-        return this.http.get<Sentence[]>(this.BACKEND_URL+'practice/' + id);
+        return this.http.get<Sentence[]>(this.BACKEND_URL + 'practice/' + id);
     }
 
     getLearnableSentences() {
-        return this.http.get<Sentence[]>(this.BACKEND_URL+'learn');
+        return this.http.get<Sentence[]>(this.BACKEND_URL + 'learn');
     }
 
     getOverdueSentences() {
-        return this.http.get(this.BACKEND_URL+'overdue/')
+        return this.http.get(this.BACKEND_URL + 'overdue/')
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));
@@ -41,6 +42,13 @@ export class QuizService {
 
     getOverdueList() {
         return this.overdueList.asObservable();
+    }
+
+    getChanceOfRareItem(): number {
+        const temp = this.chanceOfRareItem;
+        this.chanceOfRareItem = 0;
+        return temp;
+
     }
 
     updateSentence(sentenceId: string, answerEfficieny: number) {
@@ -73,6 +81,10 @@ export class QuizService {
                         progress.interval = Math.round(progress.interval * progress.difficulty);
                     }
 
+                    // eligible for rare item
+                    if (progress.interval >= 10) {
+                        this.chanceOfRareItem += 0.01;
+                    }
                     // next practice 
                     if (answerEfficieny > 3) {
                         let millisecondsInDay = 60 * 60 * 24 * 1000;

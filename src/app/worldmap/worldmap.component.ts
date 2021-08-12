@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, take } from 'rxjs/operators';
 import { Sentence } from '../models/sentence.model';
 import { Event } from 'src/app/models/event.model';
 import { EventHandler } from '../services/event-handler.service';
@@ -8,6 +8,7 @@ import { QuizService } from '../services/quiz.service';
 import { Place } from '../models/place.enum';
 import { Script } from '../models/script.model';
 import { CharacterService } from '../services/character.service';
+import { ItemService } from '../services/item.service';
 
 @Component({
   selector: 'app-worldmap',
@@ -26,7 +27,12 @@ export class WorldmapComponent implements OnInit {
   event: Event;
   background: string = "worldmap";
 
-  constructor(private eventHandler: EventHandler, private quizService: QuizService, private characterService:CharacterService) { }
+  constructor(
+    private eventHandler: EventHandler, 
+    private quizService: QuizService, 
+    private characterService:CharacterService,
+    private itemService:ItemService
+    ) { }
 
   ngOnInit(): void {
     this.onWorldMap = true;
@@ -59,6 +65,17 @@ export class WorldmapComponent implements OnInit {
     this.script = null;
     this.event=null;
     this.startQuiz = false;
+  }
+
+  quizFinished(){
+    const chance = this.quizService.getChanceOfRareItem();
+    if(Math.random()<chance){
+      console.log("Congrats, you got an item!");
+      this.itemService.getRareItem().pipe(take(1)).subscribe(item=>{
+        this.characterService.receiveItem(item);
+      });
+    };
+    this.clearData();
   }
 
   onAccept() {
