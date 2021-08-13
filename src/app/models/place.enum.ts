@@ -4,6 +4,7 @@ export enum Place {
     UNIVERSITY = "University",
     TRAINING_CENTER="Training center",
     CONSUL = "Consul",
+    SHOP = "Shop",
     //Home
     GARTEN = "Garten",
     LIBRARY ="Library",
@@ -12,6 +13,7 @@ export enum Place {
     MEADOW ="Meadow",
     VILLAGE = "Village",
     HARBOR = "Harbor",
+    ROAD = "Road",
 
     //Level 2
     BLUE_CITY ="Blue city",

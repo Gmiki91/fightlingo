@@ -16,6 +16,9 @@ export class QuizService {
 
     constructor(private http: HttpClient) {
     }
+    getSentencesByScrollId(scrollId:string){
+        return this.http.get<Sentence[]>(this.BACKEND_URL + scrollId);
+    }
 
     getTestSentences() {
         return this.http.get<Sentence[]>(this.BACKEND_URL + 'test');

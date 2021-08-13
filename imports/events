@@ -3,21 +3,15 @@
     "_id":"e0101",
     "name":"Baby Grog",
     "group":1,
-    "place": "meadow",
-    "from":"John"
+    "place": "Village",
+    "from":"Joe"
     }
     
     {
-    "_id":"e0301",
-    "name":"Kóbor kutyák elzavarása",
+    "_id":"e0201",
+    "name":"Gazírtás ",
     "group":1,
-    "place":"village",
-    "from":"Joe"
-    }
-    {
-    "_id":"e0102",
-    "name":"Gyerek Grog",
-    "group":2,
-    "place":"meadow",
+    "place":"Meadow",
     "from":"John"
     }
+

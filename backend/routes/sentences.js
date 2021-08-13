@@ -13,7 +13,12 @@ router.post("/all", (req, res, next)=>{
     .then((sentences) => {
         res.status(200).send(sentences)})
 })
+
 */
+router.get("/:scrollId", authCheck, (req,res,next)=>{
+    instantiateSentence(req.userData.language);
+    Sentence.find({scroll_id: req.params.scrollId }).then(sentences=>res.status(200).json(sentences));
+})
 //overdue sentences
 router.get("/overdue", authCheck, (req, res, next) => {
     instantiateSentence(req.userData.language);

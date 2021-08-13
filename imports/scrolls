@@ -3,33 +3,51 @@
 "title":"Final exam",
 "number":0,
 "language":"russian",
-"grammar":"The grammar for your final exam",
+"grammar":["The grammar for your final exam"],
 "level":0
 }
 
 {
 "_id":"ru_0101",
-"title":"A dick in the pond",
+"title":"Here, There",
 "number":1,
 "language":"russian",
-"grammar":"Grammar explanaton.\nVery important.\nAlso non existent.",
+"grammar":["Tut - szgyisz = ugyanaz"],
 "level":1
 }
 
 {
 "_id":"ru_0102",
-"title":"Another dick in the pond",
+"title":"This is...",
 "number":2,
 "language":"russian",
-"grammar":"Majd később kitalálom!",
+"grammar":[],
 "level":1
 }
 
 {
-"_id":"ru_0201",
-"title":"Another dick in the pond2",
+"_id":"ru_0103",
+"title":"Where?",
 "number":3,
 "language":"russian",
-"grammar":"Majd később kitalálom!2",
-"level":2
+"grammar":[],
+"level":1
+}
+
+{
+"_id":"ru_0104",
+"title":"Who? What?",
+"number":4,
+"language":"russian",
+"grammar":["студент - male, студентка - female. This is the case with many professions and nations, like Aktor - Aktrica, Amerikányec - Amerikanka","Vi - ti magázódás"],
+"level":1
+}
+
+{
+"_id":"ru_0105",
+"title":"My...",
+"number":5,
+"language":"russian",
+"grammar":["Was - Tvoj magázódás megint"],
+"level":1
 }

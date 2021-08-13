@@ -1,12 +1,13 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Character } from 'src/app/models/character.model';
 import { Scroll } from 'src/app/models/scroll.model';
+import { Sentence } from 'src/app/models/sentence.model';
 import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { CharacterService } from 'src/app/services/character.service';
+import { QuizService } from 'src/app/services/quiz.service';
 import { ScrollService } from 'src/app/services/scroll.service';
 import swal from 'sweetalert';
 
@@ -21,11 +22,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
   user: User;
   character:Character;
   scrolls: Scroll[];
+  sentences$:Observable<Sentence[]>
   selectedScroll: Scroll;
   quizType: string;
   sub: Subscription;
 
-  constructor(private auth: AuthService, private characterService: CharacterService, private scrollService: ScrollService, private router: Router) { }
+  constructor(
+    private quizService:QuizService,
+    private characterService: CharacterService, 
+    private scrollService: ScrollService, 
+    private router: Router) { }
 
   ngOnInit(): void {
     this.sub = this.characterService.character$.subscribe((char:Character)=>this.character=char)
@@ -38,6 +44,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   onScrollClicked(scroll: Scroll): void {
+    
     if (this.character.rank < scroll.number)
       this.buttonText = "";
     else if (this.character.rank == scroll.number && !this.character.isReadyForExam)
@@ -46,6 +53,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.buttonText = "Practice";
 
     this.selectedScroll = scroll;
+  }
+
+  onGlossary():void{
+    this.sentences$ = this.quizService.getSentencesByScrollId(this.selectedScroll._id);
   }
 
   onScrollBtnClicked(): void {

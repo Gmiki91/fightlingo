@@ -1,57 +1,167 @@
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "rank":0,
-   "translation": ["солдат"],
-   "english": ["soldier"]
- }
- {
-   "scroll_id": "ru_0000",
-   "level": 0,
-   "rank":0,
-   "translation": ["банан"],
-   "english": ["banana"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "rank":1,
-   "translation": ["банан1"],
-   "english": ["banana1"]
- }
- {
-   "scroll_id": "ru_0101",
-   "level": 1,
-   "rank":1,
-   "translation": ["солдат1"],
-   "english": ["солдат1"]
- }
- {
-   "scroll_id": "ru_0102",
-   "level": 1,
-   "rank":2,
-   "translation": ["банан2"],
-   "english": ["banana2"]
- }
- {
-   "scroll_id": "ru_0102",
-   "level": 1,
-   "rank":2,
-   "translation": ["солдат2"],
-   "english": ["солдат2"]
- }
-{
-   "scroll_id": "ru_0201",
-   "level": 2,
-   "rank":3,
-   "translation": ["level21"],
-   "english": ["level21"]
- }
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Он тут."], "english":["He is here."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Газета там."], "english":["The newspaper is there."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Иван тут."], "english":["Ivan is here."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Давид там."], "english":["David is there."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Иван доктор."], "english":["Ivan is a doctor."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Лондон порт."], "english":["London is a port."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Волга река."], "english":["The Volga is a river."]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Он тут?","он здесь?"], "english":["Is he here?"]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Иван доктор?"], "english":["Is Ivan a doctor?"]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Зоя и Ольга тут?"], "english":["Are Zoya and Olga here?"]}
+{"scroll_id": "ru_0101", "level":1, "rank":1, "translation":["Библиотека не тут. ","Библиотека не здесь"], "english":["The library is not here."]}
 
- {
-   "scroll_id": "ru_0201",
-   "level": 2,
-   "rank":3,
-   "translation": ["level22"],
-   "english": ["level22"]
- }
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это университет."], "english":["This is a university."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это профессор Браун."], "english":["This is Professor Brown."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это Волга."], "english":["This is the Volga."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это университет?"], "english":["Is this a university?"]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это профессор Браун?"], "english":["Is this Professor Brown?"]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Да, это университет."], "english":["Yes, this is a university."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Нет, это не музей."], "english":["No, this is not a museum."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это музей?"], "english":["Is this a museum?"]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это класс."], "english":["This is a class."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это потолок."], "english":["This is the ceiling."]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это стул или стол?"], "english":["Is this a chair or a table?"]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это доска или полка?"], "english":["Is this a blackboard or a bookcase?"]}
+{"scroll_id": "ru_0102", "level":1, "rank":2, "translation":["Это тоже карандаш?"], "english":["Is this also a pencil?"]}
+
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Вот перо."], "english":["Here is a pen."]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Вот Иван."], "english":["Here is Ivan."]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Вот газета."], "english":["Here is a newspaper."]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Вот доктор Браун!"], "english":["Here's Doctor Brown!"]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Где книга?"], "english":["Where is the book?"]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Где лампа?"], "english":["Where is the lamp?"]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Где профессор Браун?"], "english":["Where is Professor Brown?"]}
+{"scroll_id": "ru_0103", "level":1, "rank":3, "translation":["Где теперь Иван?"], "english":["Where is Ivan now?"]}
+
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Что это?"], "english":["What is this?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Кто это?"], "english":["Who is this?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Кто он?"], "english":["Who is he?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Он Юрий."], "english":["He is Yuri."]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Вы уже тут?","Ты уже тут?","Ты уже здесь?","Вы уже здесь?"], "english":["Are you here already?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Они уже дома."], "english":["They are already at home."]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Где голова?"], "english":["Where is the head?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Кто вы?","Кто ты?"], "english":["Who are you?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Я студент.","я студентка"], "english":["I am a student.","I am the student","I'm a student","I'm the student"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Он тоже студент."], "english":["He is also a student."]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Вы профессор Павлов?"], "english":["Are you Professor Pavlov?"]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Я тут и ты тут.","Я тут и вы тут."], "english":["I'm here and you're here."]}
+{"scroll_id": "ru_0104", "level":1, "rank":4, "translation":["Я дома и он дома. Мы дома."], "english":["I'm at home and he's at home. We are at home."]}
+
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это мой друг."], "english":["This is my friend."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это моя машина."], "english":["This is my car."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это моё перо."], "english":["This is my pen."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это мой дом."], "english":["This is my house."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это моя квартира."], "english":["This is my apartment."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это моё окно."], "english":["This is my window."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Он мой отец."], "english":["He is my father."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Она моя мама."], "english":["She is my mother."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Оно моё имя."], "english":["It is my name."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твой друг. "," Это ваш друг."], "english":["This is your friend."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твоя машина. "," Это ваша машина."], "english":["This is your car."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твоё перо. "," Это ваше перо."], "english":["This is your pen."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твой дом. "," Это ваш дом."], "english":["This is your house."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твоя квартира. "," Это ваша квартира."], "english":["This is your apartment."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это твоё окно. "," Это ваше окно."], "english":["This is your window."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Он твой отец. "," Он ваш отец."], "english":["He is your father."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Она твоя мама. "," Она ваша мама."], "english":["She is your mother."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Оно твоё имя."," Оно ваше имя."], "english":["It is your name."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наш друг."], "english":["This is our friend."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наша машина."], "english":["This is our car."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наше перо."], "english":["This is our pen."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наш дом."], "english":["This is our house."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наша квартира."], "english":["This is our apartment."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Это наше окно."], "english":["This is our window."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Он наш отец."], "english":["He is our father."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Она наша мама."], "english":["She is our mother."]}
+{"scroll_id": "ru_0105", "level":1, "rank":5, "translation":["Оно наше имя."], "english":["It is our name."]}
+
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Чей это карандаш?"], "english":["Whose pencil is this?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Это мой карандаш."], "english":["It's my pencil."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Чьё это письмо?"], "english":["Whose letter is this?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Оно твоё письмо."], "english":["It's your (informal) letter."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Чья это комната?"], "english":["Whose room is this?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Чья это газета?"], "english":["Whose newspaper is this?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Это наша комната."], "english":["It's our room."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Где твоя семья?"], "english":["Where is your (informal) family?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Волдеморт, где ваш нос?"], "english":["Voldemort, where is your (formal) nose?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Это моя дочь."], "english":["This is my daughter."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Это не мой брат."], "english":["This is not my brother."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Этот стол мой."], "english":["This table is mine."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Эта книга моя."], "english":["This book is mine."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Это дерево моё."], "english":["This tree is mine."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Эта лампа наша."], "english":["This lamp is ours."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Этот стол твой?"], "english":["Is this table yours (informal)?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Тот стол мой?"], "english":["Is that table mine?"]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Та кошка не моя. Та твоя."], "english":["That cat is not mine. It's yours (informal)."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Та книга наша."], "english":["That book is ours."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Тот театр твой."], "english":["That theater is yours (informal)."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["То окно наше."], "english":["That window is ours."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Тот хлеб мой."], "english":["That bread is mine."]}
+{"scroll_id": "ru_0106", "level":1, "rank":6, "translation":["Та кухня твоя."], "english":["That kitchen is yours (informal)."]}
+
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Ольга студентка и Вера тоже студентка."], "english":["Olga is a student, and Vera is a student also."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Борис учитель, а Вадим студент."], "english":["Boris is a teacher, but Vadim is a student."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Я студент и она студентка."], "english":["I am a student, and she is a student."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Я не студент, а учитель."], "english":["I am not a student, but a teacher."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Я студент, а не учитель."], "english":["I am a student, not a teacher."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Я студент. А кто вы?"], "english":["I am a student. Who are you (plural)?"]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Андрей и учитель и врач."], "english":["Andrei is both a teacher and a doctor."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Этот дом наш, а тот ваш."], "english":["This house is ours, and that one is yours (formal)."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Сестра и брат дома."], "english":["The sister and brother are at home."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Ольга и Иван брат и сестра."], "english":["Olga and Ivan are brother and sister."]}
+{"scroll_id": "ru_0107", "level":1, "rank":7, "translation":["Я студент а он врач."], "english":["I am a student, but he is a doctor."]}
+
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Я в театре."], "english":["I am at the theater."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Кошка на столе."], "english":["The cat is on the table."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В городе улица."], "english":["In the city there is a street."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["На улице дом."], "english":["On the street there is a house."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Я в кабинете."], "english":["I am in the study."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Иван на футболе."], "english":["Ivan is at a football game."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Моя сестра в Нью-Йорке."], "english":["My sister is in New York."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Джон в Москве?"], "english":["Is John in Moscow?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Отец на работе, а мать в театре."], "english":["The father is at work and the mother is at the theater."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Она в кухне."], "english":["She is in the kitchen."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Кто в театре?"], "english":["Who is at the theater?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Что на столе?"], "english":["What is on the table?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["На столе моя кошка."], "english":["On the table is my cat."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В театре твой отец."], "english":["At the theater is your (informal) father."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В музее мой сын."], "english":["At the museum is my son."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Кто в Париже?"], "english":["Who is in Paris?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В моём кабинете кресло."], "english":["In my study there is an armchair."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Что на вашем столе?"], "english":["What is on your (formal) table?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["На нём лампа и бумага."], "english":["On it (m.) are a lamp and paper."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["Кто в твоей квартире?"], "english":["Who is in/at your (informal) apartment?"]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В ней моя дочь."], "english":["In/At it (f.) is my daughter."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В нашей школе экзамен."], "english":["At our school there is an exam."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["На нём моя сестра."], "english":["At it (n.) is my sister."]}
+{"scroll_id": "ru_0108", "level":1, "rank":8, "translation":["В нашем доме мой стол."], "english":["At our house is my table."]}
+
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Он работал."], "english":["He worked."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Она работала."], "english":["She worked"]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Оно работало."], "english":["It worked."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Они работали."], "english":["They worked."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Он читал."], "english":["He read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Она читала."], "english":["She read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Оно читало."], "english":["It read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Они читали."], "english":["They read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Вы читали."], "english":["You (formal) read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Я работал."], "english":["I (male) worked."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Иван и Анна читали."], "english":["Ivan and Anna read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Ты работал."], "english":["You (informal, male) worked."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Ольга читала."], "english":["Olga read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Здесь был стол."], "english":["There was a table here."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Кресло было в кабинете."], "english":["The armchair was in the study."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Книга была на столе."], "english":["The book was on the table."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Они были дома."], "english":["They were at home."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Я был в театре вчера."], "english":["I went to the theater yesterday."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Я не был в театре вчера."], "english":["I was not at the theater yesterday."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Я был не в театре вчера, а на концерте."], "english":["I was not at the theater yesterday, but at the concert."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Что вы делали?"], "english":["What were you (formal) doing?"]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Как они говорили: по-английски или по-русски?"], "english":["What were they speaking, English or Russian?"]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Вы жили в Лондоне."], "english":["You (formal) lived in London."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Нина жила в Париже."], "english":["Nina lived in Paris."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["На столе стояла лампа."], "english":["On the table stood a lamp."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["В кухне стоял телефон."], "english":["In the kitchen stood a telephone."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Что Ольга вчера делала? Она читала."], "english":["What did Olga do yesterday? She read."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Что Иван вчера делал? Он писал письмо."], "english":["What did Ivan do yesterday? He wrote a letter."]}
+{"scroll_id": "ru_0109", "level":1, "rank":9, "translation":["Что Анна вчера делала? Она слушала."], "english":["What did Anna do yesterday? She listened."]}

@@ -1,20 +1,2 @@
-    {
-    "eventId":"e0101",
-    "language":"english",
-    "eventText":"Please help me, a little beast called Grog has been rampageing my fields.",
-    "startText": "Thank you for coming! The little beast is right over there, eating my carrots. Please hush him away!",
-    "positive":["Oy, that must have hurt", "That will teach him!", "Nice!", "He looks angry."],
-    "negative":["Are you sure you know what you're doing?", "I don't think you got his attention with that.", "Is that a spell?", "That wasn't very effective now, was it?"],
-    "ending":["He is running away! Hurray!"]
-    }
-
-    {
-    "eventId":"e0101",
-    "language":"russian",
-    "eventText":"Please help me, a little beast called Grog has been rampageing my fields.",
-    "startText": "Thank you for coming! The little beast is right over there, eating my carrots. Please hush him away!",
-    "positive":["Oy, that must have hurt", "That will teach him!", "Nice!", "He looks angry."],
-    "negative":["Are you sure you know what you're doing?", "I don't think you got his attention with that.", "Is that a spell?", "That wasn't very effective now, was it?"],
-    "ending":["He is running away! Hurray!"]
-    }
-    
+{"eventId":"e0101","language":"english","eventText":"A little beast called Grog is causing mischief in the village of VILLAGE NAME, Chief Joe has asked for our assistance","startText":"Thank you for coming! The little beast is right over there. Please hush him away!","positive":["Oy, that must have hurt", "That will teach him!", "Nice!", "He looks angry."],"negative":["Are you sure you know what you're doing?", "I don't think you got his attention with that.", "Is that a spell?", "That wasn't very effective now, was it?"],"ending":["He is running away! Hurray!"]}
+{"eventId":"e0201","language":"english","eventText":"The meadow is a bit overgrown, John has asked us to help with a bit of clearing","startText":"O Hello, little magician! As you see the grass is a bit taller than I'd like, but I'm an old man, and my back is aching. So, chop chop!","positive":["Back when I was young, I could have cleared all this in mere minutes!","Very good!","Maybe I should buy some sheep, what do you think?"],"negative":["Please mind the carrots!","Hmm, I don't think that worked","Do you think you will be done soon? My friends are waiting for me in the village's pub!"],"ending":["Nice job, thank you young magician!"]}
