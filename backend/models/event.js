@@ -6,6 +6,7 @@ const eventSchema = mongoose.Schema({
     group:Number,
     place:Object,
     from:Object,
+    //animation: ???
 })
 
 module.exports=mongoose.model("Event",eventSchema);

@@ -4,6 +4,7 @@
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection events --file imports/events
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection scripts --file imports/scripts
 //mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection scrolls --file imports/scrolls
+//mongoimport --uri mongodb+srv://miki:mikipw@cluster0.hakyf.mongodb.net/fightlingo --collection idles --file imports/idleevents
 
 const express = require('express');
 const mongoose = require('mongoose');

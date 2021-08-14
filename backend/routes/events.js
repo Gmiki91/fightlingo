@@ -3,6 +3,7 @@ const authCheck = require('../middleware/auth-check');
 const router = express.Router();
 const Event = require("../models/event");
 const Script = require("../models/script");
+const IdleEvent = require("../models/idle");
 
 const allEvents = [
     "e0101", "e0201", "e0301", "e0401", "e0501", "e0601", "e0701", "e0801", "e0901", "e1001", "e1101",
@@ -79,6 +80,14 @@ router.get('/script/:eventId',authCheck,(req,res,next)=>{
         language:req.userData.language
     }).then(script=>{
         res.send(script)});
+})
+
+router.get('/idle/:place',authCheck,(req,res,next)=>{
+    IdleEvent.find({
+        place:req.params.place,
+        level:req.userData.level
+    }).then(events=>{
+        res.send(events)});
 })
 
 module.exports=router;

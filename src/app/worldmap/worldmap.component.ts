@@ -49,6 +49,7 @@ export class WorldmapComponent implements OnInit {
     if (this.event) {
       this.openRequest(this.event);
     }else{
+      //this.eventHandler.getIdleEvent(place);
       this.setDistrict(place);
     }
   }

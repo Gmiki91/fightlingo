@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Event } from "../models/event.model";
+import { Place } from "../models/place.enum";
 import { Script } from "../models/script.model";
 
 
@@ -17,6 +18,10 @@ export class EventHandler {
         return this.http.get<Event[]>(this.BACKEND_URL)
     }
 
+    getIdleEvent(place:Place){
+        return this.http.get<Event[]>(this.BACKEND_URL + 'idle/' + place);
+    }
+
     addOverdue(event: Event, amount: number) {
         if (this.activeEvents.includes(event)) {
             const index = this.activeEvents.indexOf(event);
@@ -29,7 +34,7 @@ export class EventHandler {
     }
 
     getScript(id: string): Observable<Script> {
-        return this.http.get<Script>(this.BACKEND_URL + '/script/' + id);
+        return this.http.get<Script>(this.BACKEND_URL + 'script/' + id);
     }
 
     reset(): void {
