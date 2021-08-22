@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Proficiency } from 'src/app/proficiency.enum';
-import { PublicationService } from 'src/app/services/publication.service';
+import { Proficiency } from 'src/app/shared/proficiency.enum';
+import { PublicationService } from 'src/app/shared/services/publication.service';
 
 @Component({
   selector: 'app-own-pub',

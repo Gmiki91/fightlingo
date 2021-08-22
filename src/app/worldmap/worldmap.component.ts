@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { Sentence } from '../models/sentence.model';
-import { Event } from 'src/app/models/event.model';
-import { EventHandler } from '../services/event-handler.service';
-import { QuizService } from '../services/quiz.service';
-import { Place } from '../models/place.enum';
-import { Script } from '../models/script.model';
-import { CharacterService } from '../services/character.service';
-import { ItemService } from '../services/item.service';
+import { Sentence } from '../shared/models/sentence.model';
+import { Event } from 'src/app/shared/models/event.model';
+import { EventHandler } from '../shared/services/event-handler.service';
+import { QuizService } from '../shared/services/quiz.service';
+import { Place } from '../shared/models/place.enum';
+import { Script } from '../shared/models/script.model';
+import { CharacterService } from '../shared/services/character.service';
+import { ItemService } from '../shared/services/item.service';
 
 @Component({
   selector: 'app-worldmap',

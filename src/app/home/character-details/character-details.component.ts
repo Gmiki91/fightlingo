@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Character } from 'src/app/models/character.model';
-import { Item } from 'src/app/models/items/item.model';
-import { Potion } from 'src/app/models/items/potion.model';
-import { Robe } from 'src/app/models/items/robe.model';
-import { Staff } from 'src/app/models/items/staff.model';
-import { CharacterService } from 'src/app/services/character.service';
-import { ItemService } from 'src/app/services/item.service';
+import { Character } from 'src/app/shared/models/character.model';
+import { Item } from 'src/app/shared/models/items/item.model';
+import { Potion } from 'src/app/shared/models/items/potion.model';
+import { Robe } from 'src/app/shared/models/items/robe.model';
+import { Staff } from 'src/app/shared/models/items/staff.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { ItemService } from 'src/app/shared/services/item.service';
 
 @Component({
   selector: 'app-character-details',

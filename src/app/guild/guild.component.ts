@@ -1,16 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { Language } from 'src/app/language.enum';
-import { Scroll } from 'src/app/models/scroll.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { ScrollService } from 'src/app/services/scroll.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { io } from 'socket.io-client';
 import swal from 'sweetalert';
-import { User } from 'src/app/models/user.model';
-import { OnlineUser } from 'src/app/models/online-user.model';
-import { CharacterService } from 'src/app/services/character.service';
-import { Character } from 'src/app/models/character.model';
+import { OnlineUser } from 'src/app/shared/models/online-user.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { Character } from 'src/app/shared/models/character.model';
 
 @Component({
   selector: 'app-guild',

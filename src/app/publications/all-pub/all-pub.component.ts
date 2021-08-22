@@ -1,16 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PublicationService } from 'src/app/services/publication.service';
-import { Publication } from 'src/app/models/publication.model';
+import { PublicationService } from 'src/app/shared/services/publication.service';
+import { Publication } from 'src/app/shared/models/publication.model';
 import { MatRadioChange } from '@angular/material/radio';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { CharacterService } from 'src/app/services/character.service';
+import { CharacterService } from 'src/app/shared/services/character.service';
 
 @Component({
   selector: 'app-all-pub',

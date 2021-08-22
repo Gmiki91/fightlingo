@@ -2,13 +2,13 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Character } from 'src/app/models/character.model';
-import { Scroll } from 'src/app/models/scroll.model';
-import { Sentence } from 'src/app/models/sentence.model';
-import { User } from 'src/app/models/user.model';
-import { CharacterService } from 'src/app/services/character.service';
-import { QuizService } from 'src/app/services/quiz.service';
-import { ScrollService } from 'src/app/services/scroll.service';
+import { Character } from 'src/app/shared/models/character.model';
+import { Scroll } from 'src/app/shared/models/scroll.model';
+import { Sentence } from 'src/app/shared/models/sentence.model';
+import { User } from 'src/app/shared/models/user.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { QuizService } from 'src/app/shared/services/quiz.service';
+import { ScrollService } from 'src/app/shared/services/scroll.service';
 import swal from 'sweetalert';
 
 @Component({

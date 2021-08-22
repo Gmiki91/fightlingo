@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Language } from 'src/app/language.enum';
-import { Character } from 'src/app/models/character.model';
-import { Scroll } from 'src/app/models/scroll.model';
-import { CharacterService } from 'src/app/services/character.service';
-import { QuizService } from 'src/app/services/quiz.service';
-import { ScrollService } from 'src/app/services/scroll.service';
+import { Language } from 'src/app/shared/language.enum';
+import { Character } from 'src/app/shared/models/character.model';
+import { Scroll } from 'src/app/shared/models/scroll.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { QuizService } from 'src/app/shared/services/quiz.service';
+import { ScrollService } from 'src/app/shared/services/scroll.service';
 import swal from 'sweetalert';
 import Typewriter from 't-writer.js'
 

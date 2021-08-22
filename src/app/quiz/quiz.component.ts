@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { CharacterService } from '../services/character.service';
-import { QuizService } from '../services/quiz.service';
-import { Sentence } from '../models/sentence.model';
-import { Scroll } from '../models/scroll.model';
+import { CharacterService } from '../shared/services/character.service';
+import { QuizService } from '../shared/services/quiz.service';
+import { Sentence } from '../shared/models/sentence.model';
+import { Scroll } from '../shared/models/scroll.model';
 import swal from 'sweetalert';
-import { Script } from '../models/script.model';
+import { Script } from '../shared/models/script.model';
 
 @Component({
   selector: 'app-quiz',

@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PublicationService } from 'src/app/services/publication.service';
-import { Question } from 'src/app/models/question.model';
-import { Publication } from 'src/app/models/publication.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { PublicationService } from 'src/app/shared/services/publication.service';
+import { Question } from 'src/app/shared/models/question.model';
+import { Publication } from 'src/app/shared/models/publication.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import swal from 'sweetalert';
 import { take } from 'rxjs/operators';
-import { CharacterService } from 'src/app/services/character.service';
-import { Character } from 'src/app/models/character.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { Character } from 'src/app/shared/models/character.model';
 import { Subscription } from 'rxjs';
 
 @Component({

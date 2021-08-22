@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { EventHandler } from '../services/event-handler.service';
-import { Event } from '../models/event.model';
-import { Sentence } from '../models/sentence.model';
-import { AuthService } from '../services/auth.service';
-import { QuizService } from '../services/quiz.service';
-import { Character } from '../models/character.model';
-import { CharacterService } from '../services/character.service';
+import { EventHandler } from '../shared/services/event-handler.service';
+import { Event } from '../shared/models/event.model';
+import { Sentence } from '../shared/models/sentence.model';
+import { AuthService } from '../shared/services/auth.service';
+import { QuizService } from '../shared/services/quiz.service';
+import { Character } from '../shared/models/character.model';
+import { CharacterService } from '../shared/services/character.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

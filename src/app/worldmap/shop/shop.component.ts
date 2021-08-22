@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemService } from 'src/app/services/item.service';
-import { Item } from 'src/app/models/items/item.model'
+import { ItemService } from 'src/app/shared/services/item.service';
+import { Item } from 'src/app/shared/models/items/item.model'
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { CharacterService } from 'src/app/services/character.service';
-import { Character } from 'src/app/models/character.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
+import { Character } from 'src/app/shared/models/character.model';
 
 @Component({
   selector: 'app-shop',

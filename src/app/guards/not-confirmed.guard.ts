@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { CharacterService } from "../services/character.service";
+import { CharacterService } from "../shared/services/character.service";
 
 @Injectable({
     providedIn: 'root'

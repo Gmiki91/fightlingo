@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
-import { Character } from 'src/app/models/character.model';
-import { Item } from 'src/app/models/items/item.model';
-import { Potion } from 'src/app/models/items/potion.model';
-import { Staff } from 'src/app/models/items/staff.model';
-import { Style } from 'src/app/models/items/style.enum';
-import { OnlineUser } from 'src/app/models/online-user.model';
-import { CharacterService } from 'src/app/services/character.service';
+import { Character } from 'src/app/shared/models/character.model';
+import { Item } from 'src/app/shared/models/items/item.model';
+import { Potion } from 'src/app/shared/models/items/potion.model';
+import { Staff } from 'src/app/shared/models/items/staff.model';
+import { Style } from 'src/app/shared/models/items/style.enum';
+import { OnlineUser } from 'src/app/shared/models/online-user.model';
+import { CharacterService } from 'src/app/shared/services/character.service';
 
 @Component({
   selector: 'app-gym',

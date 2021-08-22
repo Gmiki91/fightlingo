@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
-import { CharacterService } from '../services/character.service';
+import { AuthService } from '../shared/services/auth.service';
+import { CharacterService } from '../shared/services/character.service';
 
 @Component({
   selector: 'app-home',

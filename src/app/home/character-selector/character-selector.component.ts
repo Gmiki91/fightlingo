@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Language } from 'src/app/language.enum';
-import { Character } from 'src/app/models/character.model';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { CharacterService } from 'src/app/services/character.service';
+import { Language } from 'src/app/shared/language.enum';
+import { Character } from 'src/app/shared/models/character.model';
+import { User } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { CharacterService } from 'src/app/shared/services/character.service';
 import Swal from 'sweetalert2';
 
 @Component({
