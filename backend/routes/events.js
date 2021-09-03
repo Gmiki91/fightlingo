@@ -77,7 +77,7 @@ router.get('/',authCheck,(req,res,next)=>{
 router.get('/script/:eventId',authCheck,(req,res,next)=>{
     Script.findOne({
         eventId:req.params.eventId,
-        language:req.userData.language
+        language:"english"//language:req.userData.language
     }).then(script=>{
         res.send(script)});
 })

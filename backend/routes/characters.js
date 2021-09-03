@@ -7,13 +7,12 @@ const Character = require("../models/character");
 const Scroll = require("../models/scroll");
 const Progress = require("../models/progress");
 let Sentence;
-let character;
 
 router.post('/create', authCheck, (req, res, next) => {
     let language = req.body.language;
     instantiateSentence(language);
 
-    character = new Character({
+    const character = new Character({
         userId: req.userData.id,
         name: req.body.name,
         pic: req.body.avatar,
@@ -36,7 +35,7 @@ router.post('/create', authCheck, (req, res, next) => {
 
     });
     character.save()
-        .then(initProgressByRank(req.body.language, 0))
+        .then(initProgressByRank(req.body.language,character._id, 0))
         .then(() => {
             const token = getToken(character);
 
@@ -78,9 +77,9 @@ router.delete('/deleteCharacter/:id', authCheck, (req, res, next) => {
 
 router.patch('/setRankAndLevel', authCheck, (req, res, next) => {
     for (let i = 1; i <= req.body.rank; i++) { //starts at 1 bc rank 0 is initialized at character creation
-        initProgressByRank(req.userData.language, i);
+        initProgressByRank(req.userData.language, req.userData.characterId, i);
     }
-    initNextProgress(req.userData.language, req.body.rank + 1);
+    initNextProgress(req.userData, req.body.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -96,7 +95,7 @@ router.patch('/setRankAndLevel', authCheck, (req, res, next) => {
 })
 
 router.patch('/rank', authCheck, (req, res, next) => {
-    initNextProgress(req.userData.language, req.userData.rank + 1);
+    initNextProgress(req.userData, req.userData.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -111,7 +110,7 @@ router.patch('/rank', authCheck, (req, res, next) => {
 })
 
 router.patch('/level', authCheck, (req, res, next) => {
-    initNextProgress(req.userData.language, req.userData.rank + 1);
+    initNextProgress(req.userData, req.userData.rank + 1);
     Character.findOneAndUpdate({ _id: req.userData.characterId },
         {
             $set: {
@@ -298,10 +297,10 @@ router.patch('/removeFromPocket', authCheck, (req, res, next) => {
         });
 })
 
-function initNextProgress(language, rank) {
-    instantiateSentence(language);
+function initNextProgress(userData, rank) {
+    instantiateSentence(userData.language);
     Scroll.findOne({
-        language: language,
+        language: userData.language,
         number: rank
     }, '_id')
         .then(id =>
@@ -310,7 +309,7 @@ function initNextProgress(language, rank) {
                     for (let document of documents) {
                         const prog = new Progress({
                             sentenceId: document._id,
-                            characterId: character._id,
+                            characterId: userData.characterId,
                             learned: false,
                             learningProgress: 0,
                             consecutiveCorrectAnswers: 0,
@@ -324,7 +323,7 @@ function initNextProgress(language, rank) {
         )
 }
 
-function initProgressByRank(language, rank) {
+function initProgressByRank(language,charId, rank) {
     instantiateSentence(language);
     Scroll.findOne({
         language: language,
@@ -336,7 +335,7 @@ function initProgressByRank(language, rank) {
                     for (let document of documents) {
                         const prog = new Progress({
                             sentenceId: document._id,
-                            characterId: character._id,
+                            characterId: charId,
                             learned: true,
                             learningProgress: 5,
                             consecutiveCorrectAnswers: 0,

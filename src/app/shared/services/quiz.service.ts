@@ -16,8 +16,8 @@ export class QuizService {
 
     constructor(private http: HttpClient) {
     }
-    getSentencesByScrollId(scrollId:string){
-        return this.http.get<Sentence[]>(this.BACKEND_URL + scrollId);
+    getSentencesByScrollId(scrollId: string) {
+        return this.http.get<Sentence[]>(this.BACKEND_URL + 'glossary/' + scrollId);
     }
 
     getTestSentences() {
@@ -37,7 +37,7 @@ export class QuizService {
     }
 
     getOverdueSentences() {
-        return this.http.get(this.BACKEND_URL + 'overdue/')
+        return this.http.get(this.BACKEND_URL + 'overdue')
             .pipe(map((responseData: Sentence[]) => {
                 this.overdueList.next(responseData);
             }));

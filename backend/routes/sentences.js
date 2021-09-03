@@ -15,7 +15,7 @@ router.post("/all", (req, res, next)=>{
 })
 
 */
-router.get("/:scrollId", authCheck, (req,res,next)=>{
+router.get("/glossary/:scrollId", authCheck, (req,res,next)=>{
     instantiateSentence(req.userData.language);
     Sentence.find({scroll_id: req.params.scrollId }).then(sentences=>res.status(200).json(sentences));
 })

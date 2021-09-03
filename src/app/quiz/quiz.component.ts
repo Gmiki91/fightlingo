@@ -78,6 +78,7 @@ export class QuizComponent implements OnInit, OnChanges {
     const answer = this.userAnswer.nativeElement.value;
     if (this.sentence.translation.find((translation) => translation === answer)) {
       console.log("talált");
+      this.numberOfSentences--;
       this.quizService.updateSentence(this.sentence._id, 5);
       if (this.overdueSentences){
         this.charService.updateMoney(1);
@@ -91,7 +92,7 @@ export class QuizComponent implements OnInit, OnChanges {
       }
     }
 
-    this.numberOfSentences--;
+    
     if (this.numberOfSentences > 0) {
       this.sentence = this.sentences[this.numberOfSentences - 1];
       this.displayedSentence = this.sentence.english[Math.floor(Math.random() * (this.sentence.english.length))]
